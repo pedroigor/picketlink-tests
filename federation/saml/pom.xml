@@ -319,6 +319,11 @@
           <version>${version.picketlink}</version>
         </dependency>
         <dependency>
+          <groupId>org.picketlink.distribution</groupId>
+          <artifactId>picketlink-jbas7</artifactId>
+          <version>${version.picketlink}</version>
+        </dependency>
+        <dependency>
           <groupId>org.jboss.spec.javax.servlet</groupId>
           <artifactId>jboss-servlet-api_3.0_spec</artifactId>
           <version>1.0.2.Final</version>
@@ -326,6 +331,11 @@
         <dependency>
           <groupId>org.jboss.as</groupId>
           <artifactId>jboss-as-arquillian-container-managed</artifactId>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.jboss.as</groupId>
+          <artifactId>jboss-as-arquillian-container-remote</artifactId>
           <scope>test</scope>
         </dependency>
         <dependency>
@@ -395,57 +405,6 @@
                       <type>zip</type>
                       <overWrite>false</overWrite>
                       <outputDirectory>target/integration-tests</outputDirectory>
-                    </artifactItem>
-                  </artifactItems>
-                </configuration>
-              </execution>
-              <execution>
-                <id>copy</id>
-                <phase>process-test-classes</phase>
-                <goals>
-                  <goal>copy</goal>
-                </goals>
-                <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>org.picketlink</groupId>
-                      <artifactId>picketlink-federation</artifactId>
-                      <version>${version.picketlink}</version>
-                      <type>jar</type>
-                      <overWrite>false</overWrite>
-                      <outputDirectory>
-                        ${jboss.modules.dir}/org/picketlink/main
-                      </outputDirectory>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.picketlink.distribution</groupId>
-                      <artifactId>picketlink-jbas7</artifactId>
-                      <version>${version.picketlink}</version>
-                      <type>jar</type>
-                      <overWrite>false</overWrite>
-                      <outputDirectory>
-                        ${jboss.modules.dir}/org/picketlink/main
-                      </outputDirectory>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.picketlink</groupId>
-                      <artifactId>picketlink-common</artifactId>
-                      <version>${version.picketlink}</version>
-                      <type>jar</type>
-                      <overWrite>false</overWrite>
-                      <outputDirectory>
-                        ${jboss.modules.dir}/org/picketlink/main
-                      </outputDirectory>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>org.picketlink</groupId>
-                      <artifactId>picketlink-config</artifactId>
-                      <version>${version.picketlink}</version>
-                      <type>jar</type>
-                      <overWrite>false</overWrite>
-                      <outputDirectory>
-                        ${jboss.modules.dir}/org/picketlink/main
-                      </outputDirectory>
                     </artifactItem>
                   </artifactItems>
                 </configuration>

@@ -84,6 +84,11 @@ public class SAMLWebBrowserSSOProfileTestCase {
         response = conversation.getResponse(request);
 
         assertTrue(response.getText().contains("SalesTool"));
+
+        request = new GetMethodWebRequest(url.toString());
+        response = conversation.getResponse(request);
+
+        assertTrue(response.getText().contains("EmployeeDashboard"));
     }
 
 }
