@@ -13,6 +13,10 @@
 
   <artifactId>picketlink-federation-saml-tests</artifactId>
 
+  <properties>
+    <version.picketlink>2.6.0-SNAPSHOT</version.picketlink>
+  </properties>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -44,7 +48,6 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <version.picketlink>2.6.0-SNAPSHOT</version.picketlink>
         <version.wildfly>8.0.0.CR1</version.wildfly>
         <version.wildfly.distribution>wildfly-8.0.0.CR1</version.wildfly.distribution>
         <version.shrinkwrap.resolver>2.0.0</version.shrinkwrap.resolver>
@@ -90,6 +93,11 @@
         <dependency>
           <groupId>org.picketlink</groupId>
           <artifactId>picketlink-federation</artifactId>
+          <version>${version.picketlink}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.picketlink.distribution</groupId>
+          <artifactId>picketlink-wildfly8</artifactId>
           <version>${version.picketlink}</version>
         </dependency>
         <dependency>
@@ -227,6 +235,79 @@
             </executions>
           </plugin>
           <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>xml-maven-plugin</artifactId>
+            <version>1.0</version>
+            <executions>
+              <execution>
+                <phase>process-test-classes</phase>
+                <goals>
+                  <goal>transform</goal>
+                </goals>
+                <configuration>
+                  <transformationSets>
+                    <transformationSet>
+                      <dir>${jboss.modules.dir}/org/picketlink/federation/main</dir>
+                      <outputDir>${jboss.modules.dir}/org/picketlink/federation/main</outputDir>
+                      <includes>
+                        <include>module.xml</include>
+                      </includes>
+                      <stylesheet>src/test/config/wildfly/xslt/changeFederationModule.xslt</stylesheet>
+                      <parameters>
+                        <parameter>
+                          <name>version.picketlink</name>
+                          <value>${version.picketlink}</value>
+                        </parameter>
+                      </parameters>
+                    </transformationSet>
+                    <transformationSet>
+                      <dir>${jboss.modules.dir}/org/picketlink/federation/bindings/main</dir>
+                      <outputDir>${jboss.modules.dir}/org/picketlink/federation/bindings/main</outputDir>
+                      <includes>
+                        <include>module.xml</include>
+                      </includes>
+                      <stylesheet>src/test/config/wildfly/xslt/changeFederationBindingsModule.xslt</stylesheet>
+                      <parameters>
+                        <parameter>
+                          <name>version.picketlink</name>
+                          <value>${version.picketlink}</value>
+                        </parameter>
+                      </parameters>
+                    </transformationSet>
+                    <transformationSet>
+                      <dir>${jboss.modules.dir}/org/picketlink/common/main</dir>
+                      <outputDir>${jboss.modules.dir}/org/picketlink/common/main</outputDir>
+                      <includes>
+                        <include>module.xml</include>
+                      </includes>
+                      <stylesheet>src/test/config/wildfly/xslt/changeCommonModule.xslt</stylesheet>
+                      <parameters>
+                        <parameter>
+                          <name>version.picketlink</name>
+                          <value>${version.picketlink}</value>
+                        </parameter>
+                      </parameters>
+                    </transformationSet>
+                    <transformationSet>
+                      <dir>${jboss.modules.dir}/org/picketlink/config/main</dir>
+                      <outputDir>${jboss.modules.dir}/org/picketlink/config/main</outputDir>
+                      <includes>
+                        <include>module.xml</include>
+                      </includes>
+                      <stylesheet>src/test/config/wildfly/xslt/changeConfigModule.xslt</stylesheet>
+                      <parameters>
+                        <parameter>
+                          <name>version.picketlink</name>
+                          <value>${version.picketlink}</value>
+                        </parameter>
+                      </parameters>
+                    </transformationSet>
+                  </transformationSets>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
             <artifactId>maven-resources-plugin</artifactId>
             <version>2.5</version>
             <executions>
@@ -237,13 +318,13 @@
                   <goal>copy-resources</goal>
                 </goals>
                 <configuration>
-                  <outputDirectory>target/integration-tests/${version.wildfly.distribution}/standalone/configuration</outputDirectory>
+                  <outputDirectory>target/integration-tests/${version.wildfly.distribution}/standalone</outputDirectory>
                   <overwrite>true</overwrite>
                   <resources>
                     <resource>
-                      <directory>src/test/config/wildfly</directory>
+                      <directory>src/test/config/wildfly/standalone</directory>
                       <includes>
-                        <include>standalone-test.xml</include>
+                        <include>**/*</include>
                       </includes>
                       <filtering>false</filtering>
                     </resource>
@@ -270,7 +351,6 @@
     <profile>
       <id>jboss-eap-6.2</id>
       <properties>
-        <version.picketlink>2.6.0-SNAPSHOT</version.picketlink>
         <version.jboss.as>7.3.0.Final-redhat-14</version.jboss.as>
         <version.jboss.as.distribution>jboss-eap-6.2</version.jboss.as.distribution>
         <version.shrinkwrap.resolver>2.0.0</version.shrinkwrap.resolver>
@@ -333,11 +413,11 @@
           <artifactId>jboss-as-arquillian-container-managed</artifactId>
           <scope>test</scope>
         </dependency>
-        <dependency>
-          <groupId>org.jboss.as</groupId>
-          <artifactId>jboss-as-arquillian-container-remote</artifactId>
-          <scope>test</scope>
-        </dependency>
+          <!--<dependency>-->
+          <!--<groupId>org.jboss.as</groupId>-->
+          <!--<artifactId>jboss-as-arquillian-container-remote</artifactId>-->
+          <!--<scope>test</scope>-->
+          <!--</dependency>-->
         <dependency>
           <groupId>org.jboss.arquillian.junit</groupId>
           <artifactId>arquillian-junit-container</artifactId>
@@ -409,6 +489,88 @@
                   </artifactItems>
                 </configuration>
               </execution>
+              <execution>
+                <id>copy</id>
+                <phase>process-test-classes</phase>
+                <goals>
+                  <goal>copy</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.picketlink</groupId>
+                      <artifactId>picketlink-federation</artifactId>
+                      <version>${version.picketlink}</version>
+                      <type>jar</type>
+                      <overWrite>false</overWrite>
+                      <outputDirectory>
+                        ${jboss.modules.dir}/org/picketlink/main
+                      </outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.picketlink.distribution</groupId>
+                      <artifactId>picketlink-jbas7</artifactId>
+                      <version>${version.picketlink}</version>
+                      <type>jar</type>
+                      <overWrite>false</overWrite>
+                      <outputDirectory>
+                        ${jboss.modules.dir}/org/picketlink/main
+                      </outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.picketlink</groupId>
+                      <artifactId>picketlink-common</artifactId>
+                      <version>${version.picketlink}</version>
+                      <type>jar</type>
+                      <overWrite>false</overWrite>
+                      <outputDirectory>
+                        ${jboss.modules.dir}/org/picketlink/main
+                      </outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.picketlink</groupId>
+                      <artifactId>picketlink-config</artifactId>
+                      <version>${version.picketlink}</version>
+                      <type>jar</type>
+                      <overWrite>false</overWrite>
+                      <outputDirectory>
+                        ${jboss.modules.dir}/org/picketlink/main
+                      </outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>xml-maven-plugin</artifactId>
+            <version>1.0</version>
+            <executions>
+              <execution>
+                <phase>process-test-classes</phase>
+                <goals>
+                  <goal>transform</goal>
+                </goals>
+                <configuration>
+                  <transformationSets>
+                    <transformationSet>
+                      <dir>${jboss.modules.dir}/org/picketlink/main</dir>
+                      <outputDir>${jboss.modules.dir}/org/picketlink/main</outputDir>
+                      <includes>
+                        <include>module.xml</include>
+                      </includes>
+                      <stylesheet>src/test/config/${version.jboss.as.distribution}/xslt/changePicketLinkModule.xslt</stylesheet>
+                      <parameters>
+                        <parameter>
+                          <name>version.picketlink</name>
+                          <value>${version.picketlink}</value>
+                        </parameter>
+                      </parameters>
+                    </transformationSet>
+                  </transformationSets>
+                </configuration>
+              </execution>
             </executions>
           </plugin>
           <plugin>
@@ -422,13 +584,13 @@
                   <goal>copy-resources</goal>
                 </goals>
                 <configuration>
-                  <outputDirectory>target/integration-tests/${version.jboss.as.distribution}/standalone/configuration</outputDirectory>
+                  <outputDirectory>target/integration-tests/${version.jboss.as.distribution}/standalone</outputDirectory>
                   <overwrite>true</overwrite>
                   <resources>
                     <resource>
-                      <directory>src/test/config/jboss-eap-6.2</directory>
+                      <directory>src/test/config/jboss-eap-6.2/standalone</directory>
                       <includes>
-                        <include>standalone-test.xml</include>
+                        <include>**/*</include>
                       </includes>
                       <filtering>false</filtering>
                     </resource>

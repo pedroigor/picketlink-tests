@@ -15,7 +15,7 @@
       <property name="outputToConsole">true</property>
       <property name="allowConnectingToRunningServer">true</property>
       <property name="javaVmArguments">-Xms128m -Xmx768m -XX:MaxPermSize=256m</property>
-      <property name="managementAddress">127.0.0.1</property>
+      <property name="managementAddress">localhost</property>
       <!-- If running in managed mode, the location of the installation -->
       <!--<property name="jbossHome">${jboss.home}</property>-->
       <!--<property name="jbossHome">federation/saml/target/integration-tests/wildfly-8.0.0.CR1</property>-->
@@ -31,7 +31,7 @@
       <property name="managementAddress">127.0.0.1</property>
       <!-- If running in managed mode, the location of the installation -->
       <!--<property name="jbossHome">${jboss.home}</property>-->
-      <property name="jbossHome">federation/saml/target/integration-tests/jboss-eap-6.2</property>
+      <!--<property name="jbossHome">federation/saml/target/integration-tests/jboss-eap-6.2</property>-->
     </configuration>
   </container>
 

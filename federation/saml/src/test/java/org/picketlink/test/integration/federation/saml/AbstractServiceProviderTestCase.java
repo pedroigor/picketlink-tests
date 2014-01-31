@@ -22,6 +22,7 @@
 package org.picketlink.test.integration.federation.saml;
 
 import com.meterware.httpunit.GetMethodWebRequest;
+import com.meterware.httpunit.HttpUnitOptions;
 import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebForm;
 import com.meterware.httpunit.WebLink;
@@ -45,7 +46,8 @@ public abstract class AbstractServiceProviderTestCase {
     @OperateOnDeployment("service-provider")
     public void testAuthentication(@ArquillianResource URL url) throws Exception {
         WebConversation conversation = new WebConversation();
-        WebRequest request = new GetMethodWebRequest(url.toString());
+        HttpUnitOptions.setLoggingHttpHeaders(true);
+        WebRequest request = new GetMethodWebRequest(formatUrl(url));
         WebResponse response = conversation.getResponse(request);
 
         assertTrue(response.getURL().getPath().startsWith(getIdPContextPath()));
@@ -66,7 +68,7 @@ public abstract class AbstractServiceProviderTestCase {
     @Test
     @OperateOnDeployment("service-provider")
     public void testLogout(@ArquillianResource URL url) throws Exception {
-        WebRequest request = new GetMethodWebRequest(url.toString());
+        WebRequest request = new GetMethodWebRequest(formatUrl(url));
         WebConversation conversation = new WebConversation();
         WebResponse response = conversation.getResponse(request);
 
@@ -98,4 +100,21 @@ public abstract class AbstractServiceProviderTestCase {
 
     protected abstract String getIdPContextPath();
     protected abstract void doAssertAuthentication(WebResponse response);
+
+    /**
+     * <p>Make sure the URL's host is always localhost if original host is 127.0.0.1. Necessary when running the tests against Undertow as
+     * it does not properly returns the welcome page for SPs after a successful authentication.</p>
+     *
+     * @param url
+     * @return
+     */
+    private String formatUrl(URL url) {
+        String stringUrl = url.toString();
+
+        if (stringUrl.contains("127.0.0.1")) {
+            return stringUrl.replace("127.0.0.1", "localhost");
+        }
+
+        return stringUrl;
+    }
 }
