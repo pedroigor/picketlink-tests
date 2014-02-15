@@ -44,9 +44,6 @@
   <profiles>
     <profile>
       <id>wildfly-8.0.0.CR1</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
       <properties>
         <version.wildfly>8.0.0.CR1</version.wildfly>
         <version.wildfly.distribution>wildfly-8.0.0.CR1</version.wildfly.distribution>
@@ -413,11 +410,11 @@
           <artifactId>jboss-as-arquillian-container-managed</artifactId>
           <scope>test</scope>
         </dependency>
-          <!--<dependency>-->
+        <!--<dependency>-->
           <!--<groupId>org.jboss.as</groupId>-->
           <!--<artifactId>jboss-as-arquillian-container-remote</artifactId>-->
           <!--<scope>test</scope>-->
-          <!--</dependency>-->
+        <!--</dependency>-->
         <dependency>
           <groupId>org.jboss.arquillian.junit</groupId>
           <artifactId>arquillian-junit-container</artifactId>
