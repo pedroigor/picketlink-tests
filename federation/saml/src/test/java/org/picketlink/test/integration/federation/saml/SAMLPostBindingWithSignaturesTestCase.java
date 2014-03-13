@@ -43,12 +43,12 @@ public class SAMLPostBindingWithSignaturesTestCase extends AbstractServiceProvid
 
     @Deployment(name = "idp")
     public static WebArchive deployIdentityProvider() {
-        return resolveFromFederation("idp-sig");
+        return resolveFromFederation("picketlink-federation-saml-idp-with-signature");
     }
 
     @Deployment(name = "service-provider")
     public static WebArchive deployServiceProvider() {
-        return resolveFromFederation("sales-post-sig");
+        return resolveFromFederation("picketlink-federation-saml-sp-post-with-signature");
     }
 
     @Override

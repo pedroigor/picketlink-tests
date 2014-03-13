@@ -22,10 +22,8 @@
 package org.picketlink.test.integration.federation.saml;
 
 import com.meterware.httpunit.GetMethodWebRequest;
-import com.meterware.httpunit.HttpUnitOptions;
 import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebForm;
-import com.meterware.httpunit.WebLink;
 import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -33,14 +31,13 @@ import org.jboss.arquillian.container.test.api.OperateOnDeployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.net.URL;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.picketlink.test.integration.federation.saml.QuickstartArchiveUtil.resolveFromFederation;
 
@@ -49,28 +46,37 @@ import static org.picketlink.test.integration.federation.saml.QuickstartArchiveU
  */
 @RunWith (Arquillian.class)
 @RunAsClient
-public class SAML11IDPInitiatedTestCase extends AbstractFederationTestCase {
+public class RestoreOriginalRequestTestCase extends AbstractFederationTestCase {
 
-    @Deployment(name = "idp")
-    public static WebArchive deployIdentityProvider() {
+    @Deployment(name = "picketlink-federation-saml-idp-basic")
+    public static WebArchive deployIdp() {
         return resolveFromFederation("picketlink-federation-saml-idp-basic");
     }
 
-    @Deployment(name = "service-provider")
-    public static WebArchive deployServiceProvider() {
-        return resolveFromFederation("picketlink-federation-saml-sp-post-basic");
+    @Deployment(name = "picketlink-federation-saml-sp-redirect-basic")
+    public static WebArchive deployEmployee() {
+        WebArchive serviceProvider = resolveFromFederation("picketlink-federation-saml-sp-redirect-basic");
+
+        serviceProvider.add(new StringAsset("Back to the original requested resource."), "savedRequest/savedRequest.html");
+
+        return serviceProvider;
+    }
+
+    @Deployment(name = "picketlink-federation-saml-sp-post-basic")
+    public static WebArchive deploySales() {
+        WebArchive serviceProvider = resolveFromFederation("picketlink-federation-saml-sp-post-basic");
+
+        serviceProvider.add(new StringAsset("Back to the original requested resource."), "savedRequest/savedRequest.html");
+
+        return serviceProvider;
     }
 
     @Test
-    @OperateOnDeployment("idp")
-    public void testAuthentication(@ArquillianResource URL url) throws Exception {
+    @OperateOnDeployment("picketlink-federation-saml-sp-post-basic")
+    public void testPostOriginalRequest(@ArquillianResource URL url) throws Exception {
+        WebRequest request = new GetMethodWebRequest(formatUrl(url) + "savedRequest/savedRequest.html");
         WebConversation conversation = new WebConversation();
-        HttpUnitOptions.setLoggingHttpHeaders(true);
-        WebRequest request = new GetMethodWebRequest(formatUrl(url));
         WebResponse response = conversation.getResponse(request);
-
-        assertTrue(response.getURL().getPath().startsWith("/idp"));
-        assertEquals(1, response.getForms().length);
 
         WebForm webForm = response.getForms()[0];
 
@@ -81,12 +87,26 @@ public class SAML11IDPInitiatedTestCase extends AbstractFederationTestCase {
 
         response = conversation.getCurrentPage();
 
-        WebLink link = response.getLinkWithID("saml_11_sales_link");
-
-        assertNotNull(link);
-
-        response = link.click();
-
-        assertTrue(response.getText().contains("SalesTool"));
+        assertTrue(response.getText().contains("Back to the original requested resource."));
     }
+
+    @Test
+    @OperateOnDeployment("picketlink-federation-saml-sp-redirect-basic")
+    public void testRedirectOriginalRequest(@ArquillianResource URL url) throws Exception {
+        WebRequest request = new GetMethodWebRequest(formatUrl(url) + "/savedRequest/savedRequest.html");
+        WebConversation conversation = new WebConversation();
+        WebResponse response = conversation.getResponse(request);
+
+        WebForm webForm = response.getForms()[0];
+
+        webForm.setParameter("j_username", "tomcat");
+        webForm.setParameter("j_password", "tomcat");
+
+        webForm.getSubmitButtons()[0].click();
+
+        response = conversation.getCurrentPage();
+
+        assertTrue(response.getText().contains("Back to the original requested resource."));
+    }
+
 }

@@ -43,12 +43,12 @@ public class SAMLPostBindingWithEncryptionTestCase extends AbstractServiceProvid
 
     @Deployment(name = "idp")
     public static WebArchive deployIdentityProvider() {
-        return resolveFromFederation("idp-enc");
+        return resolveFromFederation("picketlink-federation-saml-idp-with-encryption");
     }
 
     @Deployment(name = "service-provider")
     public static WebArchive deployServiceProvider() {
-        WebArchive archive = resolveFromFederation("sales-post-enc");
+        WebArchive archive = resolveFromFederation("picketlink-federation-saml-sp-with-encryption");
 
         return archive;
     }

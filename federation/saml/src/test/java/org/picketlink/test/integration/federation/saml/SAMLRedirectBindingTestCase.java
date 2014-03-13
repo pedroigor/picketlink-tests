@@ -43,12 +43,12 @@ public class SAMLRedirectBindingTestCase extends AbstractServiceProviderTestCase
 
     @Deployment(name = "idp")
     public static WebArchive deployIdentityProvider() {
-        return resolveFromFederation("idp");
+        return resolveFromFederation("picketlink-federation-saml-idp-basic");
     }
 
     @Deployment(name = "service-provider")
     public static WebArchive deployServiceProvider() {
-        return resolveFromFederation("employee");
+        return resolveFromFederation("picketlink-federation-saml-sp-redirect-basic");
     }
 
     @Override

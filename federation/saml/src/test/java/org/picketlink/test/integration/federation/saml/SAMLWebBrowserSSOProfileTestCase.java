@@ -49,17 +49,17 @@ public class SAMLWebBrowserSSOProfileTestCase {
 
     @Deployment(name = "idp")
     public static WebArchive deployIdp() {
-        return resolveFromFederation("idp");
+        return resolveFromFederation("picketlink-federation-saml-idp-basic");
     }
 
     @Deployment(name = "employee")
     public static WebArchive deployEmployee() {
-        return resolveFromFederation("employee");
+        return resolveFromFederation("picketlink-federation-saml-sp-redirect-basic");
     }
 
     @Deployment(name = "sales")
     public static WebArchive deploySales() {
-        return resolveFromFederation("sales-post");
+        return resolveFromFederation("picketlink-federation-saml-sp-post-basic");
     }
 
     @Test

@@ -22,7 +22,7 @@
     </configuration>
   </container>
 
-  <container qualifier="jboss-eap-6.2">
+  <container qualifier="jboss-eap-6.3">
     <configuration>
       <property name="serverConfig">standalone-test.xml</property>
       <property name="outputToConsole">true</property>
@@ -31,7 +31,7 @@
       <property name="managementAddress">127.0.0.1</property>
       <!-- If running in managed mode, the location of the installation -->
       <!--<property name="jbossHome">${jboss.home}</property>-->
-      <!--<property name="jbossHome">federation/saml/target/integration-tests/jboss-eap-6.2</property>-->
+      <!--<property name="jbossHome">federation/saml/target/integration-tests/jboss-eap-6.3</property>-->
     </configuration>
   </container>
 

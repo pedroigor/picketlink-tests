@@ -31,7 +31,10 @@ import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 public class QuickstartArchiveUtil {
 
     public static <T extends Archive> T resolveFromFederation(String artifactId) {
-        return (T) Maven.resolver().resolve("org.picketlink.quickstarts:" + artifactId + ":war:" + getFederationBindingClassifier() + ":" + getVersion())
+        //        return (T) Maven.resolver().resolve("org.picketlink.quickstarts:" + artifactId + ":war:" + getFederationBindingClassifier() + ":" + getVersion())
+        //                   .withoutTransitivity()
+        //                   .asSingle(WebArchive.class);
+        return (T) Maven.resolver().resolve("org.picketlink.quickstarts:" + artifactId + ":war:" + getVersion())
                    .withoutTransitivity()
                    .asSingle(WebArchive.class);
     }

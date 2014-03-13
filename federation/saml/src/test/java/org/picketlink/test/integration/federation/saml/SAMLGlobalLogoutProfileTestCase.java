@@ -49,23 +49,23 @@ import static org.picketlink.test.integration.federation.saml.QuickstartArchiveU
 @RunAsClient
 public class SAMLGlobalLogoutProfileTestCase {
 
-    @Deployment(name = "idp")
+    @Deployment(name = "picketlink-federation-saml-idp-basic")
     public static WebArchive deployIdp() {
-        return resolveFromFederation("idp");
+        return resolveFromFederation("picketlink-federation-saml-idp-basic");
     }
 
-    @Deployment(name = "employee")
+    @Deployment(name = "picketlink-federation-saml-sp-redirect-basic")
     public static WebArchive deployEmployee() {
-        return resolveFromFederation("employee");
+        return resolveFromFederation("picketlink-federation-saml-sp-redirect-basic");
     }
 
-    @Deployment(name = "sales")
+    @Deployment(name = "picketlink-federation-saml-sp-post-basic")
     public static WebArchive deploySales() {
-        return resolveFromFederation("sales-post");
+        return resolveFromFederation("picketlink-federation-saml-sp-post-basic");
     }
 
     @Test
-    @OperateOnDeployment("employee")
+    @OperateOnDeployment("picketlink-federation-saml-sp-redirect-basic")
     public void testGlobalLogout(@ArquillianResource URL url) throws Exception {
         WebRequest request = new GetMethodWebRequest(url.toString());
         WebConversation conversation = new WebConversation();

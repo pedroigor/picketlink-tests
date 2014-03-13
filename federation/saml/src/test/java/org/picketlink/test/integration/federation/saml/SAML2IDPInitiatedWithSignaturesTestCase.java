@@ -21,17 +21,12 @@
  */
 package org.picketlink.test.integration.federation.saml;
 
-import com.meterware.httpunit.WebResponse;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.runner.RunWith;
 
-import java.io.IOException;
-
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.picketlink.test.integration.federation.saml.QuickstartArchiveUtil.resolveFromFederation;
 
 /**
@@ -39,29 +34,16 @@ import static org.picketlink.test.integration.federation.saml.QuickstartArchiveU
  */
 @RunWith (Arquillian.class)
 @RunAsClient
-public class SAMLMetadataTestCase extends AbstractServiceProviderTestCase {
+public class SAML2IDPInitiatedWithSignaturesTestCase extends AbstractSAML2IDPInitiatedTestCase {
 
     @Deployment(name = "idp")
     public static WebArchive deployIdentityProvider() {
-        return resolveFromFederation("picketlink-federation-saml-idp-with-metadata");
+        return resolveFromFederation("picketlink-federation-saml-idp-with-signature");
     }
 
     @Deployment(name = "service-provider")
     public static WebArchive deployServiceProvider() {
-        return resolveFromFederation("picketlink-federation-saml-sp-with-metadata");
+        return resolveFromFederation("picketlink-federation-saml-sp-post-with-signature");
     }
 
-    @Override
-    protected String getIdPContextPath() {
-        return "/idp-metadata";
-    }
-
-    @Override
-    protected void doAssertAuthentication(WebResponse response) {
-        try {
-            assertTrue(response.getText().contains("SalesTool"));
-        } catch (IOException e) {
-            fail();
-        }
-    }
 }
