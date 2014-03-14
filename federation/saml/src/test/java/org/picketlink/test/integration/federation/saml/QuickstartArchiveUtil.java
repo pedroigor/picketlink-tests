@@ -31,24 +31,21 @@ import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 public class QuickstartArchiveUtil {
 
     public static <T extends Archive> T resolveFromFederation(String artifactId) {
-        //        return (T) Maven.resolver().resolve("org.picketlink.quickstarts:" + artifactId + ":war:" + getFederationBindingClassifier() + ":" + getVersion())
-        //                   .withoutTransitivity()
-        //                   .asSingle(WebArchive.class);
-        return (T) Maven.resolver().resolve("org.picketlink.quickstarts:" + artifactId + ":war:" + getVersion())
+        return (T) Maven.resolver().resolve("org.picketlink.quickstarts:" + artifactId + ":war:" + getFederationBindingClassifier() + ":" + getVersion())
                    .withoutTransitivity()
                    .asSingle(WebArchive.class);
     }
 
     private static String getFederationBindingClassifier() {
         String arquillianLunch = System.getProperty("arquillian.launch");
-        String classifier = "wildfly-8";
 
         if (arquillianLunch != null) {
             if (arquillianLunch.startsWith("jboss-eap-")) {
-                classifier = "jboss-as7";
+                return "jboss-eap";
             }
         }
-        return classifier;
+
+        return "wildfly";
     }
 
     private static String getVersion() {

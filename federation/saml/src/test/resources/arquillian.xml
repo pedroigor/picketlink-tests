@@ -9,7 +9,7 @@
     <property name="deploymentExportPath">target/integration-tests/deployments</property>
   </engine>
 
-  <container qualifier="wildfly" default="true">
+  <container qualifier="wildfly-8.0.1.Final-SNAPSHOT" default="true">
     <configuration>
       <property name="serverConfig">standalone-test.xml</property>
       <property name="outputToConsole">true</property>
@@ -18,7 +18,7 @@
       <property name="managementAddress">localhost</property>
       <!-- If running in managed mode, the location of the installation -->
       <!--<property name="jbossHome">${jboss.home}</property>-->
-      <!--<property name="jbossHome">federation/saml/target/integration-tests/wildfly-8.0.0.CR1</property>-->
+      <!--<property name="jbossHome">federation/saml/target/integration-tests/8.0.1.Final-SNAPSHOT</property>-->
     </configuration>
   </container>
 

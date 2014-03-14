@@ -47,7 +47,7 @@ import static org.picketlink.test.integration.federation.saml.QuickstartArchiveU
  */
 @RunWith (Arquillian.class)
 @RunAsClient
-public class SAMLGlobalLogoutProfileTestCase {
+public class SAMLGlobalLogoutProfileTestCase extends AbstractFederationTestCase {
 
     @Deployment(name = "picketlink-federation-saml-idp-basic")
     public static WebArchive deployIdp() {
@@ -67,7 +67,7 @@ public class SAMLGlobalLogoutProfileTestCase {
     @Test
     @OperateOnDeployment("picketlink-federation-saml-sp-redirect-basic")
     public void testGlobalLogout(@ArquillianResource URL url) throws Exception {
-        WebRequest request = new GetMethodWebRequest(url.toString());
+        WebRequest request = new GetMethodWebRequest(formatUrl(url));
         WebConversation conversation = new WebConversation();
         WebResponse response = conversation.getResponse(request);
 
@@ -82,7 +82,7 @@ public class SAMLGlobalLogoutProfileTestCase {
 
         assertTrue(response.getText().contains("EmployeeDashboard"));
 
-        request = new GetMethodWebRequest(url.toString().replace("/employee", "/sales-post"));
+        request = new GetMethodWebRequest(formatUrl(url).replace("/employee", "/sales-post"));
         response = conversation.getResponse(request);
 
         assertTrue(response.getText().contains("SalesTool"));
@@ -98,7 +98,7 @@ public class SAMLGlobalLogoutProfileTestCase {
         assertTrue(response.getURL().getPath().startsWith("/idp"));
         assertEquals(1, response.getForms().length);
 
-        request = new GetMethodWebRequest(url.toString());
+        request = new GetMethodWebRequest(formatUrl(url));
         response = conversation.getResponse(request);
 
         assertTrue(response.getURL().getPath().startsWith("/idp"));

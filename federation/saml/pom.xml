@@ -73,6 +73,14 @@
                                     <outputDirectory>${jboss.modules.dir}/org/picketlink/federation/bindings/main</outputDirectory>
                                 </artifactItem>
                                 <artifactItem>
+                                    <groupId>org.picketlink.distribution</groupId>
+                                    <artifactId>picketlink-wildfly8</artifactId>
+                                    <version>${version.picketlink}</version>
+                                    <type>jar</type>
+                                    <overWrite>false</overWrite>
+                                    <outputDirectory>${jboss.modules.dir}/org/picketlink/federation/bindings/main</outputDirectory>
+                                </artifactItem>
+                                <artifactItem>
                                     <groupId>org.picketlink</groupId>
                                     <artifactId>picketlink-common</artifactId>
                                     <version>${version.picketlink}</version>
@@ -208,10 +216,10 @@
 
     <profiles>
         <profile>
-            <id>wildfly</id>
+            <id>wildfly-8.0.1.Final-SNAPSHOT</id>
             <properties>
-                <version.wildfly>8.0.0.CR1</version.wildfly>
-                <version.jboss.as.distribution>wildfly-8.0.0.CR1</version.jboss.as.distribution>
+                <version.wildfly>8.0.1.Final-SNAPSHOT</version.wildfly>
+                <version.jboss.as.distribution>wildfly-8.0.1.Final-SNAPSHOT</version.jboss.as.distribution>
                 <version.shrinkwrap.resolver>2.0.0</version.shrinkwrap.resolver>
             </properties>
             <dependencyManagement>
@@ -261,11 +269,11 @@
                     <artifactId>picketlink-wildfly8</artifactId>
                     <version>${version.picketlink}</version>
                 </dependency>
-                <dependency>
-                    <groupId>org.jboss.spec.javax.servlet</groupId>
-                    <artifactId>jboss-servlet-api_3.0_spec</artifactId>
-                    <version>1.0.2.Final</version>
-                </dependency>
+                <!--<dependency>-->
+                    <!--<groupId>org.wildfly</groupId>-->
+                    <!--<artifactId>wildfly-arquillian-container-remote</artifactId>-->
+                    <!--<scope>test</scope>-->
+                <!--</dependency>-->
                 <dependency>
                     <groupId>org.wildfly</groupId>
                     <artifactId>wildfly-arquillian-container-managed</artifactId>
@@ -321,6 +329,15 @@
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.1</version>
+                        <configuration>
+                            <source>1.7</source>
+                            <target>1.7</target>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-dependency-plugin</artifactId>
                         <executions>
                             <execution>
@@ -351,7 +368,6 @@
         <profile>
             <id>jboss-eap-common</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
                 <property>
                     <name>jboss-eap</name>
                 </property>
