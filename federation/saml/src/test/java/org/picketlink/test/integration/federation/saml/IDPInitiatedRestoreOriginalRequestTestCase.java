@@ -55,6 +55,10 @@ public class IDPInitiatedRestoreOriginalRequestTestCase extends AbstractFederati
     @OperateOnDeployment("picketlink-federation-saml-sp-redirect-basic")
     private URL serviceProviderRedirectURL;
 
+    @ArquillianResource
+    @OperateOnDeployment("picketlink-federation-saml-sp-post-basic")
+    private URL serviceProviderPostURL;
+
     @Deployment(name = "picketlink-federation-saml-idp-basic")
     public static WebArchive deployIdp() {
         return resolveFromFederation("picketlink-federation-saml-idp-basic");
@@ -106,10 +110,9 @@ public class IDPInitiatedRestoreOriginalRequestTestCase extends AbstractFederati
     }
 
     @Test
-    @Ignore
     @OperateOnDeployment("picketlink-federation-saml-idp-basic")
     public void testRedirectOriginalRequest(@ArquillianResource URL url) throws Exception {
-        WebRequest request = new GetMethodWebRequest(formatUrl(url) + "/savedRequest/savedRequest.html");
+        WebRequest request = new GetMethodWebRequest(formatUrl(url));
         WebConversation conversation = new WebConversation();
         WebResponse response = conversation.getResponse(request);
 
@@ -121,6 +124,14 @@ public class IDPInitiatedRestoreOriginalRequestTestCase extends AbstractFederati
         webForm.getSubmitButtons()[0].click();
 
         response = conversation.getCurrentPage();
+
+        WebLink link = response.getLinkWithID("saml_2_sales_link");
+
+        assertNotNull(link);
+
+        request = new GetMethodWebRequest(formatUrl(this.serviceProviderPostURL) + "savedRequest/savedRequest.html");
+
+        response = conversation.getResponse(request);
 
         assertTrue(response.getText().contains("Back to the original requested resource."));
     }
