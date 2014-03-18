@@ -9,7 +9,7 @@
     <property name="deploymentExportPath">target/integration-tests/deployments</property>
   </engine>
 
-  <container qualifier="wildfly-8.0.1.Final-SNAPSHOT" default="true">
+  <container qualifier="wildfly-8.0.1.Final-SNAPSHOT">
     <configuration>
       <property name="serverConfig">standalone-test.xml</property>
       <property name="outputToConsole">true</property>

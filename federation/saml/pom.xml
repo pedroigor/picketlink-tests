@@ -216,10 +216,8 @@
 
     <profiles>
         <profile>
-            <id>wildfly-8.0.1.Final-SNAPSHOT</id>
+            <id>wildfly-common</id>
             <properties>
-                <version.wildfly>8.0.1.Final-SNAPSHOT</version.wildfly>
-                <version.jboss.as.distribution>wildfly-8.0.1.Final-SNAPSHOT</version.jboss.as.distribution>
                 <version.shrinkwrap.resolver>2.0.0</version.shrinkwrap.resolver>
             </properties>
             <dependencyManagement>
@@ -515,6 +513,14 @@
             <properties>
                 <version.jboss.as>7.4.0.Final-redhat-SNAPSHOT</version.jboss.as>
                 <version.jboss.as.distribution>jboss-eap-6.3</version.jboss.as.distribution>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>wildfly-8.0.1.Final-SNAPSHOT</id>
+            <properties>
+                <version.wildfly>8.0.1.Final-SNAPSHOT</version.wildfly>
+                <version.jboss.as.distribution>wildfly-8.0.1.Final-SNAPSHOT</version.jboss.as.distribution>
             </properties>
         </profile>
     </profiles>
