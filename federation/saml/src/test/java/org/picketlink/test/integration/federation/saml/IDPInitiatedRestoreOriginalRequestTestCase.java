@@ -102,7 +102,7 @@ public class IDPInitiatedRestoreOriginalRequestTestCase extends AbstractFederati
 
         assertNotNull(link);
 
-        request = new GetMethodWebRequest(formatUrl(this.serviceProviderRedirectURL) + "savedRequest/savedRequest.html");
+        request = new GetMethodWebRequest(formatUrl(this.serviceProviderPostURL) + "savedRequest/savedRequest.html");
 
         response = conversation.getResponse(request);
 
@@ -129,11 +129,12 @@ public class IDPInitiatedRestoreOriginalRequestTestCase extends AbstractFederati
 
         assertNotNull(link);
 
-        request = new GetMethodWebRequest(formatUrl(this.serviceProviderPostURL) + "savedRequest/savedRequest.html");
+        request = new GetMethodWebRequest(formatUrl(this.serviceProviderRedirectURL) + "savedRequest/savedRequest.html");
 
         response = conversation.getResponse(request);
 
         assertTrue(response.getText().contains("Back to the original requested resource."));
     }
+
 
 }
