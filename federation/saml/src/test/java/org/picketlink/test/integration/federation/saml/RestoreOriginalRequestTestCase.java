@@ -67,6 +67,7 @@ public class RestoreOriginalRequestTestCase extends AbstractFederationTestCase {
         WebArchive serviceProvider = resolveFromFederation("picketlink-federation-saml-sp-post-basic");
 
         serviceProvider.add(new StringAsset("Back to the original requested resource."), "savedRequest/savedRequest.html");
+        serviceProvider.add(new StringAsset("<%= request.getParameter(\"SAVED_PARAM\") %>."), "savedRequest/savedRequest.jsp");
 
         return serviceProvider;
     }
@@ -88,6 +89,28 @@ public class RestoreOriginalRequestTestCase extends AbstractFederationTestCase {
         response = conversation.getCurrentPage();
 
         assertTrue(response.getText().contains("Back to the original requested resource."));
+    }
+
+    @Test
+    @OperateOnDeployment("picketlink-federation-saml-sp-post-basic")
+    public void testPostOriginalRequestWithParams(@ArquillianResource URL url) throws Exception {
+        WebRequest request = new GetMethodWebRequest(formatUrl(url) + "savedRequest/savedRequest.jsp");
+
+        request.setParameter("SAVED_PARAM", "Param was saved.");
+
+        WebConversation conversation = new WebConversation();
+        WebResponse response = conversation.getResponse(request);
+
+        WebForm webForm = response.getForms()[0];
+
+        webForm.setParameter("j_username", "tomcat");
+        webForm.setParameter("j_password", "tomcat");
+
+        webForm.getSubmitButtons()[0].click();
+
+        response = conversation.getCurrentPage();
+
+        assertTrue(response.getText().contains("Param was saved."));
     }
 
     @Test
