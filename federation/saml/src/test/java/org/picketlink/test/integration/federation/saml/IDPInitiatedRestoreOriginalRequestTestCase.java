@@ -96,13 +96,7 @@ public class IDPInitiatedRestoreOriginalRequestTestCase extends AbstractFederati
 
         webForm.getSubmitButtons()[0].click();
 
-        response = conversation.getCurrentPage();
-
-        WebLink link = response.getLinkWithID("saml_2_sales_link");
-
-        assertNotNull(link);
-
-        request = new GetMethodWebRequest(formatUrl(this.serviceProviderPostURL) + "savedRequest/savedRequest.html");
+        request = new GetMethodWebRequest(formatUrl(url) + "?TARGET=" + formatUrl(this.serviceProviderPostURL) + "savedRequest/savedRequest.html");
 
         response = conversation.getResponse(request);
 
@@ -123,13 +117,7 @@ public class IDPInitiatedRestoreOriginalRequestTestCase extends AbstractFederati
 
         webForm.getSubmitButtons()[0].click();
 
-        response = conversation.getCurrentPage();
-
-        WebLink link = response.getLinkWithID("saml_2_sales_link");
-
-        assertNotNull(link);
-
-        request = new GetMethodWebRequest(formatUrl(this.serviceProviderRedirectURL) + "savedRequest/savedRequest.html");
+        request = new GetMethodWebRequest(formatUrl(url) + "?TARGET=" + formatUrl(this.serviceProviderPostURL) + "savedRequest/savedRequest.html");
 
         response = conversation.getResponse(request);
 
