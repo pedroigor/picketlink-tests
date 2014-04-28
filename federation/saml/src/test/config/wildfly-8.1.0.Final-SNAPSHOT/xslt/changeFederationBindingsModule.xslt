@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:module="urn:jboss:module:1.1" version="1.0">
+                xmlns:module="urn:jboss:module:1.3" version="1.0">
 
   <xsl:param name="version.picketlink"/>
 
   <xsl:output method="xml" indent="yes"/>
 
-  <xsl:template match="//module:module[@name='org.picketlink.common']/module:resources"/>
+  <xsl:template match="//module:module[@name='org.picketlink.federation.bindings']/module:resources"/>
 
-  <xsl:template match="//module:module[@name='org.picketlink.common']/module:resources">
+  <xsl:template match="//module:module[@name='org.picketlink.federation.bindings']/module:resources">
       <resources>
         <resource-root>
-          <xsl:attribute name="path">picketlink-common-<xsl:value-of select="$version.picketlink"/>.jar</xsl:attribute>
+          <xsl:attribute name="path">picketlink-wildfly8-<xsl:value-of select="$version.picketlink"/>.jar</xsl:attribute>
         </resource-root>
       </resources>
   </xsl:template>

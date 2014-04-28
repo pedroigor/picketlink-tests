@@ -22,7 +22,7 @@
     </configuration>
   </container>
 
-  <container qualifier="wildfly-8.1.0.CR1">
+  <container qualifier="wildfly-8.1.0.Final-SNAPSHOT">
     <configuration>
       <property name="serverConfig">standalone-test.xml</property>
       <property name="outputToConsole">true</property>

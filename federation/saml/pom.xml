@@ -180,16 +180,16 @@
                 <executions>
                     <execution>
                         <id>copy-resources</id>
-                        <phase>validate</phase>
+                        <phase>process-test-classes</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>target/integration-tests/${version.jboss.as.distribution}/standalone</outputDirectory>
+                            <outputDirectory>target/integration-tests/${version.jboss.as.distribution}/</outputDirectory>
                             <overwrite>true</overwrite>
                             <resources>
                                 <resource>
-                                    <directory>src/test/config/${version.jboss.as.distribution}/standalone</directory>
+                                    <directory>src/test/config/${version.jboss.as.distribution}/</directory>
                                     <includes>
                                         <include>**/*</include>
                                     </includes>
@@ -525,10 +525,10 @@
         </profile>
 
         <profile>
-            <id>wildfly-8.1.0.CR1</id>
+            <id>wildfly-8.1.0.Final-SNAPSHOT</id>
             <properties>
-                <version.wildfly>8.1.0.CR1</version.wildfly>
-                <version.jboss.as.distribution>wildfly-8.1.0.CR1</version.jboss.as.distribution>
+                <version.wildfly>8.1.0.Final-SNAPSHOT</version.wildfly>
+                <version.jboss.as.distribution>wildfly-8.1.0.Final-SNAPSHOT</version.jboss.as.distribution>
             </properties>
         </profile>
     </profiles>
