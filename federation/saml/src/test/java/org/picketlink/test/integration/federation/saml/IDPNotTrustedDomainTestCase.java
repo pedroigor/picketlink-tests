@@ -22,9 +22,10 @@
 package org.picketlink.test.integration.federation.saml;
 
 import com.meterware.httpunit.GetMethodWebRequest;
+import com.meterware.httpunit.WebClient;
+import com.meterware.httpunit.WebClientListener;
 import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebForm;
-import com.meterware.httpunit.WebLink;
 import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -32,13 +33,17 @@ import org.jboss.arquillian.container.test.api.OperateOnDeployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.picketlink.common.constants.JBossSAMLURIConstants;
+import org.picketlink.identity.federation.saml.v2.protocol.ResponseType;
+import org.picketlink.identity.federation.saml.v2.protocol.StatusCodeType;
+import org.picketlink.identity.federation.saml.v2.protocol.StatusType;
 
 import java.net.URL;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.picketlink.test.integration.federation.saml.QuickstartArchiveUtil.resolveFromFederation;
@@ -48,35 +53,55 @@ import static org.picketlink.test.integration.federation.saml.QuickstartArchiveU
  */
 @RunWith (Arquillian.class)
 @RunAsClient
-public class SAML2IDPInitiatedTestCase extends AbstractSAML2IDPInitiatedTestCase {
+public class IDPNotTrustedDomainTestCase extends AbstractFederationTestCase {
 
-    @ArquillianResource
-    @OperateOnDeployment("service-provider")
-    private URL serviceProviderPostURL;
+    @Deployment(name = "idp-invalid-trust-domain")
+    public static WebArchive deployInvalidTrustDomainIdP() {
+        WebArchive deployment = resolveFromFederation("picketlink-federation-saml-idp-basic");
 
-    @Deployment(name = "idp")
-    public static WebArchive deployIdentityProvider() {
-        WebArchive webArchive = resolveFromFederation("picketlink-federation-saml-idp-basic");
+        deployment.add(getIdPConfig(null, false, false, "nodomain", null), "WEB-INF/picketlink.xml");
 
-        System.out.println(webArchive.toString(true));
-
-        return webArchive;
+        return deployment;
     }
 
     @Deployment(name = "service-provider")
-    public static WebArchive deployServiceProvider() {
-        WebArchive serviceProvider = resolveFromFederation("picketlink-federation-saml-sp-post-basic");
-
-        serviceProvider.add(new StringAsset("Back to the original requested resource."), "savedRequest/savedRequest.html");
-
-        return serviceProvider;
+    public static WebArchive deployEmployee() {
+        return resolveFromFederation("picketlink-federation-saml-sp-redirect-basic");
     }
 
     @Test
-    @OperateOnDeployment("idp")
-    public void testPostOriginalRequest(@ArquillianResource URL url) throws Exception {
+    @OperateOnDeployment("service-provider")
+    public void testRedirectOriginalRequest(@ArquillianResource URL url) throws Exception {
         WebRequest request = new GetMethodWebRequest(formatUrl(url));
         WebConversation conversation = new WebConversation();
+
+        conversation.addClientListener(new WebClientListener() {
+            @Override
+            public void requestSent(WebClient src, WebRequest req) {
+            }
+
+            @Override
+            public void responseReceived(WebClient src, WebResponse resp) {
+                ResponseType responseType = getResponseType(resp);
+
+                if (responseType != null) {
+                    StatusType status = responseType.getStatus();
+
+                    assertNotNull(status);
+
+                    StatusCodeType topLevelCode = status.getStatusCode();
+
+                    assertNotNull(topLevelCode);
+                    assertEquals(JBossSAMLURIConstants.STATUS_RESPONDER.get(), topLevelCode.getValue().toString());
+
+                    StatusCodeType secondLevelCode = topLevelCode.getStatusCode();
+
+                    assertNotNull(secondLevelCode);
+                    assertEquals(JBossSAMLURIConstants.STATUS_REQUEST_DENIED.get(), secondLevelCode.getValue().toString());
+                }
+            }
+        });
+
         WebResponse response = conversation.getResponse(request);
 
         WebForm webForm = response.getForms()[0];
@@ -86,10 +111,8 @@ public class SAML2IDPInitiatedTestCase extends AbstractSAML2IDPInitiatedTestCase
 
         webForm.getSubmitButtons()[0].click();
 
-        request = new GetMethodWebRequest(formatUrl(url) + "?SAML_VERSION=2.0&TARGET=" + formatUrl(this.serviceProviderPostURL) + "savedRequest/savedRequest.html");
+        response = conversation.getCurrentPage();
 
-        response = conversation.getResponse(request);
-
-        assertTrue(response.getText().contains("Back to the original requested resource."));
+        assertTrue(response.getText().contains("The Identity Provider could not process the authentication request."));
     }
 }

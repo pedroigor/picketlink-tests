@@ -42,10 +42,14 @@ import static org.junit.Assert.assertTrue;
  */
 public abstract class AbstractServiceProviderTestCase extends AbstractFederationTestCase {
 
+    @ArquillianResource
+    @OperateOnDeployment("idp")
+    private URL idpUrl;
+
     @Test
     @OperateOnDeployment("service-provider")
     public void testAuthentication(@ArquillianResource URL url) throws Exception {
-        WebConversation conversation = new WebConversation();
+        WebConversation conversation = createWebConversation();
         HttpUnitOptions.setLoggingHttpHeaders(true);
         WebRequest request = new GetMethodWebRequest(formatUrl(url));
         WebResponse response = conversation.getResponse(request);
@@ -69,7 +73,7 @@ public abstract class AbstractServiceProviderTestCase extends AbstractFederation
     @OperateOnDeployment("service-provider")
     public void testLogout(@ArquillianResource URL url) throws Exception {
         WebRequest request = new GetMethodWebRequest(formatUrl(url));
-        WebConversation conversation = new WebConversation();
+        WebConversation conversation = createWebConversation();
         WebResponse response = conversation.getResponse(request);
 
         assertTrue(response.getURL().getPath().startsWith(getIdPContextPath()));
@@ -98,7 +102,14 @@ public abstract class AbstractServiceProviderTestCase extends AbstractFederation
         assertEquals(1, response.getForms().length);
     }
 
-    protected abstract String getIdPContextPath();
+    protected String getIdPContextPath() {
+        return this.idpUrl.getPath();
+    }
+
     protected abstract void doAssertAuthentication(WebResponse response);
+
+    protected WebConversation createWebConversation() {
+        return new WebConversation();
+    }
 
 }

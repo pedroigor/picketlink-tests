@@ -52,11 +52,6 @@ public class SAMLRedirectBindingWithSignaturesTestCase extends AbstractServicePr
     }
 
     @Override
-    protected String getIdPContextPath() {
-        return "/idp-sig";
-    }
-
-    @Override
     protected void doAssertAuthentication(WebResponse response) {
         try {
             assertTrue(response.getText().contains("EmployeeDashboard"));

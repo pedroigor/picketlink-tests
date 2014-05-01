@@ -22,9 +22,11 @@
 package org.picketlink.test.integration.federation.saml;
 
 import com.meterware.httpunit.GetMethodWebRequest;
+import com.meterware.httpunit.HttpUnitOptions;
+import com.meterware.httpunit.WebClient;
+import com.meterware.httpunit.WebClientListener;
 import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebForm;
-import com.meterware.httpunit.WebLink;
 import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -32,13 +34,17 @@ import org.jboss.arquillian.container.test.api.OperateOnDeployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.picketlink.identity.federation.saml.v2.assertion.AssertionType;
+import org.picketlink.identity.federation.saml.v2.assertion.NameIDType;
+import org.picketlink.identity.federation.saml.v2.protocol.ResponseType;
 
 import java.net.URL;
+import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.picketlink.test.integration.federation.saml.QuickstartArchiveUtil.resolveFromFederation;
@@ -48,36 +54,31 @@ import static org.picketlink.test.integration.federation.saml.QuickstartArchiveU
  */
 @RunWith (Arquillian.class)
 @RunAsClient
-public class SAML2IDPInitiatedTestCase extends AbstractSAML2IDPInitiatedTestCase {
-
-    @ArquillianResource
-    @OperateOnDeployment("service-provider")
-    private URL serviceProviderPostURL;
+public class SAML2AssertionResponseTestCase extends AbstractFederationTestCase {
 
     @Deployment(name = "idp")
     public static WebArchive deployIdentityProvider() {
-        WebArchive webArchive = resolveFromFederation("picketlink-federation-saml-idp-basic");
+        WebArchive deployment = resolveFromFederation("picketlink-federation-saml-idp-basic");
 
-        System.out.println(webArchive.toString(true));
+        deployment.add(getIdPConfig(null, false, false, null, null), "WEB-INF/picketlink.xml");
 
-        return webArchive;
+        return deployment;
     }
 
     @Deployment(name = "service-provider")
     public static WebArchive deployServiceProvider() {
-        WebArchive serviceProvider = resolveFromFederation("picketlink-federation-saml-sp-post-basic");
-
-        serviceProvider.add(new StringAsset("Back to the original requested resource."), "savedRequest/savedRequest.html");
-
-        return serviceProvider;
+        return resolveFromFederation("picketlink-federation-saml-sp-redirect-basic");
     }
 
     @Test
-    @OperateOnDeployment("idp")
-    public void testPostOriginalRequest(@ArquillianResource URL url) throws Exception {
+    @OperateOnDeployment("service-provider")
+    public void testAuthentication(@ArquillianResource URL url) throws Exception {
+        WebConversation conversation = createWebConversation();
+        HttpUnitOptions.setLoggingHttpHeaders(true);
         WebRequest request = new GetMethodWebRequest(formatUrl(url));
-        WebConversation conversation = new WebConversation();
         WebResponse response = conversation.getResponse(request);
+
+        assertEquals(1, response.getForms().length);
 
         WebForm webForm = response.getForms()[0];
 
@@ -86,10 +87,45 @@ public class SAML2IDPInitiatedTestCase extends AbstractSAML2IDPInitiatedTestCase
 
         webForm.getSubmitButtons()[0].click();
 
-        request = new GetMethodWebRequest(formatUrl(url) + "?SAML_VERSION=2.0&TARGET=" + formatUrl(this.serviceProviderPostURL) + "savedRequest/savedRequest.html");
+        response = conversation.getCurrentPage();
 
-        response = conversation.getResponse(request);
+        assertTrue(response.getText().contains("EmployeeDashboard"));
+    }
 
-        assertTrue(response.getText().contains("Back to the original requested resource."));
+    private WebConversation createWebConversation() {
+        WebConversation conversation = new WebConversation();
+
+        conversation.addClientListener(new WebClientListener() {
+            @Override
+            public void requestSent(WebClient src, WebRequest req) {
+            }
+
+            @Override
+            public void responseReceived(WebClient src, WebResponse resp) {
+                ResponseType responseType = getResponseType(resp);
+
+                if (responseType != null) {
+                    List<ResponseType.RTChoiceType> assertions = responseType.getAssertions();
+
+                    assertNotNull(assertions);
+                    assertEquals(1, assertions.size());
+
+                    ResponseType.RTChoiceType rtChoiceType = assertions.get(0);
+
+                    assertNotNull(rtChoiceType);
+
+                    AssertionType assertion = rtChoiceType.getAssertion();
+
+                    assertNotNull(assertion);
+
+                    NameIDType subjectName = (NameIDType) assertion.getSubject().getSubType().getBaseID();
+
+                    assertEquals("tomcat", subjectName.getValue());
+
+                }
+            }
+        });
+
+        return conversation;
     }
 }

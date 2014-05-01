@@ -52,11 +52,6 @@ public class SAMLPostBindingWithSignaturesTestCase extends AbstractServiceProvid
     }
 
     @Override
-    protected String getIdPContextPath() {
-        return "/idp-sig";
-    }
-
-    @Override
     protected void doAssertAuthentication(WebResponse response) {
         try {
             assertTrue(response.getText().contains("SalesTool"));

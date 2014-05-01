@@ -52,11 +52,6 @@ public class SAMLPostBindingTestCase extends AbstractServiceProviderTestCase {
     }
 
     @Override
-    protected String getIdPContextPath() {
-        return "/idp";
-    }
-
-    @Override
     protected void doAssertAuthentication(WebResponse response) {
         try {
             assertTrue(response.getText().contains("SalesTool"));

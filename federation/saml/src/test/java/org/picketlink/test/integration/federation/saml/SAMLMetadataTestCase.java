@@ -52,11 +52,6 @@ public class SAMLMetadataTestCase extends AbstractServiceProviderTestCase {
     }
 
     @Override
-    protected String getIdPContextPath() {
-        return "/idp-metadata";
-    }
-
-    @Override
     protected void doAssertAuthentication(WebResponse response) {
         try {
             assertTrue(response.getText().contains("SalesTool"));
