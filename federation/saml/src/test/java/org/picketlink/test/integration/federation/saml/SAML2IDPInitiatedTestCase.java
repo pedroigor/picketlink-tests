@@ -24,7 +24,6 @@ package org.picketlink.test.integration.federation.saml;
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebForm;
-import com.meterware.httpunit.WebLink;
 import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -39,7 +38,6 @@ import org.junit.runner.RunWith;
 
 import java.net.URL;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.picketlink.test.integration.federation.saml.QuickstartArchiveUtil.resolveFromFederation;
 
@@ -87,6 +85,27 @@ public class SAML2IDPInitiatedTestCase extends AbstractSAML2IDPInitiatedTestCase
         webForm.getSubmitButtons()[0].click();
 
         request = new GetMethodWebRequest(formatUrl(url) + "?SAML_VERSION=2.0&TARGET=" + formatUrl(this.serviceProviderPostURL) + "savedRequest/savedRequest.html");
+
+        response = conversation.getResponse(request);
+
+        assertTrue(response.getText().contains("Back to the original requested resource."));
+    }
+
+    @Test
+    @OperateOnDeployment("idp")
+    public void testRedirectOriginalRequest(@ArquillianResource URL url) throws Exception {
+        WebRequest request = new GetMethodWebRequest(formatUrl(url));
+        WebConversation conversation = new WebConversation();
+        WebResponse response = conversation.getResponse(request);
+
+        WebForm webForm = response.getForms()[0];
+
+        webForm.setParameter("j_username", "tomcat");
+        webForm.setParameter("j_password", "tomcat");
+
+        webForm.getSubmitButtons()[0].click();
+
+        request = new GetMethodWebRequest(formatUrl(url) + "?SAML_VERSION=2.0&TARGET=" + formatUrl(this.serviceProviderPostURL) + "savedRequest/savedRequest.html&SAML_BINDING=REDIRECT");
 
         response = conversation.getResponse(request);
 
