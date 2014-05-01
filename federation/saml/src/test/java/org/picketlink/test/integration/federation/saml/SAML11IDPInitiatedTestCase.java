@@ -89,4 +89,35 @@ public class SAML11IDPInitiatedTestCase extends AbstractFederationTestCase {
 
         assertTrue(response.getText().contains("SalesTool"));
     }
+
+    @Test
+    @OperateOnDeployment("idp")
+    public void testAuthenticationWithPostBinding(@ArquillianResource URL url) throws Exception {
+        WebConversation conversation = new WebConversation();
+        HttpUnitOptions.setLoggingHttpHeaders(true);
+        WebRequest request = new GetMethodWebRequest(formatUrl(url));
+        WebResponse response = conversation.getResponse(request);
+
+        assertTrue(response.getURL().getPath().startsWith("/idp"));
+        assertEquals(1, response.getForms().length);
+
+        WebForm webForm = response.getForms()[0];
+
+        webForm.setParameter("j_username", "tomcat");
+        webForm.setParameter("j_password", "tomcat");
+
+        webForm.getSubmitButtons()[0].click();
+
+        response = conversation.getCurrentPage();
+
+        WebLink link = response.getLinkWithID("saml_11_sales_link");
+
+        link.setAttribute("href", link.getAttribute("href") + "&SAML_BINDING=POST");
+
+        assertNotNull(link);
+
+        response = link.click();
+
+        assertTrue(response.getText().contains("SalesTool"));
+    }
 }
