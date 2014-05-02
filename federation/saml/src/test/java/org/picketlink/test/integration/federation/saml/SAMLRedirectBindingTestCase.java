@@ -43,11 +43,7 @@ public class SAMLRedirectBindingTestCase extends AbstractServiceProviderTestCase
 
     @Deployment(name = "idp")
     public static WebArchive deployIdentityProvider() {
-        WebArchive deployment = resolveFromFederation("picketlink-federation-saml-idp-basic");
-
-        deployment.add(getIdPConfig(null, false, false, null, null), "WEB-INF/picketlink.xml");
-
-        return deployment;
+        return resolveFromFederation("picketlink-federation-saml-idp-basic");
     }
 
     @Deployment(name = "service-provider")

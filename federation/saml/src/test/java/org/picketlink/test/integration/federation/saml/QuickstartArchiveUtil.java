@@ -37,15 +37,23 @@ public class QuickstartArchiveUtil {
     }
 
     private static String getFederationBindingClassifier() {
+        if (isWildFlyContainer()) {
+            return "wildfly";
+        }
+
+        return "jboss-eap";
+    }
+
+    public static boolean isWildFlyContainer() {
         String arquillianLunch = System.getProperty("arquillian.launch");
 
         if (arquillianLunch != null) {
             if (arquillianLunch.startsWith("jboss-eap-")) {
-                return "jboss-eap";
+                return false;
             }
         }
 
-        return "wildfly";
+        return true;
     }
 
     private static String getVersion() {

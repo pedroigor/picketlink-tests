@@ -31,7 +31,7 @@
       <property name="managementAddress">localhost</property>
         <!-- If running in managed mode, the location of the installation -->
         <!--<property name="jbossHome">${jboss.home}</property>-->
-        <!--<property name="jbossHome">federation/saml/target/integration-tests/8.0.1.Final-SNAPSHOT</property>-->
+        <!--<property name="jbossHome">federation/saml/target/integration-tests/wildfly-8.1.0.Final-SNAPSHOT</property>-->
     </configuration>
   </container>
 
@@ -44,7 +44,7 @@
       <property name="managementAddress">127.0.0.1</property>
       <!-- If running in managed mode, the location of the installation -->
       <!--<property name="jbossHome">${jboss.home}</property>-->
-      <property name="jbossHome">federation/saml/target/integration-tests/jboss-eap-6.3</property>
+      <!--<property name="jbossHome">federation/saml/target/integration-tests/jboss-eap-6.3</property>-->
     </configuration>
   </container>
 

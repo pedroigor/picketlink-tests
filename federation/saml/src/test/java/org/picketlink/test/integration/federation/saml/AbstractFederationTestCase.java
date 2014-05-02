@@ -79,7 +79,14 @@ public abstract class AbstractFederationTestCase {
         boolean supportEncryption,
         String trustedDomains,
         Class<? extends AttributeManager> attributeManager) {
-        InputStream inputStream = IDPAuthenticationFailedTestCase.class.getResourceAsStream("/config/picketlink-template.xml");
+        InputStream inputStream;
+
+        if (QuickstartArchiveUtil.isWildFlyContainer()) {
+            inputStream = IDPAuthenticationFailedTestCase.class.getResourceAsStream("/config/picketlink-template-wildfly.xml");
+        } else {
+            inputStream = IDPAuthenticationFailedTestCase.class.getResourceAsStream("/config/picketlink-template-eap.xml");
+        }
+
         String config = new String(IOUtil.asByteArray(inputStream));
 
         if (trustedDomains == null) {
