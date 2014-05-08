@@ -539,6 +539,14 @@
         </profile>
 
         <profile>
+            <id>wildfly-8.1.0.CR1</id>
+            <properties>
+                <version.wildfly>8.1.0.CR1</version.wildfly>
+                <version.jboss.as.distribution>wildfly-8.1.0.CR1</version.jboss.as.distribution>
+            </properties>
+        </profile>
+
+        <profile>
             <id>wildfly-8.1.0.Final-SNAPSHOT</id>
             <properties>
                 <version.wildfly>8.1.0.Final-SNAPSHOT</version.wildfly>
