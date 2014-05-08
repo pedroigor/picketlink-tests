@@ -102,6 +102,32 @@
                 </executions>
             </plugin>
             <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.5</version>
+                <executions>
+                    <execution>
+                        <id>copy-confg-resources</id>
+                        <phase>process-test-classes</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/integration-tests/${version.jboss.as.distribution}/</outputDirectory>
+                            <overwrite>true</overwrite>
+                            <resources>
+                                <resource>
+                                    <directory>src/test/config/${version.jboss.as.distribution}/</directory>
+                                    <includes>
+                                        <include>**/*</include>
+                                    </includes>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>xml-maven-plugin</artifactId>
                 <version>1.0</version>
@@ -170,32 +196,6 @@
                                     </parameters>
                                 </transformationSet>
                             </transformationSets>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.5</version>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <phase>process-test-classes</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>target/integration-tests/${version.jboss.as.distribution}/</outputDirectory>
-                            <overwrite>true</overwrite>
-                            <resources>
-                                <resource>
-                                    <directory>src/test/config/${version.jboss.as.distribution}/</directory>
-                                    <includes>
-                                        <include>**/*</include>
-                                    </includes>
-                                    <filtering>false</filtering>
-                                </resource>
-                            </resources>
                         </configuration>
                     </execution>
                 </executions>
@@ -500,6 +500,20 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+
+        <profile>
+            <id>jboss-eap-6.2</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>jboss-eap-6.2</name>
+                </property>
+            </activation>
+            <properties>
+                <version.jboss.as>7.3.0.Final-redhat-14</version.jboss.as>
+                <version.jboss.as.distribution>jboss-eap-6.2</version.jboss.as.distribution>
+            </properties>
         </profile>
 
         <profile>
