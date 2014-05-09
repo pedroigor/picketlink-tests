@@ -63,6 +63,7 @@
                                     <type>jar</type>
                                     <overWrite>false</overWrite>
                                     <outputDirectory>${jboss.modules.dir}/org/picketlink/federation/main</outputDirectory>
+                                    <destFileName>picketlink-federation-${version.picketlink}</destFileName>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.picketlink.distribution</groupId>
@@ -71,6 +72,7 @@
                                     <type>jar</type>
                                     <overWrite>false</overWrite>
                                     <outputDirectory>${jboss.modules.dir}/org/picketlink/federation/bindings/main</outputDirectory>
+                                    <destFileName>picketlink-jbas7-${version.picketlink}</destFileName>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.picketlink.distribution</groupId>
@@ -79,6 +81,7 @@
                                     <type>jar</type>
                                     <overWrite>false</overWrite>
                                     <outputDirectory>${jboss.modules.dir}/org/picketlink/federation/bindings/main</outputDirectory>
+                                    <destFileName>picketlink-wildfly8-${version.picketlink}</destFileName>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.picketlink</groupId>
@@ -87,6 +90,7 @@
                                     <type>jar</type>
                                     <overWrite>false</overWrite>
                                     <outputDirectory>${jboss.modules.dir}/org/picketlink/common/main</outputDirectory>
+                                    <destFileName>picketlink-common-${version.picketlink}</destFileName>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.picketlink</groupId>
@@ -95,6 +99,7 @@
                                     <type>jar</type>
                                     <overWrite>false</overWrite>
                                     <outputDirectory>${jboss.modules.dir}/org/picketlink/config/main</outputDirectory>
+                                    <destFileName>picketlink-config-${version.picketlink}</destFileName>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
