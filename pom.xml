@@ -365,7 +365,7 @@
 
     <profiles>
         <profile>
-            <id>wildfly-common</id>
+            <id>wildfly</id>
             <properties>
                 <version.shrinkwrap.resolver>2.0.0</version.shrinkwrap.resolver>
             </properties>
@@ -526,7 +526,7 @@
         </profile>
 
         <profile>
-            <id>jboss-eap-common</id>
+            <id>jboss-eap</id>
             <activation>
                 <property>
                     <name>jboss-eap</name>
