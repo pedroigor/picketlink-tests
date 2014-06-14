@@ -19,7 +19,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.picketlink.test.authentication;
+package org.picketlink.test.authentication.web;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.OperateOnDeployment;
@@ -32,8 +32,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.picketlink.Identity;
 import org.picketlink.credential.DefaultLoginCredentials;
-import org.picketlink.test.AbstractArquillianTestCase;
-import org.picketlink.test.idm.config.IDMInitializer;
 import org.picketlink.test.util.ArchiveUtils;
 
 import javax.inject.Inject;
@@ -63,7 +61,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(Arquillian.class)
 @RunAsClient
-public class StatelessIdentityAuthenticationTestCase extends AbstractArquillianTestCase {
+public class StatelessIdentityAuthenticationTestCase {
 
     @Deployment(name = "stateless-services")
     public static WebArchive deployStateless() {
@@ -83,12 +81,11 @@ public class StatelessIdentityAuthenticationTestCase extends AbstractArquillianT
         WebArchive deployment = ArchiveUtils.create(name);
 
         deployment.addClass(StatelessIdentityAuthenticationTestCase.class);
-        deployment.addClass(AbstractArquillianTestCase.class);
         deployment.addClass(StatelessIdentityAuthenticationTestCase.class);
         deployment.addClass(JaxRsActivator.class);
         deployment.addClass(Authenticator.class);
         deployment.addClass(Token.class);
-        deployment.addClass(IDMInitializer.class);
+        deployment.addClass(Resources.class);
 
         return deployment;
     }
@@ -113,7 +110,7 @@ public class StatelessIdentityAuthenticationTestCase extends AbstractArquillianT
         DefaultLoginCredentials user = new DefaultLoginCredentials();
 
         user.setUserId("john");
-        user.setPassword("john");
+        user.setPassword("passwd");
 
         ClientResponse response = (ClientResponse) target.request().post(Entity.json(user));
         Token token = response.readEntity(Token.class);

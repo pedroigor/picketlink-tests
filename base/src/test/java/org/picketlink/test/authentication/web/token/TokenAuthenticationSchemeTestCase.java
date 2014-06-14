@@ -29,7 +29,7 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.picketlink.common.util.Base64;
-import org.picketlink.test.authentication.StatelessIdentityBeanConfiguration;
+import org.picketlink.test.authentication.web.StatelessIdentityBeanConfiguration;
 import org.picketlink.test.authentication.web.AbstractAuthenticationSchemeTestCase;
 
 import java.net.URL;

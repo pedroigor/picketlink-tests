@@ -32,7 +32,6 @@ import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.credential.Password;
 import org.picketlink.idm.model.Account;
 import org.picketlink.idm.model.basic.User;
-import org.picketlink.test.AbstractArquillianTestCase;
 import org.picketlink.test.util.ArchiveUtils;
 
 import javax.inject.Inject;
@@ -50,7 +49,7 @@ import static org.picketlink.idm.model.basic.BasicModel.getUser;
  * @author Pedro Igor
  * 
  */
-public abstract class AbstractAuthenticationTestCase extends AbstractArquillianTestCase {
+public abstract class AbstractAuthenticationTestCase {
 
     protected static final String USER_NAME = "john";
     protected static final String USER_PASSWORD = "mypasswd";
@@ -68,7 +67,6 @@ public abstract class AbstractAuthenticationTestCase extends AbstractArquillianT
         List<Class> classes = new ArrayList<Class>();
 
         classes.add(AbstractAuthenticationTestCase.class);
-        classes.add(AbstractArquillianTestCase.class);
         classes.addAll(Arrays.asList(classesToAdd));
 
         return ArchiveUtils.create(classes.toArray(new Class[classes.size()]));

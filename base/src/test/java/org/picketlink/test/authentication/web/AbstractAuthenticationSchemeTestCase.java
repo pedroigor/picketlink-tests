@@ -22,7 +22,6 @@ import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.picketlink.test.AbstractArquillianTestCase;
 import org.picketlink.test.util.ArchiveUtils;
 
 import java.net.MalformedURLException;
@@ -31,7 +30,7 @@ import java.net.URL;
 /**
  * @author pedroigor
  */
-public abstract class AbstractAuthenticationSchemeTestCase extends AbstractArquillianTestCase {
+public abstract class AbstractAuthenticationSchemeTestCase {
 
     public static final String SESSION_HEADER_NAME = "JSESSIONID";
 

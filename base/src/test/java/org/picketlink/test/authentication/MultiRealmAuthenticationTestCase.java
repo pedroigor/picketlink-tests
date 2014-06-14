@@ -39,7 +39,6 @@ import org.picketlink.idm.credential.Password;
 import org.picketlink.idm.model.Partition;
 import org.picketlink.idm.model.basic.Realm;
 import org.picketlink.idm.model.basic.User;
-import org.picketlink.test.AbstractArquillianTestCase;
 import org.picketlink.test.util.ArchiveUtils;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -67,7 +66,7 @@ import static org.junit.Assert.assertTrue;
  * 
  */
 @RunWith(Arquillian.class)
-public class MultiRealmAuthenticationTestCase extends AbstractArquillianTestCase {
+public class MultiRealmAuthenticationTestCase {
 
     private static final String USER_NAME = "john";
     private static final String STAGING_REALM_NAME = "Staging";
@@ -94,7 +93,6 @@ public class MultiRealmAuthenticationTestCase extends AbstractArquillianTestCase
 
         classes.add(MultiRealmAuthenticationTestCase.class);
         classes.add(AbstractAuthenticationTestCase.class);
-        classes.add(AbstractArquillianTestCase.class);
 
         return ArchiveUtils.create(classes.toArray(new Class[classes.size()]));
     }

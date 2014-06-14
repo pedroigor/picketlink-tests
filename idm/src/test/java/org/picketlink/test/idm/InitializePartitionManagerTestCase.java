@@ -1,4 +1,4 @@
-package org.picketlink.test.idm.config;
+package org.picketlink.test.idm;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -8,7 +8,6 @@ import org.junit.runner.RunWith;
 import org.picketlink.PartitionManagerCreateEvent;
 import org.picketlink.idm.PartitionManager;
 import org.picketlink.idm.model.basic.Realm;
-import org.picketlink.test.AbstractArquillianTestCase;
 import org.picketlink.test.util.ArchiveUtils;
 
 import javax.enterprise.event.Observes;
@@ -21,7 +20,7 @@ import static org.junit.Assert.assertNull;
  * @author Pedro Igor
  */
 @RunWith(Arquillian.class)
-public class InitializePartitionManagerTestCase extends AbstractArquillianTestCase {
+public class InitializePartitionManagerTestCase {
 
     private static final String PARTITION_NAME = "somePartition";
 
@@ -30,7 +29,7 @@ public class InitializePartitionManagerTestCase extends AbstractArquillianTestCa
 
     @Deployment
     public static WebArchive deploy() {
-        return ArchiveUtils.create(InitializePartitionManagerTestCase.class, AbstractArquillianTestCase.class);
+        return ArchiveUtils.create(InitializePartitionManagerTestCase.class);
     }
 
     @Test

@@ -1,4 +1,4 @@
-package org.picketlink.test.idm.config;
+package org.picketlink.test.idm;
 
 import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.PartitionManager;
