@@ -34,9 +34,9 @@ To run the tests using JBoss EAP 6 you should execute the following command:
 The command above will execute all tests against JBoss EAP 6.3 version. The **-Pjboss-eap** profile must be always defined regardless
 the EAP version you want to use. The list below summarizes all JBoss EAP supported versions:
  
-* For JBoss EAP 6.2, run *mvn clean verify -Pjboss-eap **-Pjboss-eap-6.2***
+* For JBoss EAP 6.2, run *mvn clean verify -Pjboss-eap **-Pjboss-eap-6.2**
 
-* For JBoss EAP 6.3, run *mvn clean verify -Pjboss-eap **-Pjboss-eap-6.3***
+* For JBoss EAP 6.3, run *mvn clean verify -Pjboss-eap **-Pjboss-eap-6.3**
 
 **Note:** Make sure you have JBoss EAP Maven Artifacts configured in your local Maven repository. Otherwise you wont be able to 
 resolve the necessary dependencies to run the tests.
@@ -50,9 +50,9 @@ To run the tests using WildFly you should execute the following command:
 The command above will execute all tests against WildFly 8.1.0.Final version. The **-Pwildfly** profile must be always defined regardless
 the WildFly version you want to use. The list below summarizes all WildFly supported versions:
  
-* For WildFly 8.1.0.Final, run *mvn clean install -Pwildfly **-Pwildfly-8.1.0.Final***
+* For WildFly 8.1.0.Final, run *mvn clean install -Pwildfly **-Pwildfly-8.1.0.Final**
 
-* For WildFly 8.2.0.CR1-SNAPSHOT, run *mvn clean install -Pwildfly **-Pwildfly-8.2.0.CR1-SNAPSHOT***
+* For WildFly 8.2.0.CR1-SNAPSHOT, run *mvn clean install -Pwildfly **-Pwildfly-8.2.0.CR1-SNAPSHOT**
 
 * For WildFly 9.0.0.Alpha1-SNAPSHOT, run *mvn clean install -Pwildfly **-Pwildfly-9.0.0.Alpha1-SNAPSHOT***
 
