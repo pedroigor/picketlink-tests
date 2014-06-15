@@ -13,9 +13,11 @@
 
     <modules>
         <module>shared</module>
+        <module>test-module</module>
         <module>idm</module>
         <module>base</module>
         <module>saml</module>
+        <module>subsystem</module>
     </modules>
 
     <properties>
@@ -43,6 +45,12 @@
                 <groupId>net.sourceforge.htmlunit</groupId>
                 <artifactId>htmlunit</artifactId>
                 <version>${htmlunit.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.picketlink.test</groupId>
+                <artifactId>picketlink-tests-test-module</artifactId>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
@@ -183,6 +191,51 @@
                                         <outputDirectory>${jboss.modules.dir}/org/picketlink/config/main</outputDirectory>
                                         <destFileName>picketlink-config-${project.version}.jar</destFileName>
                                     </artifactItem>
+                                    <artifactItem>
+                                        <groupId>org.picketlink</groupId>
+                                        <artifactId>picketlink-api</artifactId>
+                                        <version>${project.version}</version>
+                                        <type>jar</type>
+                                        <overWrite>false</overWrite>
+                                        <outputDirectory>${jboss.modules.dir}/org/picketlink/core/api/main</outputDirectory>
+                                        <destFileName>picketlink-api-${project.version}.jar</destFileName>
+                                    </artifactItem>
+                                    <artifactItem>
+                                        <groupId>org.picketlink</groupId>
+                                        <artifactId>picketlink-impl</artifactId>
+                                        <version>${project.version}</version>
+                                        <type>jar</type>
+                                        <overWrite>false</overWrite>
+                                        <outputDirectory>${jboss.modules.dir}/org/picketlink/core/main</outputDirectory>
+                                        <destFileName>picketlink-impl-${project.version}.jar</destFileName>
+                                    </artifactItem>
+                                    <artifactItem>
+                                        <groupId>org.picketlink</groupId>
+                                        <artifactId>picketlink-idm-api</artifactId>
+                                        <version>${project.version}</version>
+                                        <type>jar</type>
+                                        <overWrite>false</overWrite>
+                                        <outputDirectory>${jboss.modules.dir}/org/picketlink/idm/api/main</outputDirectory>
+                                        <destFileName>picketlink-idm-api-${project.version}.jar</destFileName>
+                                    </artifactItem>
+                                    <artifactItem>
+                                        <groupId>org.picketlink</groupId>
+                                        <artifactId>picketlink-idm-impl</artifactId>
+                                        <version>${project.version}</version>
+                                        <type>jar</type>
+                                        <overWrite>false</overWrite>
+                                        <outputDirectory>${jboss.modules.dir}/org/picketlink/idm/main</outputDirectory>
+                                        <destFileName>picketlink-idm-impl-${project.version}.jar</destFileName>
+                                    </artifactItem>
+                                    <artifactItem>
+                                        <groupId>org.picketlink.test</groupId>
+                                        <artifactId>picketlink-tests-test-module</artifactId>
+                                        <version>${project.version}</version>
+                                        <type>jar</type>
+                                        <overWrite>false</overWrite>
+                                        <outputDirectory>${jboss.modules.dir}/../../../org/picketlink/test/main</outputDirectory>
+                                        <destFileName>picketlink-tests-test-module-${project.version}.jar</destFileName>
+                                    </artifactItem>
                                 </artifactItems>
                             </configuration>
                         </execution>
@@ -277,6 +330,76 @@
                                             <include>module.xml</include>
                                         </includes>
                                         <stylesheet>${basedir}/../config/${version.jboss.as.distribution}/xslt/changeConfigModule.xslt</stylesheet>
+                                        <parameters>
+                                            <parameter>
+                                                <name>version.picketlink</name>
+                                                <value>${project.version}</value>
+                                            </parameter>
+                                        </parameters>
+                                    </transformationSet>
+                                    <transformationSet>
+                                        <dir>${jboss.modules.dir}/org/picketlink/core/api/main</dir>
+                                        <outputDir>${jboss.modules.dir}/org/picketlink/core/api/main</outputDir>
+                                        <includes>
+                                            <include>module.xml</include>
+                                        </includes>
+                                        <stylesheet>${basedir}/../config/${version.jboss.as.distribution}/xslt/changeCoreApiModule.xslt</stylesheet>
+                                        <parameters>
+                                            <parameter>
+                                                <name>version.picketlink</name>
+                                                <value>${project.version}</value>
+                                            </parameter>
+                                        </parameters>
+                                    </transformationSet>
+                                    <transformationSet>
+                                        <dir>${jboss.modules.dir}/org/picketlink/core/main</dir>
+                                        <outputDir>${jboss.modules.dir}/org/picketlink/core/main</outputDir>
+                                        <includes>
+                                            <include>module.xml</include>
+                                        </includes>
+                                        <stylesheet>${basedir}/../config/${version.jboss.as.distribution}/xslt/changeCoreModule.xslt</stylesheet>
+                                        <parameters>
+                                            <parameter>
+                                                <name>version.picketlink</name>
+                                                <value>${project.version}</value>
+                                            </parameter>
+                                        </parameters>
+                                    </transformationSet>
+                                    <transformationSet>
+                                        <dir>${jboss.modules.dir}/org/picketlink/idm/api/main</dir>
+                                        <outputDir>${jboss.modules.dir}/org/picketlink/idm/api/main</outputDir>
+                                        <includes>
+                                            <include>module.xml</include>
+                                        </includes>
+                                        <stylesheet>${basedir}/../config/${version.jboss.as.distribution}/xslt/changeIdmApiModule.xslt</stylesheet>
+                                        <parameters>
+                                            <parameter>
+                                                <name>version.picketlink</name>
+                                                <value>${project.version}</value>
+                                            </parameter>
+                                        </parameters>
+                                    </transformationSet>
+                                    <transformationSet>
+                                        <dir>${jboss.modules.dir}/org/picketlink/idm/main</dir>
+                                        <outputDir>${jboss.modules.dir}/org/picketlink/idm/main</outputDir>
+                                        <includes>
+                                            <include>module.xml</include>
+                                        </includes>
+                                        <stylesheet>${basedir}/../config/${version.jboss.as.distribution}/xslt/changeIdmModule.xslt</stylesheet>
+                                        <parameters>
+                                            <parameter>
+                                                <name>version.picketlink</name>
+                                                <value>${project.version}</value>
+                                            </parameter>
+                                        </parameters>
+                                    </transformationSet>
+                                    <transformationSet>
+                                        <dir>${jboss.modules.dir}/../../../org/picketlink/test/main</dir>
+                                        <outputDir>${jboss.modules.dir}/../../../org/picketlink/test/main</outputDir>
+                                        <includes>
+                                            <include>module.xml</include>
+                                        </includes>
+                                        <stylesheet>${basedir}/../config/${version.jboss.as.distribution}/xslt/changeTestModule.xslt</stylesheet>
                                         <parameters>
                                             <parameter>
                                                 <name>version.picketlink</name>
@@ -638,6 +761,7 @@
             <properties>
                 <version.jboss.as>7.3.0.Final-redhat-14</version.jboss.as>
                 <version.jboss.as.distribution>jboss-eap-6.2</version.jboss.as.distribution>
+                <org.picketlink.test.subsystem.disable>true</org.picketlink.test.subsystem.disable>
             </properties>
         </profile>
 
@@ -660,6 +784,7 @@
             <properties>
                 <version.wildfly>8.1.0.Final</version.wildfly>
                 <version.jboss.as.distribution>wildfly-8.1.0.Final</version.jboss.as.distribution>
+                <org.picketlink.test.subsystem.disable>true</org.picketlink.test.subsystem.disable>
             </properties>
         </profile>
 
@@ -668,6 +793,7 @@
             <properties>
                 <version.wildfly>8.2.0.CR1-SNAPSHOT</version.wildfly>
                 <version.jboss.as.distribution>wildfly-8.2.0.CR1-SNAPSHOT</version.jboss.as.distribution>
+                <org.picketlink.test.subsystem.disable>true</org.picketlink.test.subsystem.disable>
             </properties>
         </profile>
 

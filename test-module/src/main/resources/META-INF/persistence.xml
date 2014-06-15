@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+
+  <persistence-unit name="custom-types-pu" transaction-type="JTA">
+    <jta-data-source>java:jboss/datasources/TestModuleDS</jta-data-source>
+
+    <class>org.picketlink.test.module.entity.AbstractCredentialTypeEntity</class>
+    <class>org.picketlink.test.module.entity.AttributedTypeEntity</class>
+    <class>org.picketlink.test.module.entity.AttributeTypeEntity</class>
+    <class>org.picketlink.test.module.entity.GroupTypeEntity</class>
+    <class>org.picketlink.test.module.entity.IdentityTypeEntity</class>
+    <class>org.picketlink.test.module.entity.PartitionTypeEntity</class>
+    <class>org.picketlink.test.module.entity.PasswordCredentialTypeEntity</class>
+    <class>org.picketlink.test.module.entity.RelationshipTypeEntity</class>
+    <class>org.picketlink.test.module.entity.RelationshipIdentityTypeEntity</class>
+    <class>org.picketlink.test.module.entity.RoleTypeEntity</class>
+    <class>org.picketlink.test.module.entity.SalesAgentEntity</class>
+
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.format_sql" value="true"/>
+      <property name="hibernate.flushMode" value="FLUSH_AUTO" />
+      <property name="hibernate.listeners.envers.autoRegister" value="false"/>
+      <property name="javax.persistence.validation.mode" value="none"/>
+    </properties>
+  </persistence-unit>
+
+</persistence>

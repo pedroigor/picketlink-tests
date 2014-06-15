@@ -8,12 +8,22 @@ This is an Integration Test Suite for PicketLink. It provides tests covering the
 * PicketLink Identity Management (CDI-based Deployments and Tests)
 * PicketLink Authorization and Apache DeltaSpike (CDI-based Deployments and Tests)
 * PicketLink Federation SAML
+* PicketLink Identity Management Subsystem
+* PicketLink Usage From JBoss Modules
 
 The tests can be run against different JBoss EAP and WildFly versions. 
 
 This test suite always provide tests for the latest released version of JBoss EAP 6 and WildFly and also for the current upstream 
-version of those projects. In the latter case, you may need to clone and built EAP or WildFly locally in order to run the tests
+version of those projects. In the latter case, you may need to clone and build EAP or WildFly locally in order to run the tests
 for a specific version.
+
+## Modules Overview
+
+* **base**, provides tests for PicketLink Base Module
+* **idm**, provides tests for PicketLink Identity Management Module
+* **saml**, provides tests for PicketLink Federation SAML Support
+* **subsystem**, provides tests for PicketLink Extensions and Subsystems for JBoss EAP and WildFly
+ 
 
 ## Running Tests in JBoss Enterprise Application Platform 6
 
