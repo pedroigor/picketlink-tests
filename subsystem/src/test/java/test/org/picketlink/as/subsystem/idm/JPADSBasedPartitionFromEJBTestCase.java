@@ -5,6 +5,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.picketlink.idm.IdentityManager;
@@ -27,6 +28,7 @@ import static org.junit.Assert.assertTrue;
  * @author pedroigor
  */
 @RunWith(Arquillian.class)
+@Ignore
 public class JPADSBasedPartitionFromEJBTestCase {
 
     @Resource(mappedName = "picketlink/JPADSBasedPartitionManager")
