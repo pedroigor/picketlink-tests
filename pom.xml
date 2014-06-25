@@ -228,6 +228,15 @@
                                         <destFileName>picketlink-idm-impl-${project.version}.jar</destFileName>
                                     </artifactItem>
                                     <artifactItem>
+                                        <groupId>org.picketlink</groupId>
+                                        <artifactId>picketlink-idm-simple-schema</artifactId>
+                                        <version>${project.version}</version>
+                                        <type>jar</type>
+                                        <overWrite>false</overWrite>
+                                        <outputDirectory>${jboss.modules.dir}/org/picketlink/idm/schema/main</outputDirectory>
+                                        <destFileName>picketlink-idm-simple-schema-${project.version}.jar</destFileName>
+                                    </artifactItem>
+                                    <artifactItem>
                                         <groupId>org.picketlink.test</groupId>
                                         <artifactId>picketlink-tests-test-module</artifactId>
                                         <version>${project.version}</version>
@@ -386,6 +395,20 @@
                                             <include>module.xml</include>
                                         </includes>
                                         <stylesheet>${basedir}/../config/${version.jboss.as.distribution}/xslt/changeIdmModule.xslt</stylesheet>
+                                        <parameters>
+                                            <parameter>
+                                                <name>version.picketlink</name>
+                                                <value>${project.version}</value>
+                                            </parameter>
+                                        </parameters>
+                                    </transformationSet>
+                                    <transformationSet>
+                                        <dir>${jboss.modules.dir}/org/picketlink/idm/schema/main</dir>
+                                        <outputDir>${jboss.modules.dir}/org/picketlink/idm/schema/main</outputDir>
+                                        <includes>
+                                            <include>module.xml</include>
+                                        </includes>
+                                        <stylesheet>${basedir}/../config/${version.jboss.as.distribution}/xslt/changeIdmSchemaModule.xslt</stylesheet>
                                         <parameters>
                                             <parameter>
                                                 <name>version.picketlink</name>

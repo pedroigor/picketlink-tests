@@ -26,7 +26,6 @@
 
     <resources>
         <resource-root path="picketlink-idm-simple-schema-2.5.3.SP1.jar"/>
-        <resource-root path="picketlink-idm-simple-schema-2.5.3.SP1.jar"/>
         <!-- Insert resources here -->
     </resources>
 
