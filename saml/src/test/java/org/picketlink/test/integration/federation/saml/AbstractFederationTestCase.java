@@ -35,6 +35,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 import static org.junit.Assert.fail;
+import static org.picketlink.test.util.EnvironmentUtil.isWildFlyContainer;
 
 /**
  * @author Pedro Igor
@@ -81,10 +82,10 @@ public abstract class AbstractFederationTestCase {
         Class<? extends AttributeManager> attributeManager) {
         InputStream inputStream;
 
-        if (QuickstartArchiveUtil.isWildFlyContainer()) {
-            inputStream = IDPAuthenticationFailedTestCase.class.getResourceAsStream("/config/picketlink-template-wildfly.xml");
+        if (isWildFlyContainer()) {
+            inputStream = IDPAuthenticationFailedTestCase.class.getResourceAsStream("/config/picketlink-idp-template-wildfly.xml");
         } else {
-            inputStream = IDPAuthenticationFailedTestCase.class.getResourceAsStream("/config/picketlink-template-eap.xml");
+            inputStream = IDPAuthenticationFailedTestCase.class.getResourceAsStream("/config/picketlink-idp-template-eap.xml");
         }
 
         String config = new String(IOUtil.asByteArray(inputStream));
@@ -110,4 +111,28 @@ public abstract class AbstractFederationTestCase {
         return new StringAsset(config);
     }
 
+    protected static StringAsset getIdPJBossWeb(String contextRoot, String securityDomain) {
+        InputStream inputStream;
+
+        if (isWildFlyContainer()) {
+            inputStream = IDPAuthenticationFailedTestCase.class.getResourceAsStream("/config/jboss-web-idp-template.xml");
+        } else {
+            inputStream = IDPAuthenticationFailedTestCase.class.getResourceAsStream("/config/jboss-web-idp-template.xml");
+        }
+
+        String config = new String(IOUtil.asByteArray(inputStream));
+
+        if (contextRoot == null) {
+            contextRoot = "idp";
+        }
+
+        if (securityDomain == null) {
+            securityDomain = "idp";
+        }
+
+        config = config.replace("${context-root}", contextRoot);
+        config = config.replace("${security-domain}", securityDomain);
+
+        return new StringAsset(config);
+    }
 }

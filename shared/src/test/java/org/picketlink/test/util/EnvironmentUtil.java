@@ -19,31 +19,27 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.picketlink.test.integration.federation.saml;
-
-import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-
-import static org.picketlink.test.util.EnvironmentUtil.getVersion;
-import static org.picketlink.test.util.EnvironmentUtil.isWildFlyContainer;
+package org.picketlink.test.util;
 
 /**
  * @author Pedro Igor
  */
-public class QuickstartArchiveUtil {
+public class EnvironmentUtil {
 
-    public static <T extends Archive> T resolveFromFederation(String artifactId) {
-        return (T) Maven.resolver().resolve("org.picketlink.quickstarts:" + artifactId + ":war:" + getFederationBindingClassifier() + ":" + getVersion())
-                   .withoutTransitivity()
-                   .asSingle(WebArchive.class);
-    }
+    public static boolean isWildFlyContainer() {
+        String arquillianLunch = System.getProperty("arquillian.launch");
 
-    private static String getFederationBindingClassifier() {
-        if (isWildFlyContainer()) {
-            return "wildfly";
+        if (arquillianLunch != null) {
+            if (arquillianLunch.startsWith("jboss-eap-")) {
+                return false;
+            }
         }
 
-        return "jboss-eap";
+        return true;
     }
+
+    public static String getVersion() {
+        return System.getProperty("project.version", "2.7.0-SNAPSHOT");
+    }
+
 }
