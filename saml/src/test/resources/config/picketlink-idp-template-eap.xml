@@ -26,7 +26,9 @@
 		<Handler
             class="org.picketlink.identity.federation.web.handlers.saml2.SAML2IssuerTrustHandler" />
 		<Handler
-            class="org.picketlink.identity.federation.web.handlers.saml2.SAML2LogOutHandler" />
+            class="org.picketlink.identity.federation.web.handlers.saml2.SAML2LogOutHandler">
+            <Option Key="BACK_CHANNEL_LOGOUT" Value="${backend-channel-logout}"/>
+        </Handler>
 		<Handler
             class="org.picketlink.identity.federation.web.handlers.saml2.SAML2AuthenticationHandler" />
 		<Handler

@@ -22,11 +22,9 @@
 package org.picketlink.test.integration.federation.saml;
 
 import com.meterware.httpunit.GetMethodWebRequest;
-import com.meterware.httpunit.HttpUnitOptions;
-import com.meterware.httpunit.WebClient;
-import com.meterware.httpunit.WebClientListener;
 import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebForm;
+import com.meterware.httpunit.WebLink;
 import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -37,12 +35,8 @@ import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.picketlink.identity.federation.saml.v2.assertion.AssertionType;
-import org.picketlink.identity.federation.saml.v2.assertion.NameIDType;
-import org.picketlink.identity.federation.saml.v2.protocol.ResponseType;
 
 import java.net.URL;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -54,31 +48,33 @@ import static org.picketlink.test.integration.federation.saml.QuickstartArchiveU
  */
 @RunWith (Arquillian.class)
 @RunAsClient
-public class SAML2AssertionResponseTestCase extends AbstractFederationTestCase {
+public class SAMLIdPInitiatedGlobalLogoutProfileTestCase extends AbstractFederationTestCase {
 
-    @Deployment(name = "idp")
-    public static WebArchive deployIdentityProvider() {
-        WebArchive deployment = resolveFromFederation("picketlink-federation-saml-idp-basic");
+    @ArquillianResource
+    @OperateOnDeployment("identity-provider")
+    private URL idpUrl;
 
-        deployment.add(getIdPConfig(null, false, false, null, null, false), "WEB-INF/picketlink.xml");
-
-        return deployment;
+    @Deployment(name = "identity-provider")
+    public static WebArchive deployIdp() {
+        return resolveFromFederation("picketlink-federation-saml-idp-basic");
     }
 
-    @Deployment(name = "service-provider")
-    public static WebArchive deployServiceProvider() {
+    @Deployment(name = "picketlink-federation-saml-sp-redirect-basic")
+    public static WebArchive deployEmployee() {
         return resolveFromFederation("picketlink-federation-saml-sp-redirect-basic");
     }
 
-    @Test
-    @OperateOnDeployment("service-provider")
-    public void testAuthentication(@ArquillianResource URL url) throws Exception {
-        WebConversation conversation = createWebConversation();
-        HttpUnitOptions.setLoggingHttpHeaders(true);
-        WebRequest request = new GetMethodWebRequest(formatUrl(url));
-        WebResponse response = conversation.getResponse(request);
+    @Deployment(name = "picketlink-federation-saml-sp-post-basic")
+    public static WebArchive deploySales() {
+        return resolveFromFederation("picketlink-federation-saml-sp-post-basic");
+    }
 
-        assertEquals(1, response.getForms().length);
+    @Test
+    @OperateOnDeployment("picketlink-federation-saml-sp-redirect-basic")
+    public void testGlobalLogout(@ArquillianResource URL url) throws Exception {
+        WebRequest request = new GetMethodWebRequest(formatUrl(url));
+        WebConversation conversation = new WebConversation();
+        WebResponse response = conversation.getResponse(request);
 
         WebForm webForm = response.getForms()[0];
 
@@ -90,42 +86,36 @@ public class SAML2AssertionResponseTestCase extends AbstractFederationTestCase {
         response = conversation.getCurrentPage();
 
         assertTrue(response.getText().contains("EmployeeDashboard"));
+
+        request = new GetMethodWebRequest(formatUrl(url).replace("/employee", "/sales-post"));
+        response = conversation.getResponse(request);
+
+        assertTrue(response.getText().contains("SalesTool"));
+
+        request = new GetMethodWebRequest(formatUrl(this.idpUrl));
+        response = conversation.getResponse(request);
+
+        WebLink link = response.getLinkWithID("saml_11_sales_link");
+
+        assertNotNull(link);
+
+        request = new GetMethodWebRequest(formatUrl(this.idpUrl) + "?GLO=true");
+        response = conversation.getResponse(request);
+
+        assertTrue(response.getURL().getPath().startsWith("/idp"));
+        assertEquals(1, response.getForms().length);
+
+        request = new GetMethodWebRequest(formatUrl(url).replace("/employee", "/sales-post"));
+        response = conversation.getResponse(request);
+
+        assertTrue(response.getURL().getPath().startsWith("/idp"));
+        assertEquals(1, response.getForms().length);
+
+        request = new GetMethodWebRequest(formatUrl(url));
+        response = conversation.getResponse(request);
+
+        assertTrue(response.getURL().getPath().startsWith("/idp"));
+        assertEquals(1, response.getForms().length);
     }
 
-    private WebConversation createWebConversation() {
-        WebConversation conversation = new WebConversation();
-
-        conversation.addClientListener(new WebClientListener() {
-            @Override
-            public void requestSent(WebClient src, WebRequest req) {
-            }
-
-            @Override
-            public void responseReceived(WebClient src, WebResponse resp) {
-                ResponseType responseType = getResponseType(resp);
-
-                if (responseType != null) {
-                    List<ResponseType.RTChoiceType> assertions = responseType.getAssertions();
-
-                    assertNotNull(assertions);
-                    assertEquals(1, assertions.size());
-
-                    ResponseType.RTChoiceType rtChoiceType = assertions.get(0);
-
-                    assertNotNull(rtChoiceType);
-
-                    AssertionType assertion = rtChoiceType.getAssertion();
-
-                    assertNotNull(assertion);
-
-                    NameIDType subjectName = (NameIDType) assertion.getSubject().getSubType().getBaseID();
-
-                    assertEquals("tomcat", subjectName.getValue());
-
-                }
-            }
-        });
-
-        return conversation;
-    }
 }

@@ -79,13 +79,14 @@ public abstract class AbstractFederationTestCase {
     protected static StringAsset getIdPConfig(String identityUrl, boolean supportSignatures,
         boolean supportEncryption,
         String trustedDomains,
-        Class<? extends AttributeManager> attributeManager) {
+        Class<? extends AttributeManager> attributeManager,
+        boolean backChannelLogout) {
         InputStream inputStream;
 
         if (isWildFlyContainer()) {
-            inputStream = IDPAuthenticationFailedTestCase.class.getResourceAsStream("/config/picketlink-idp-template-wildfly.xml");
+            inputStream = AbstractFederationTestCase.class.getResourceAsStream("/config/picketlink-idp-template-wildfly.xml");
         } else {
-            inputStream = IDPAuthenticationFailedTestCase.class.getResourceAsStream("/config/picketlink-idp-template-eap.xml");
+            inputStream = AbstractFederationTestCase.class.getResourceAsStream("/config/picketlink-idp-template-eap.xml");
         }
 
         String config = new String(IOUtil.asByteArray(inputStream));
@@ -99,7 +100,7 @@ public abstract class AbstractFederationTestCase {
         }
 
         if (identityUrl == null) {
-            identityUrl = "http://localhost:8080/idp";
+            identityUrl = "http://localhost:8080/idp/";
         }
 
         config = config.replace("${identity-url}", identityUrl);
@@ -107,6 +108,29 @@ public abstract class AbstractFederationTestCase {
         config = config.replace("${support-signatures}", Boolean.valueOf(supportSignatures).toString());
         config = config.replace("${support-encryption}", Boolean.valueOf(supportEncryption).toString());
         config = config.replace("${attribute-manager}", attributeManager.getName());
+        config = config.replace("${backend-channel-logout}", String.valueOf(backChannelLogout));
+
+        return new StringAsset(config);
+    }
+
+    protected static StringAsset getSpConfig(String identityUrl, String serviceUrl, boolean supportSignatures,
+        boolean supportEncryption) {
+        InputStream inputStream = AbstractFederationTestCase.class.getResourceAsStream("/config/picketlink-sp-template.xml");;
+
+        String config = new String(IOUtil.asByteArray(inputStream));
+
+        if (serviceUrl == null) {
+            throw new IllegalArgumentException("You must provide a valid URL.");
+        }
+
+        if (identityUrl == null) {
+            identityUrl = "http://localhost:8080/idp/";
+        }
+
+        config = config.replace("${identity-url}", identityUrl);
+        config = config.replace("${service-url}", serviceUrl);
+        config = config.replace("${support-signatures}", Boolean.valueOf(supportSignatures).toString());
+        config = config.replace("${support-encryption}", Boolean.valueOf(supportEncryption).toString());
 
         return new StringAsset(config);
     }

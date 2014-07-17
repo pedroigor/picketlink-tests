@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.picketlink.test.idm;
+package org.picketlink.test.idm.ejb;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -28,6 +28,7 @@ import org.picketlink.idm.model.basic.Group;
 import org.picketlink.idm.model.basic.Role;
 import org.picketlink.idm.model.basic.User;
 import org.picketlink.test.AbstractJPADeploymentTestCase;
+import org.picketlink.test.idm.IDMInitializer;
 
 import javax.inject.Inject;
 

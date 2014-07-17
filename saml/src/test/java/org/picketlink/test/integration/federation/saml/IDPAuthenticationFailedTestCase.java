@@ -63,7 +63,7 @@ public class IDPAuthenticationFailedTestCase extends AbstractFederationTestCase 
     public static WebArchive deployAuthnFailedIdP() {
         WebArchive deployment = resolveFromFederation("picketlink-federation-saml-idp-basic");
 
-        deployment.add(getIdPConfig(null, false, false, null, BadAttributeManager.class), "WEB-INF/picketlink.xml");
+        deployment.add(getIdPConfig(null, false, false, null, BadAttributeManager.class, false), "WEB-INF/picketlink.xml");
         deployment.addClass(BadAttributeManager.class);
         deployment.addClass(IDPAuthenticationFailedTestCase.class);
         deployment.addClass(AbstractFederationTestCase.class);
