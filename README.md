@@ -17,6 +17,9 @@ This test suite always provide tests for the latest released version of JBoss EA
 version of those projects. In the latter case, you may need to clone and build EAP or WildFly locally in order to run the tests
 for a specific version.
 
+Also if you are testing against picketlink upstream, you may need to locally clone and build projects picketlink, picketlink-bindings 
+and picketlink-quickstarts to ensure that you have all needed snapshots available locally.
+
 ## Modules Overview
 
 * **base**, provides tests for PicketLink Base Module
