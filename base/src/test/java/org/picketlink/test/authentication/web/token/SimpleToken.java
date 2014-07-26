@@ -23,9 +23,12 @@ package org.picketlink.test.authentication.web.token;
 
 import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.PartitionManager;
+import org.picketlink.idm.credential.DefaultToken;
 import org.picketlink.idm.credential.Token;
 import org.picketlink.idm.credential.storage.TokenCredentialStorage;
 import org.picketlink.idm.model.Account;
+import org.picketlink.idm.model.IdentityType;
+import org.picketlink.idm.model.annotation.StereotypeProperty;
 import org.picketlink.idm.model.basic.Realm;
 import org.picketlink.idm.model.basic.User;
 import org.picketlink.idm.query.IdentityQuery;
@@ -38,20 +41,56 @@ import java.util.UUID;
 /**
  * @author Pedro Igor
  */
-public class SimpleToken extends Token {
+public class SimpleToken extends DefaultToken {
 
     public SimpleToken(String token) {
         super(token);
     }
 
     @ApplicationScoped
-    public static class SimpleTokenProvider implements Token.Provider {
+    public static class SimpleTokenProvider implements Token.Provider<SimpleToken> {
 
         @Inject
         private PartitionManager partitionManager;
 
         @Override
-        public Account getAccount(Token token) {
+        public SimpleToken issue(Account account) {
+            User user = (User) account;
+            SimpleToken token = createToken(user);
+
+            getIdentityManager(user).updateCredential(account, token);
+
+            return token;
+        }
+
+        @Override
+        public SimpleToken renew(Account account, SimpleToken currentToken) {
+            return issue(account);
+        }
+
+        @Override
+        public void invalidate(Account account) {
+
+        }
+
+        @Override
+        public Class<SimpleToken> getTokenType() {
+            return SimpleToken.class;
+        }
+
+        private IdentityManager getIdentityManager(User user) {
+            return this.partitionManager.createIdentityManager(user.getPartition());
+        }
+    }
+
+    @ApplicationScoped
+    public static class SimpleTokenConsumer implements Token.Consumer<SimpleToken> {
+
+        @Inject
+        private PartitionManager partitionManager;
+
+        @Override
+        public Account getAccount(SimpleToken token) {
             String[] claims = token.getToken().split(";");
 
             if (claims.length != 3) {
@@ -76,31 +115,12 @@ public class SimpleToken extends Token {
         }
 
         @Override
-        public Token create(Object value) {
-            return new SimpleToken(value.toString());
+        public Class<SimpleToken> getTokenType() {
+            return SimpleToken.class;
         }
 
         @Override
-        public Token issue(Account account) {
-            User user = (User) account;
-            Token token = createToken(user);
-
-            getIdentityManager(user).updateCredential(account, token);
-
-            return token;
-        }
-
-        private IdentityManager getIdentityManager(User user) {
-            return this.partitionManager.createIdentityManager(user.getPartition());
-        }
-
-        @Override
-        public Token renew(Token currentToken) {
-            return issue(getAccount(currentToken));
-        }
-
-        @Override
-        public boolean validate(Token token) {
+        public boolean validate(SimpleToken token) {
             User user = (User) getAccount(token);
             TokenCredentialStorage tokenStorage = getIdentityManager(user)
                 .retrieveCurrentCredential(user, TokenCredentialStorage.class);
@@ -109,18 +129,17 @@ public class SimpleToken extends Token {
         }
 
         @Override
-        public void invalidate(Account account) {
-
+        public <I extends IdentityType> I extractIdentity(SimpleToken token, Class<I> identityType, StereotypeProperty.Property stereotypeProperty, Object identifier) {
+            return null;
         }
 
         @Override
-        public boolean supports(Token token) {
+        public boolean supports(SimpleToken token) {
             return SimpleToken.class.equals(token.getClass());
         }
 
-        @Override
-        public <T extends TokenCredentialStorage> T getTokenStorage(Account account, Token token) {
-            return null;
+        private IdentityManager getIdentityManager(User user) {
+            return this.partitionManager.createIdentityManager(user.getPartition());
         }
     }
 

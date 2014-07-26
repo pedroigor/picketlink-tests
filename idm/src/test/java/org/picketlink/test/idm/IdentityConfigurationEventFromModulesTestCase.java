@@ -41,7 +41,7 @@ public class IdentityConfigurationEventFromModulesTestCase {
         return ShrinkWrap
                    .create(WebArchive.class, "test.war")
                    .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                   .addAsManifestResource(new StringAsset("Dependencies: org.picketlink.core meta-inf,org.picketlink.core.api meta-inf,org.picketlink.idm.api meta-inf\n"), "MANIFEST.MF")
+                   .addAsManifestResource(new StringAsset("Dependencies: org.picketlink.core meta-inf,org.picketlink.core.api meta-inf,org.picketlink.idm.api meta-inf, org.picketlink.idm meta-inf\n"), "MANIFEST.MF")
                    .addClass(IdentityConfigurationEventFromModulesTestCase.class);
     }
 

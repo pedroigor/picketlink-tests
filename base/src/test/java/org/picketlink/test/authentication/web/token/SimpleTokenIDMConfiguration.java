@@ -34,7 +34,7 @@ import javax.inject.Inject;
 public class SimpleTokenIDMConfiguration {
 
     @Inject
-    private SimpleToken.SimpleTokenProvider tokenProvider;
+    private SimpleToken.SimpleTokenConsumer tokenConsumer;
 
     @Produces
     public IdentityConfiguration produceConfiguration() {
@@ -44,7 +44,7 @@ public class SimpleTokenIDMConfiguration {
             .named("custom-config")
             .stores()
             .file()
-            .setCredentialHandlerProperty(TokenCredentialHandler.TOKEN_PROVIDER, this.tokenProvider)
+            .setCredentialHandlerProperty(TokenCredentialHandler.TOKEN_CONSUMER, this.tokenConsumer)
             .supportAllFeatures();
 
         return builder.build();
