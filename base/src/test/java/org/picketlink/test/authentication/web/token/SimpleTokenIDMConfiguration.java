@@ -23,18 +23,13 @@ package org.picketlink.test.authentication.web.token;
 
 import org.picketlink.idm.config.IdentityConfiguration;
 import org.picketlink.idm.config.IdentityConfigurationBuilder;
-import org.picketlink.idm.credential.handler.TokenCredentialHandler;
 
 import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
 
 /**
  * @author Pedro Igor
  */
 public class SimpleTokenIDMConfiguration {
-
-    @Inject
-    private SimpleToken.SimpleTokenConsumer tokenConsumer;
 
     @Produces
     public IdentityConfiguration produceConfiguration() {
@@ -44,7 +39,6 @@ public class SimpleTokenIDMConfiguration {
             .named("custom-config")
             .stores()
             .file()
-            .setCredentialHandlerProperty(TokenCredentialHandler.TOKEN_CONSUMER, this.tokenConsumer)
             .supportAllFeatures();
 
         return builder.build();

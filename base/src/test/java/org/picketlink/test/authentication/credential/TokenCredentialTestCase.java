@@ -26,27 +26,16 @@ import org.junit.runner.RunWith;
 import org.picketlink.Identity;
 import org.picketlink.credential.DefaultLoginCredentials;
 import org.picketlink.idm.IdentityManager;
-import org.picketlink.idm.PartitionManager;
 import org.picketlink.idm.config.IdentityConfiguration;
 import org.picketlink.idm.config.IdentityConfigurationBuilder;
-import org.picketlink.idm.credential.DefaultToken;
+import org.picketlink.idm.credential.AbstractToken;
 import org.picketlink.idm.credential.Token;
 import org.picketlink.idm.credential.TokenCredential;
-import org.picketlink.idm.credential.handler.TokenCredentialHandler;
-import org.picketlink.idm.credential.storage.TokenCredentialStorage;
-import org.picketlink.idm.model.Account;
-import org.picketlink.idm.model.IdentityType;
-import org.picketlink.idm.model.annotation.StereotypeProperty;
-import org.picketlink.idm.model.basic.Realm;
 import org.picketlink.idm.model.basic.User;
-import org.picketlink.idm.query.IdentityQuery;
 import org.picketlink.test.authentication.AbstractAuthenticationTestCase;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
-import java.util.List;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -107,9 +96,6 @@ public class TokenCredentialTestCase extends AbstractAuthenticationTestCase {
     @ApplicationScoped
     public static class IDMConfiguration {
 
-        @Inject
-        private SimpleTokenConsumer tokenConsumer;
-
         @Produces
         public IdentityConfiguration produceConfiguration() {
             IdentityConfigurationBuilder builder = new IdentityConfigurationBuilder();
@@ -118,7 +104,6 @@ public class TokenCredentialTestCase extends AbstractAuthenticationTestCase {
                 .named("custom-config")
                     .stores()
                         .file()
-                        .setCredentialHandlerProperty(TokenCredentialHandler.TOKEN_CONSUMER, this.tokenConsumer)
                         .supportAllFeatures();
 
             return builder.build();
@@ -126,70 +111,15 @@ public class TokenCredentialTestCase extends AbstractAuthenticationTestCase {
     }
 
 
-    public static class SimpleToken extends DefaultToken {
+    public static class SimpleToken extends AbstractToken {
 
         public SimpleToken(String token) {
             super(token);
         }
-    }
-
-    @ApplicationScoped
-    public static class SimpleTokenConsumer implements Token.Consumer<SimpleToken> {
-
-        @Inject
-        private PartitionManager partitionManager;
 
         @Override
-        public Account getAccount(SimpleToken token) {
-            String[] claims = token.getToken().split(";");
-
-            if (claims.length != 3) {
-                return null;
-            }
-
-            String realmName = claims[2].substring("issuer".length() + 1);
-            String subject = claims[1].substring("subject".length() + 1);
-            Realm partition = this.partitionManager.getPartition(Realm.class, realmName);
-            IdentityManager identityManager = this.partitionManager.createIdentityManager(partition);
-
-            IdentityQuery<User> query = identityManager.createIdentityQuery(User.class)
-                .setParameter(User.LOGIN_NAME, subject);
-
-            List<User> result = query.getResultList();
-
-            if (!result.isEmpty()) {
-                return result.get(0);
-            }
-
-            return null;
-        }
-
-        @Override
-        public Class<SimpleToken> getTokenType() {
-            return null;
-        }
-
-        private IdentityManager getIdentityManager(User user) {
-            return this.partitionManager.createIdentityManager(user.getPartition());
-        }
-
-        @Override
-        public boolean validate(SimpleToken token) {
-            User user = (User) getAccount(token);
-            TokenCredentialStorage tokenStorage = getIdentityManager(user)
-                .retrieveCurrentCredential(user, TokenCredentialStorage.class);
-
-            return tokenStorage.getValue().equals(token.getToken());
-        }
-
-        @Override
-        public <I extends IdentityType> I extractIdentity(SimpleToken token, Class<I> identityType, StereotypeProperty.Property stereotypeProperty, Object identifier) {
-            return null;
-        }
-
-        @Override
-        public boolean supports(SimpleToken token) {
-            return SimpleToken.class.equals(token.getClass());
+        public String getSubject() {
+            return getToken();
         }
     }
 
@@ -197,11 +127,7 @@ public class TokenCredentialTestCase extends AbstractAuthenticationTestCase {
         StringBuilder builder = new StringBuilder();
 
         builder
-            .append("id=").append(UUID.randomUUID().toString())
-            .append(";")
-            .append("subject=").append(user.getLoginName())
-            .append(";")
-            .append("issuer=").append(user.getPartition().getName());
+            .append(user.getLoginName());
 
         return (T) new SimpleToken(builder.toString());
     }
