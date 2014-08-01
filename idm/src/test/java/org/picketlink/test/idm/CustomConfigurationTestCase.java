@@ -44,7 +44,7 @@ import org.picketlink.idm.jpa.model.sample.simple.RoleTypeEntity;
 import org.picketlink.idm.jpa.model.sample.simple.X509CredentialTypeEntity;
 import org.picketlink.idm.model.basic.Realm;
 import org.picketlink.idm.model.basic.User;
-import org.picketlink.internal.EEJPAContextInitializer;
+import org.picketlink.internal.EntityManagerContextInitializer;
 import org.picketlink.test.AbstractJPADeploymentTestCase;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -102,7 +102,7 @@ public class CustomConfigurationTestCase extends AbstractJPADeploymentTestCase {
     public static class IDMConfiguration {
 
         @Inject
-        private EEJPAContextInitializer contextInitializer;
+        private EntityManagerContextInitializer contextInitializer;
 
         public void observeIdentityConfigurationEvent(@Observes IdentityConfigurationEvent event) throws Exception {
             IdentityConfigurationBuilder builder = event.getConfig();

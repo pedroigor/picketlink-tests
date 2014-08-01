@@ -45,7 +45,6 @@ import org.picketlink.idm.model.basic.GroupMembership;
 import org.picketlink.idm.model.basic.GroupRole;
 import org.picketlink.idm.model.basic.Role;
 import org.picketlink.idm.model.basic.User;
-import org.picketlink.internal.EEJPAContextInitializer;
 import org.picketlink.test.AbstractJPADeploymentTestCase;
 import org.picketlink.test.authorization.permission.GenericPermissionTypeEntity;
 import org.picketlink.test.authorization.permission.SomeEntity;
@@ -119,9 +118,6 @@ public abstract class AbstractAuthorizationTestCase extends AbstractJPADeploymen
     @ApplicationScoped
     public static class IDMConfiguration {
 
-        @Inject
-        private EEJPAContextInitializer contextInitializer;
-
         public void observeIdentityConfigurationEvent(@Observes IdentityConfigurationEvent event) throws Exception {
             IdentityConfigurationBuilder builder = event.getConfig();
 
@@ -142,7 +138,6 @@ public abstract class AbstractAuthorizationTestCase extends AbstractJPADeploymen
                                 PasswordCredentialTypeEntity.class,
                                 GenericPermissionTypeEntity.class,
                                 AttributeTypeEntity.class)
-                            .addContextInitializer(this.contextInitializer)
                             .supportType(MyCustomRole.class,
                                 MyCustomGroup.class,
                                 User.class,

@@ -28,21 +28,8 @@ import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.PartitionManager;
 import org.picketlink.idm.config.IdentityConfiguration;
 import org.picketlink.idm.config.IdentityConfigurationBuilder;
-import org.picketlink.idm.jpa.model.sample.simple.AccountTypeEntity;
-import org.picketlink.idm.jpa.model.sample.simple.AttributeTypeEntity;
-import org.picketlink.idm.jpa.model.sample.simple.DigestCredentialTypeEntity;
-import org.picketlink.idm.jpa.model.sample.simple.GroupTypeEntity;
-import org.picketlink.idm.jpa.model.sample.simple.IdentityTypeEntity;
-import org.picketlink.idm.jpa.model.sample.simple.OTPCredentialTypeEntity;
-import org.picketlink.idm.jpa.model.sample.simple.PartitionTypeEntity;
-import org.picketlink.idm.jpa.model.sample.simple.PasswordCredentialTypeEntity;
-import org.picketlink.idm.jpa.model.sample.simple.RelationshipIdentityTypeEntity;
-import org.picketlink.idm.jpa.model.sample.simple.RelationshipTypeEntity;
-import org.picketlink.idm.jpa.model.sample.simple.RoleTypeEntity;
-import org.picketlink.idm.jpa.model.sample.simple.X509CredentialTypeEntity;
 import org.picketlink.idm.model.basic.Realm;
 import org.picketlink.idm.model.basic.User;
-import org.picketlink.internal.EEJPAContextInitializer;
 import org.picketlink.test.AbstractJPADeploymentTestCase;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -93,9 +80,6 @@ public class ProduceMultipleIdentityConfigurationTestCase extends AbstractJPADep
     @ApplicationScoped
     public static class IDMConfiguration {
 
-        @Inject
-        private EEJPAContextInitializer contextInitializer;
-
         @Produces
         public IdentityConfiguration produceFileConfiguration() throws Exception {
             IdentityConfigurationBuilder builder = new IdentityConfigurationBuilder();
@@ -117,21 +101,6 @@ public class ProduceMultipleIdentityConfigurationTestCase extends AbstractJPADep
                 .named(JPA_CONFIG_NAME)
                 .stores()
                 .jpa()
-                .mappedEntity(
-                    AccountTypeEntity.class,
-                    RoleTypeEntity.class,
-                    GroupTypeEntity.class,
-                    IdentityTypeEntity.class,
-                    RelationshipTypeEntity.class,
-                    RelationshipIdentityTypeEntity.class,
-                    PartitionTypeEntity.class,
-                    PasswordCredentialTypeEntity.class,
-                    DigestCredentialTypeEntity.class,
-                    X509CredentialTypeEntity.class,
-                    OTPCredentialTypeEntity.class,
-                    AttributeTypeEntity.class
-                )
-                .addContextInitializer(this.contextInitializer)
                 .supportAllFeatures();
 
             return builder.build();
