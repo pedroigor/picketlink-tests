@@ -117,20 +117,20 @@
         </dependency>
 
         <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-log4j12</artifactId>
-                <version>1.5.6</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>1.5.6</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>jcl-over-slf4j</artifactId>
-                <version>1.5.6</version>
-            </dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.5.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.5.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>1.5.6</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -528,18 +528,6 @@
                             </exclusion>
                         </exclusions>
                     </dependency>
-                    <dependency>
-                        <groupId>org.wildfly</groupId>
-                        <artifactId>wildfly-arquillian-container-managed</artifactId>
-                        <version>${version.wildfly}</version>
-                        <scope>test</scope>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.wildfly</groupId>
-                        <artifactId>wildfly-arquillian-container-remote</artifactId>
-                        <version>${version.wildfly}</version>
-                        <scope>test</scope>
-                    </dependency>
                 </dependencies>
             </dependencyManagement>
             <dependencies>
@@ -560,16 +548,6 @@
                     <groupId>org.picketlink.distribution</groupId>
                     <artifactId>picketlink-wildfly8</artifactId>
                     <version>${project.version}</version>
-                </dependency>
-                <!--<dependency>-->
-                    <!--<groupId>org.wildfly.arquillian</groupId>-->
-                    <!--<artifactId>wildfly-arquillian-container-remote</artifactId>-->
-                    <!--<scope>test</scope>-->
-                <!--</dependency>-->
-                <dependency>
-                    <groupId>org.wildfly</groupId>
-                    <artifactId>wildfly-arquillian-container-managed</artifactId>
-                    <scope>test</scope>
                 </dependency>
                 <dependency>
                     <groupId>org.jboss.arquillian.junit</groupId>
@@ -843,6 +821,23 @@
                 <version.jboss.as.distribution>jboss-eap-6.2</version.jboss.as.distribution>
                 <org.picketlink.test.subsystem.disable>true</org.picketlink.test.subsystem.disable>
             </properties>
+            <dependencies>
+                <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+            </dependencies>
         </profile>
 
         <profile>
@@ -854,7 +849,7 @@
                 </property>
             </activation>
             <properties>
-                <version.jboss.as>7.4.0.Final-redhat-SNAPSHOT</version.jboss.as>
+                <version.jboss.as>7.4.1.Final-redhat-SNAPSHOT</version.jboss.as>
                 <version.jboss.as.distribution>jboss-eap-6.3</version.jboss.as.distribution>
             </properties>
         </profile>
@@ -863,27 +858,112 @@
             <id>wildfly-8.1.0.Final</id>
             <properties>
                 <version.wildfly>8.1.0.Final</version.wildfly>
+                <version.arquillian>8.1.0.Final</version.arquillian>
                 <version.jboss.as.distribution>wildfly-8.1.0.Final</version.jboss.as.distribution>
                 <org.picketlink.test.subsystem.disable>true</org.picketlink.test.subsystem.disable>
             </properties>
+            <dependencyManagement>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.wildfly</groupId>
+                        <artifactId>wildfly-arquillian-container-managed</artifactId>
+                        <version>${version.arquillian}</version>
+                        <scope>test</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.wildfly</groupId>
+                        <artifactId>wildfly-arquillian-container-remote</artifactId>
+                        <version>${version.arquillian}</version>
+                        <scope>test</scope>
+                    </dependency>
+                </dependencies>
+            </dependencyManagement>
+            <dependencies>
+                <!--<dependency>-->
+                <!--<groupId>org.wildfly</groupId>-->
+                <!--<artifactId>wildfly-arquillian-container-remote</artifactId>-->
+                <!--<scope>test</scope>-->
+                <!--</dependency>-->
+                <dependency>
+                    <groupId>org.wildfly</groupId>
+                    <artifactId>wildfly-arquillian-container-managed</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
         </profile>
 
         <profile>
             <id>wildfly-8.2.0.CR1-SNAPSHOT</id>
             <properties>
                 <version.wildfly>8.2.0.CR1-SNAPSHOT</version.wildfly>
+                <version.arquillian>8.2.0.CR1-SNAPSHOT</version.arquillian>
                 <version.jboss.as.distribution>wildfly-8.2.0.CR1-SNAPSHOT</version.jboss.as.distribution>
                 <org.picketlink.test.subsystem.disable>true</org.picketlink.test.subsystem.disable>
             </properties>
+            <dependencyManagement>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.wildfly</groupId>
+                        <artifactId>wildfly-arquillian-container-managed</artifactId>
+                        <version>${version.arquillian}</version>
+                        <scope>test</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.wildfly</groupId>
+                        <artifactId>wildfly-arquillian-container-remote</artifactId>
+                        <version>${version.arquillian}</version>
+                        <scope>test</scope>
+                    </dependency>
+                </dependencies>
+            </dependencyManagement>
+            <dependencies>
+                <!--<dependency>-->
+                <!--<groupId>org.wildfly</groupId>-->
+                <!--<artifactId>wildfly-arquillian-container-remote</artifactId>-->
+                <!--<scope>test</scope>-->
+                <!--</dependency>-->
+                <dependency>
+                    <groupId>org.wildfly</groupId>
+                    <artifactId>wildfly-arquillian-container-managed</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
         </profile>
 
         <profile>
             <id>wildfly-9.0.0.Alpha1-SNAPSHOT</id>
             <properties>
                 <version.wildfly>9.0.0.Alpha1-SNAPSHOT</version.wildfly>
+                <version.arquillian>1.0.0.Alpha1</version.arquillian>
                 <version.jboss.as.distribution>wildfly-9.0.0.Alpha1-SNAPSHOT</version.jboss.as.distribution>
             </properties>
+            <dependencyManagement>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.wildfly.arquillian</groupId>
+                        <artifactId>wildfly-arquillian-container-managed</artifactId>
+                        <version>${version.arquillian}</version>
+                        <scope>test</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.wildfly.arquillian</groupId>
+                        <artifactId>wildfly-arquillian-container-remote</artifactId>
+                        <version>${version.arquillian}</version>
+                        <scope>test</scope>
+                    </dependency>
+                </dependencies>
+            </dependencyManagement>
             <dependencies>
+                <!--<dependency>-->
+                <!--<groupId>org.wildfly.arquillian</groupId>-->
+                <!--<artifactId>wildfly-arquillian-container-remote</artifactId>-->
+                <!--<scope>test</scope>-->
+                <!--</dependency>-->
+                <dependency>
+                    <groupId>org.wildfly.arquillian</groupId>
+                    <artifactId>wildfly-arquillian-container-managed</artifactId>
+                    <scope>test</scope>
+                </dependency>
                 <dependency>
                     <groupId>org.wildfly.arquillian</groupId>
                     <artifactId>wildfly-arquillian-common</artifactId>

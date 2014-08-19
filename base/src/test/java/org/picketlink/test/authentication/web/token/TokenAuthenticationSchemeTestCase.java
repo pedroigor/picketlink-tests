@@ -29,8 +29,8 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.picketlink.common.util.Base64;
-import org.picketlink.test.authentication.web.StatelessIdentityBeanConfiguration;
 import org.picketlink.test.authentication.web.AbstractAuthenticationSchemeTestCase;
+import org.picketlink.test.authentication.web.StatelessIdentityBeanConfiguration;
 
 import java.net.URL;
 
@@ -49,10 +49,10 @@ public class TokenAuthenticationSchemeTestCase extends AbstractAuthenticationSch
 
     @Deployment (name = "default", testable = false)
     public static Archive<?> deployDefault() {
-        WebArchive webArchive = create("default.war", "authc-filter-basic-token-web.xml",
+        WebArchive webArchive = create("default.war", (String) null,
             SimpleToken.class,
             SimpleTokenIDMConfiguration.class,
-            SimpleTokenAuthenticationConfiguration.class,
+            TokenSecurityConfiguration.class,
             ProtectedServlet.class,
             StatelessIdentityBeanConfiguration.class);
 

@@ -27,8 +27,9 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.picketlink.authentication.web.support.HTTPDigestUtil;
+import org.picketlink.http.internal.schemes.support.HTTPDigestUtil;
 import org.picketlink.idm.credential.Digest;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -41,7 +42,7 @@ public class DigestAuthenticationSchemeTestCase extends AbstractAuthenticationSc
 
     @Deployment (testable = false)
     public static Archive<?> deploy() {
-        return create("authc-filter-digest-web.xml");
+        return create((String) null, DigestHttpSecurityConfiguration.class);
     }
 
     @Test

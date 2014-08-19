@@ -42,7 +42,7 @@ public class AuthenticationExceptionTestCase extends AbstractAuthenticationSchem
 
     @Deployment(testable = false)
     public static Archive<?> deploy() {
-        WebArchive archive = create("teste.war", "authc-filter-form-web.xml");
+        WebArchive archive = create("teste.war", (String) null, FormHttpSecurityConfiguration.class);
 
         archive.add(new StringAsset("Login Page"), "login.jsp");
         archive.add(new StringAsset("Login Error Page"), "loginError.jsp");

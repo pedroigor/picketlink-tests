@@ -1,27 +1,26 @@
 package org.picketlink.test.authentication.web;
 
-import java.io.IOException;
+import org.picketlink.Identity;
+import org.picketlink.config.http.AuthenticationSchemeConfiguration;
+import org.picketlink.credential.DefaultLoginCredentials;
+import org.picketlink.http.authentication.HttpAuthenticationScheme;
 
 import javax.inject.Inject;
-import javax.servlet.FilterConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
-import org.picketlink.Identity;
-import org.picketlink.authentication.web.HTTPAuthenticationScheme;
-import org.picketlink.credential.DefaultLoginCredentials;
-
-public abstract class CustomAbstractHttpAuthScheme implements HTTPAuthenticationScheme {
+public abstract class CustomAbstractHttpAuthScheme implements HttpAuthenticationScheme {
 
     private boolean hasBeenInitialized;
-    private FilterConfig config;
+    private AuthenticationSchemeConfiguration config;
 
     @Inject
     private Identity identity;
 
 
     @Override
-    public void initialize(FilterConfig config) {
+    public void initialize(AuthenticationSchemeConfiguration config) {
         this.config = config;
         hasBeenInitialized = true;
     }
@@ -42,7 +41,7 @@ public abstract class CustomAbstractHttpAuthScheme implements HTTPAuthentication
     }
 
     @Override
-    public boolean postAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void onPostAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
         StringBuilder resp = new StringBuilder();
         resp.append(getClass().getName());
         if (hasBeenInitialized) {
@@ -57,11 +56,5 @@ public abstract class CustomAbstractHttpAuthScheme implements HTTPAuthentication
         response.setContentType("text/plain");
         response.getOutputStream().print(resp.toString());
         response.flushBuffer();
-        return false;
-    }
-
-    @Override
-    public boolean isProtected(HttpServletRequest request) {
-        return true;
     }
 }

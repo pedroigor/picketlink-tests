@@ -43,7 +43,7 @@ public class BasicAuthenticationSchemeFromAjaxClientTestCase extends AbstractAut
 
     @Deployment (name = "default", testable = false)
     public static Archive<?> deployDefault() {
-        return create("default.war", "authc-filter-basic-web.xml");
+        return create("default.war", (String) null, BasicHttpSecurityConfiguration.class);
     }
 
     @Test

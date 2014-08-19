@@ -17,6 +17,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.picketlink</groupId>
+            <artifactId>picketlink</artifactId>
+        </dependency>
+        <dependency>
             <groupId>httpunit</groupId>
             <artifactId>httpunit</artifactId>
         </dependency>

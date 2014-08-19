@@ -19,25 +19,29 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.picketlink.test.authentication.web.token;
+package org.picketlink.test.authentication.web;
 
-import org.picketlink.annotations.PicketLink;
-import org.picketlink.authentication.web.TokenAuthenticationScheme;
+import org.picketlink.config.SecurityConfigurationBuilder;
+import org.picketlink.event.SecurityConfigurationEvent;
 
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
+import javax.enterprise.event.Observes;
 
 /**
  * @author Pedro Igor
  */
-public class SimpleTokenAuthenticationConfiguration {
+public class FormHttpSecurityConfiguration {
 
-    @Inject
-    private TokenAuthenticationScheme tokenAuthenticationScheme;
+    public void onInit(@Observes SecurityConfigurationEvent event) {
+        SecurityConfigurationBuilder builder = event.getBuilder();
 
-    @Produces
-    @PicketLink
-    public TokenAuthenticationScheme configureTokenAuthenticationScheme() {
-        return this.tokenAuthenticationScheme;
+        builder
+            .http()
+            .path("/protected/*")
+            .authc()
+            .form()
+                .loginPage("/login.jsp")
+                .errorPage("/loginError.jsp")
+                .restoreOriginalRequest();
     }
+
 }

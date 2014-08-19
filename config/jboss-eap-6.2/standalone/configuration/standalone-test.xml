@@ -258,6 +258,21 @@
                   </login-module>
                 </authentication>
               </security-domain>
+                <security-domain name="idp-ssl" cache-type="default">
+                    <authentication>
+                        <login-module code="CertificateRoles" flag="optional">
+                            <module-option name="password-stacking" value="useFirstPass"/>
+                            <module-option name="securityDomain" value="idp-ssl"/>
+                            <module-option name="verifier" value="org.jboss.security.auth.certs.AnyCertVerifier"/>
+                        </login-module>
+                        <login-module code="UsersRoles" flag="required">
+                            <module-option name="password-stacking" value="useFirstPass"/>
+                            <module-option name="usersProperties" value="users.properties"/>
+                            <module-option name="rolesProperties" value="roles.properties"/>
+                        </login-module>
+                    </authentication>
+                    <jsse keystore-password="change_it" keystore-url="${jboss.server.config.dir}/localhost.keystore" truststore-password="change_it" truststore-url="${jboss.server.config.dir}/client.truststore" client-auth="true"/>
+                </security-domain>
               <security-domain name="picketlink-sts" cache-type="default">
                 <authentication>
                   <login-module code="UsersRoles" flag="required">
@@ -305,6 +320,13 @@
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:web:1.5" default-virtual-server="default-host" native="false">
             <connector name="http" protocol="HTTP/1.1" scheme="http" socket-binding="http"/>
+            <connector name="https" protocol="HTTP/1.1" scheme="https" socket-binding="https" enable-lookups="false" secure="true">
+                <ssl name="localhost-ssl" key-alias="localhost" password="change_it"
+                     certificate-key-file="${jboss.server.config.dir}/localhost.keystore"
+                     protocol="TLSv1"
+                     verify-client="want"
+                     ca-certificate-file="${jboss.server.config.dir}/client.truststore"/>
+            </connector>
             <virtual-server name="default-host" enable-welcome-root="true">
                 <alias name="localhost"/>
                 <alias name="example.com"/>

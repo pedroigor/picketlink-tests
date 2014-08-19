@@ -46,7 +46,7 @@ public class FormAuthenticationSchemeTestCase extends AbstractAuthenticationSche
 
     @Deployment (testable = false)
     public static Archive<?> deploy() {
-        WebArchive archive = create("authc-filter-form-web.xml");
+        WebArchive archive = create((String) null, FormHttpSecurityConfiguration.class);
 
         archive.add(new StringAsset("Login Page"), "login.jsp");
         archive.add(new StringAsset("Login Error Page"), "loginError.jsp");
@@ -117,6 +117,7 @@ public class FormAuthenticationSchemeTestCase extends AbstractAuthenticationSche
         response = client.loadWebResponse(request);
 
         assertEquals(HttpStatus.SC_OK, response.getStatusCode());
+        assertEquals("Login Error Page", response.getContentAsString());
 
     }
 

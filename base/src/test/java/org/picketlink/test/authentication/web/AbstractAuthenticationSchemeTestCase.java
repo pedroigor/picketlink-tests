@@ -49,7 +49,9 @@ public abstract class AbstractAuthenticationSchemeTestCase {
                 .asSingle(JavaArchive.class));
 
 
-        ArchiveUtils.addWebXml(archive, webXml);
+        if (webXml != null) {
+            ArchiveUtils.addWebXml(archive, webXml);
+        }
 
         archive.add(new StringAsset("Index Page"), "index.html");
         archive.add(new StringAsset("Protected Page"), "protected/index.html");
@@ -62,7 +64,7 @@ public abstract class AbstractAuthenticationSchemeTestCase {
     }
 
     protected URL getProtectedResourceURL() throws MalformedURLException {
-        return new URL(getContextPath() + "/protected/");
+        return new URL(getContextPath() + "protected/");
     }
 
     protected URL getContextPath() {

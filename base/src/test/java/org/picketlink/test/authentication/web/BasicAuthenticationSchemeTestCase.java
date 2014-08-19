@@ -46,22 +46,21 @@ public class BasicAuthenticationSchemeTestCase extends AbstractAuthenticationSch
 
     @Deployment (name = "default", testable = false)
     public static Archive<?> deployDefault() {
-        return create("default.war", "authc-filter-basic-web.xml");
+        return create("default.war", (String) null, BasicHttpSecurityConfiguration.class);
     }
 
     @Deployment (name = "force-reauthentication", testable = false)
     public static Archive<?> deployWithReauthentication() {
-        return create("force-reauthentication.war", "authc-filter-basic-reauthc-web.xml");
+        return create("force-reauthentication.war", (String) null, BasicHttpSecurityConfiguration.class);
     }
 
     @Deployment (name = "stateless-reauthentication", testable = false)
     public static Archive<?> deployWithStatelessAuthentication() {
-        WebArchive webArchive = create("stateless-authentication.war", "authc-filter-basic-web.xml");
+        WebArchive webArchive = create("stateless-authentication.war", (String) null, BasicHttpSecurityConfiguration.class);
 
         webArchive.addClass(StatelessIdentityBeanConfiguration.class);
 
         return webArchive;
-
     }
 
     @Test
