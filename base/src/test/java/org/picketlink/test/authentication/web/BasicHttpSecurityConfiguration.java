@@ -37,13 +37,13 @@ public class BasicHttpSecurityConfiguration {
 
         builder
             .http()
-            .path("/protected/*")
-            .methods(HttpMethod.POST.name(), HttpMethod.GET.name())
-            .authc()
+            .forPath("/protected/*")
+            .withMethod(HttpMethod.POST, HttpMethod.GET)
+            .authenticateWith()
             .basic()
                 .realmName("Test Realm")
-            .path("/protected/*")
-            .methods(HttpMethod.OPTIONS.name())
+            .forPath("/protected/*")
+            .withMethod(HttpMethod.OPTIONS)
             .unprotected();
     }
 

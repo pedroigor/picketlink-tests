@@ -8,7 +8,6 @@ import org.picketlink.http.authentication.HttpAuthenticationScheme;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 public abstract class CustomAbstractHttpAuthScheme implements HttpAuthenticationScheme {
 
@@ -33,15 +32,20 @@ public abstract class CustomAbstractHttpAuthScheme implements HttpAuthentication
     }
 
     @Override
-    public void challengeClient(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void challengeClient(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/plain");
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        response.getOutputStream().print("this is a client challenge response");
-        response.flushBuffer();
+
+        try {
+            response.getOutputStream().print("this is a client challenge response");
+            response.flushBuffer();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public void onPostAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void onPostAuthentication(HttpServletRequest request, HttpServletResponse response) {
         StringBuilder resp = new StringBuilder();
         resp.append(getClass().getName());
         if (hasBeenInitialized) {
@@ -54,7 +58,12 @@ public abstract class CustomAbstractHttpAuthScheme implements HttpAuthentication
             resp.append(", has_injected_identity");
         }
         response.setContentType("text/plain");
-        response.getOutputStream().print(resp.toString());
-        response.flushBuffer();
+
+        try {
+            response.getOutputStream().print(resp.toString());
+            response.flushBuffer();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

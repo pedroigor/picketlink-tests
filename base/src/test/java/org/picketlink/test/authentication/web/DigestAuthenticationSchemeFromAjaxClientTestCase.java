@@ -26,7 +26,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.picketlink.http.internal.schemes.support.HTTPDigestUtil;
+import org.picketlink.http.internal.authentication.schemes.support.HTTPDigestUtil;
 import org.picketlink.idm.credential.Digest;
 
 import static org.junit.Assert.assertEquals;

@@ -36,8 +36,8 @@ public class FormHttpSecurityConfiguration {
 
         builder
             .http()
-            .path("/protected/*")
-            .authc()
+            .forPath("/protected/*")
+            .authenticateWith()
             .form()
                 .loginPage("/login.jsp")
                 .errorPage("/loginError.jsp")

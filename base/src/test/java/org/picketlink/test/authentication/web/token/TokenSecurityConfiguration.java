@@ -39,7 +39,7 @@ public class TokenSecurityConfiguration {
             .stateless()
             .http()
             .allPaths()
-            .authc()
+            .authenticateWith()
             .token();
     }
 
