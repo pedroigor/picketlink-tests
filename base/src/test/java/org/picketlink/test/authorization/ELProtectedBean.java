@@ -108,7 +108,7 @@ public class ELProtectedBean {
 
     }
 
-    @Restrict("#{identity.account.partition.name != 'default'}")
+    @Restrict("#{isLoggedIn() and identity.account.partition.name != 'default'}")
     public void protectedWithInvalidPartitionExpression() {
 
     }
