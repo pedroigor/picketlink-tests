@@ -56,9 +56,12 @@ public class AnnotationBasedAuthorizationTestCase extends AbstractAuthorizationT
     @Inject
     protected AnnotationProtectedBean protectedBean;
 
+    @Inject
+    protected ClassLevelAnnotationProtectedBean classLevelAnnotationProtectedBean;
+
     @Deployment
     public static WebArchive deploy() {
-        return create(AnnotationBasedAuthorizationTestCase.class, AnnotationProtectedBean.class);
+        return create(AnnotationBasedAuthorizationTestCase.class, AnnotationProtectedBean.class, ClassLevelAnnotationProtectedBean.class);
     }
 
     @Before
@@ -136,6 +139,12 @@ public class AnnotationBasedAuthorizationTestCase extends AbstractAuthorizationT
     public void testSuccessfulInvocationWithRequiredPartitionNameAndType() throws Exception {
         performAuthentication();
         this.protectedBean.protectedWithRequiredPartitionTypeAndName();
+    }
+
+    @Test
+    public void testSuccessfulClassLevelAuthorization() throws Exception {
+        performAuthentication();
+        this.classLevelAnnotationProtectedBean.protectedWithRequiredRole();
     }
 
     @Test
