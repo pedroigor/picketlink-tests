@@ -855,6 +855,20 @@
         </profile>
 
         <profile>
+            <id>jboss-eap-6.4</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>jboss-eap-6.4</name>
+                </property>
+            </activation>
+            <properties>
+                <version.jboss.as>7.5.0.Final-redhat-SNAPSHOT</version.jboss.as>
+                <version.jboss.as.distribution>jboss-eap-6.4</version.jboss.as.distribution>
+            </properties>
+        </profile>
+
+        <profile>
             <id>wildfly-8.1.0.Final</id>
             <properties>
                 <version.wildfly>8.1.0.Final</version.wildfly>
