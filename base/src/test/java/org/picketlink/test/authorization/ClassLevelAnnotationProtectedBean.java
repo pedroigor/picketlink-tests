@@ -26,9 +26,9 @@ import org.picketlink.authorization.annotations.RolesAllowed;
 /**
  * @author Pedro Igor
  */
+@RolesAllowed("Tester")
 public class ClassLevelAnnotationProtectedBean {
 
-    @RolesAllowed("Tester")
     public void protectedWithRequiredRole() {
 
     }
