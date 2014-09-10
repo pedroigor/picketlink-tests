@@ -120,7 +120,7 @@ public class IDPAuthenticationFailedTestCase extends AbstractFederationTestCase 
 
         response = conversation.getCurrentPage();
 
-        assertTrue(response.getText().contains("The Identity Provider could not process the authentication request."));
+        assertTrue(response.getText().contains("The Service Provider could not process the request."));
     }
 
     public static class BadAttributeManager implements AttributeManager {
