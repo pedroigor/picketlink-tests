@@ -859,12 +859,12 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
                 <property>
-                    <name>jboss-eap-6.4</name>
+                    <name>jboss-eap-6.3</name>
                 </property>
             </activation>
             <properties>
                 <version.jboss.as>7.5.0.Final-redhat-SNAPSHOT</version.jboss.as>
-                <version.jboss.as.distribution>jboss-eap-6.4</version.jboss.as.distribution>
+                <version.jboss.as.distribution>jboss-eap-6.3</version.jboss.as.distribution>
             </properties>
         </profile>
 
