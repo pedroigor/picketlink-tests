@@ -859,12 +859,12 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
                 <property>
-                    <name>jboss-eap-6.3</name>
+                    <name>jboss-eap-6.4</name>
                 </property>
             </activation>
             <properties>
                 <version.jboss.as>7.5.0.Final-redhat-SNAPSHOT</version.jboss.as>
-                <version.jboss.as.distribution>jboss-eap-6.3</version.jboss.as.distribution>
+                <version.jboss.as.distribution>jboss-eap-6.4</version.jboss.as.distribution>
             </properties>
         </profile>
 
@@ -945,11 +945,11 @@
         </profile>
 
         <profile>
-            <id>wildfly-9.0.0.Alpha1-SNAPSHOT</id>
+            <id>wildfly-9.0.0.Alpha2-SNAPSHOT</id>
             <properties>
-                <version.wildfly>9.0.0.Alpha1-SNAPSHOT</version.wildfly>
-                <version.arquillian>1.0.0.Alpha1</version.arquillian>
-                <version.jboss.as.distribution>wildfly-9.0.0.Alpha1-SNAPSHOT</version.jboss.as.distribution>
+                <version.wildfly>9.0.0.Alpha2-SNAPSHOT</version.wildfly>
+                <version.arquillian>1.0.0.Alpha2</version.arquillian>
+                <version.jboss.as.distribution>wildfly-9.0.0.Alpha2-SNAPSHOT</version.jboss.as.distribution>
             </properties>
             <dependencyManagement>
                 <dependencies>
