@@ -34,6 +34,8 @@ import org.picketlink.idm.model.basic.BasicModel;
 import org.picketlink.idm.model.basic.Group;
 import org.picketlink.idm.model.basic.Role;
 import org.picketlink.idm.model.basic.User;
+import org.picketlink.test.authorization.permission.AnotherEntity;
+import org.picketlink.test.authorization.permission.SomeEntity;
 
 import javax.inject.Inject;
 
@@ -88,6 +90,21 @@ public class AnnotationBasedAuthorizationTestCase extends AbstractAuthorizationT
             grantGroupRole(relationshipManager, john, tester, qaGroup);
 
             this.permissionManager.grantPermission(john, "profile", "read");
+            this.permissionManager.grantPermission(john, SomeEntity.class, "create");
+
+            SomeEntity someEntity = new SomeEntity();
+
+            someEntity.setId(1l);
+
+            this.permissionManager.grantPermission(john, someEntity, "write");
+
+            this.permissionManager.grantPermission(john, AnotherEntity.class, "load");
+
+            AnotherEntity anotherEntity = new AnotherEntity();
+
+            anotherEntity.setId(1l);
+
+            this.permissionManager.grantPermission(john, anotherEntity, "delete");
 
             this.userTransaction.commit();
         }
@@ -103,6 +120,15 @@ public class AnnotationBasedAuthorizationTestCase extends AbstractAuthorizationT
     public void testSuccessfulInvocationWithPermission() throws Exception {
         performAuthentication();
         this.protectedBean.protectedWithResourcePermission();
+        this.protectedBean.protectedWithResourceClassPermission();
+        this.protectedBean.protectedWithResourceClassIdentifierPermission();
+    }
+
+    @Test
+    public void testSuccessfulInvocationWithPermissionAnotherEntity() throws Exception {
+        performAuthentication();
+        this.protectedBean.protectedWithResourceClassPermissionAnotherEntity();
+        this.protectedBean.protectedWithResourceClassIdentifierPermissionAnotherEntity();
     }
 
     @Test
@@ -163,6 +189,71 @@ public class AnnotationBasedAuthorizationTestCase extends AbstractAuthorizationT
     public void failInvocationFromUnAuthenticatedUserPermission() throws Exception {
         try {
             this.protectedBean.protectedWithResourceWithoutPermission();
+            fail();
+        } catch (Exception e) {
+            if (!AccessDeniedException.class.isInstance(e) && !AccessDeniedException.class.isInstance(e.getCause())) {
+                fail();
+            }
+        }
+    }
+
+    @Test
+    public void failInvocationFromInvalidUserPermission() throws Exception {
+        performAuthentication();
+        try {
+            this.protectedBean.protectedWithResourceWithoutPermission();
+            fail();
+        } catch (Exception e) {
+            if (!AccessDeniedException.class.isInstance(e) && !AccessDeniedException.class.isInstance(e.getCause())) {
+                fail();
+            }
+        }
+    }
+
+    @Test
+    public void failInvocationFromInvalidUserResourceClassPermission() throws Exception {
+        performAuthentication();
+        try {
+            this.protectedBean.protectedWithoutResourceClassPermission();
+            fail();
+        } catch (Exception e) {
+            if (!AccessDeniedException.class.isInstance(e) && !AccessDeniedException.class.isInstance(e.getCause())) {
+                fail();
+            }
+        }
+    }
+
+    @Test
+    public void failInvocationFromInvalidUserResourceClassIdentifierPermission() throws Exception {
+        performAuthentication();
+        try {
+            this.protectedBean.protectedWithoutResourceClassIdentifierPermission();
+            fail();
+        } catch (Exception e) {
+            if (!AccessDeniedException.class.isInstance(e) && !AccessDeniedException.class.isInstance(e.getCause())) {
+                fail();
+            }
+        }
+    }
+
+    @Test
+    public void failInvocationFromInvalidUserResourceClassPermissionAnotherEntity() throws Exception {
+        performAuthentication();
+        try {
+            this.protectedBean.protectedWithoutResourceClassPermissionAnotherEntity();
+            fail();
+        } catch (Exception e) {
+            if (!AccessDeniedException.class.isInstance(e) && !AccessDeniedException.class.isInstance(e.getCause())) {
+                fail();
+            }
+        }
+    }
+
+    @Test
+    public void failInvocationFromInvalidUserResourceClassIdentifierPermissionAnotherEntity() throws Exception {
+        performAuthentication();
+        try {
+            this.protectedBean.protectedWithoutResourceClassIdentifierPermissionAnotherEntity();
             fail();
         } catch (Exception e) {
             if (!AccessDeniedException.class.isInstance(e) && !AccessDeniedException.class.isInstance(e.getCause())) {

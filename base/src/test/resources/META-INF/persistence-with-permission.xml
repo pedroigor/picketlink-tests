@@ -19,7 +19,7 @@
         <class>org.picketlink.idm.jpa.model.sample.simple.X509CredentialTypeEntity</class>
         <class>org.picketlink.idm.jpa.model.sample.simple.OTPCredentialTypeEntity</class>
         <class>org.picketlink.idm.jpa.model.sample.simple.AttributeTypeEntity</class>
-        <class>org.picketlink.test.authorization.permission.GenericPermissionTypeEntity</class>
+        <class>org.picketlink.idm.jpa.model.sample.simple.PermissionTypeEntity</class>
         <class>org.picketlink.test.authorization.permission.SomeEntity</class>
         <class>org.picketlink.test.authorization.MyCustomRoleTypeEntity</class>
         <class>org.picketlink.test.authorization.MyCustomGroupTypeEntity</class>

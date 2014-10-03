@@ -29,15 +29,6 @@ import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.PermissionManager;
 import org.picketlink.idm.RelationshipManager;
 import org.picketlink.idm.config.IdentityConfigurationBuilder;
-import org.picketlink.idm.jpa.model.sample.simple.AccountTypeEntity;
-import org.picketlink.idm.jpa.model.sample.simple.AttributeTypeEntity;
-import org.picketlink.idm.jpa.model.sample.simple.GroupTypeEntity;
-import org.picketlink.idm.jpa.model.sample.simple.IdentityTypeEntity;
-import org.picketlink.idm.jpa.model.sample.simple.PartitionTypeEntity;
-import org.picketlink.idm.jpa.model.sample.simple.PasswordCredentialTypeEntity;
-import org.picketlink.idm.jpa.model.sample.simple.RelationshipIdentityTypeEntity;
-import org.picketlink.idm.jpa.model.sample.simple.RelationshipTypeEntity;
-import org.picketlink.idm.jpa.model.sample.simple.RoleTypeEntity;
 import org.picketlink.idm.model.Partition;
 import org.picketlink.idm.model.basic.Grant;
 import org.picketlink.idm.model.basic.Group;
@@ -46,7 +37,7 @@ import org.picketlink.idm.model.basic.GroupRole;
 import org.picketlink.idm.model.basic.Role;
 import org.picketlink.idm.model.basic.User;
 import org.picketlink.test.AbstractJPADeploymentTestCase;
-import org.picketlink.test.authorization.permission.GenericPermissionTypeEntity;
+import org.picketlink.test.authorization.permission.AnotherEntity;
 import org.picketlink.test.authorization.permission.SomeEntity;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -85,13 +76,13 @@ public abstract class AbstractAuthorizationTestCase extends AbstractJPADeploymen
     public static WebArchive create(Class<?>... classes) {
         List<Class<?>> classesToAdd = new ArrayList(Arrays.asList(classes));
 
-        classesToAdd.add(GenericPermissionTypeEntity.class);
         classesToAdd.add(AbstractAuthorizationTestCase.class);
         classesToAdd.add(MyCustomRole.class);
         classesToAdd.add(MyCustomGroup.class);
         classesToAdd.add(MyCustomGrant.class);
         classesToAdd.add(MyCustomGroupMembership.class);
         classesToAdd.add(SomeEntity.class);
+        classesToAdd.add(AnotherEntity.class);
         classesToAdd.add(MyCustomRoleTypeEntity.class);
         classesToAdd.add(MyCustomGroupTypeEntity.class);
 
@@ -125,19 +116,6 @@ public abstract class AbstractAuthorizationTestCase extends AbstractJPADeploymen
                 .named("custom-config")
                     .stores()
                         .jpa()
-                            .mappedEntity(
-                                AccountTypeEntity.class,
-                                RoleTypeEntity.class,
-                                GroupTypeEntity.class,
-                                MyCustomRoleTypeEntity.class,
-                                MyCustomGroupTypeEntity.class,
-                                IdentityTypeEntity.class,
-                                RelationshipTypeEntity.class,
-                                RelationshipIdentityTypeEntity.class,
-                                PartitionTypeEntity.class,
-                                PasswordCredentialTypeEntity.class,
-                                GenericPermissionTypeEntity.class,
-                                AttributeTypeEntity.class)
                             .supportType(MyCustomRole.class,
                                 MyCustomGroup.class,
                                 User.class,

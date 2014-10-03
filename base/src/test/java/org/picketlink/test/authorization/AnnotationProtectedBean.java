@@ -28,6 +28,8 @@ import org.picketlink.authorization.annotations.RequiresPermission;
 import org.picketlink.authorization.annotations.RolesAllowed;
 import org.picketlink.idm.model.basic.Realm;
 import org.picketlink.idm.model.basic.Tier;
+import org.picketlink.test.authorization.permission.AnotherEntity;
+import org.picketlink.test.authorization.permission.SomeEntity;
 
 /**
  * @author Pedro Igor
@@ -46,6 +48,46 @@ public class AnnotationProtectedBean {
 
     @RequiresPermission(resource = "profile", operation = "write")
     public void protectedWithResourceWithoutPermission() {
+
+    }
+
+    @RequiresPermission(resourceClass = SomeEntity.class, operation = "create")
+    public void protectedWithResourceClassPermission() {
+
+    }
+
+    @RequiresPermission(resourceClass = SomeEntity.class, operation = "delete")
+    public void protectedWithoutResourceClassPermission() {
+
+    }
+
+    @RequiresPermission(resourceClass = SomeEntity.class, resourceIdentifier = "1", operation = "write")
+    public void protectedWithResourceClassIdentifierPermission() {
+
+    }
+
+    @RequiresPermission(resourceClass = SomeEntity.class, resourceIdentifier = "2", operation = "create")
+    public void protectedWithoutResourceClassIdentifierPermission() {
+
+    }
+
+    @RequiresPermission(resourceClass = AnotherEntity.class, operation = "load")
+    public void protectedWithResourceClassPermissionAnotherEntity() {
+
+    }
+
+    @RequiresPermission(resourceClass = AnotherEntity.class, operation = "write")
+    public void protectedWithoutResourceClassPermissionAnotherEntity() {
+
+    }
+
+    @RequiresPermission(resourceClass = AnotherEntity.class, resourceIdentifier = "1", operation = "delete")
+    public void protectedWithResourceClassIdentifierPermissionAnotherEntity() {
+
+    }
+
+    @RequiresPermission(resourceClass = AnotherEntity.class, resourceIdentifier = "2", operation = "load")
+    public void protectedWithoutResourceClassIdentifierPermissionAnotherEntity() {
 
     }
 
