@@ -639,6 +639,7 @@
                                     <exclude>**/SAMLIDPInitiatedSSLAuthenticationTestCase.java</exclude>
                                     <exclude>**/SAMLSPInitiatedFallbackFormSSLAuthenticationTestCase.java</exclude>
                                     <exclude>**/SAMLSPInitiatedSSLAuthenticationTestCase.java</exclude>
+                                    <exclude>**/SAMLPostBindingWithAjaxRequestTestCase.java</exclude>
                                 </excludes>
                             </configuration>
                         </plugin>
