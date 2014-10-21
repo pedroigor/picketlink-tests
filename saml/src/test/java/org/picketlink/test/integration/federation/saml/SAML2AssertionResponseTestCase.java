@@ -92,7 +92,7 @@ public class SAML2AssertionResponseTestCase extends AbstractFederationTestCase {
         assertTrue(response.getText().contains("EmployeeDashboard"));
     }
 
-    private WebConversation createWebConversation() {
+    protected WebConversation createWebConversation() {
         WebConversation conversation = new WebConversation();
 
         conversation.addClientListener(new WebClientListener() {

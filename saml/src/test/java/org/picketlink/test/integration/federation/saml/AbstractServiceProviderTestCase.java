@@ -48,10 +48,10 @@ public abstract class AbstractServiceProviderTestCase extends AbstractFederation
 
     @Test
     @OperateOnDeployment("service-provider")
-    public void testAuthentication(@ArquillianResource URL url) throws Exception {
+    public void testAuthentication(@ArquillianResource URL serviceProviderUrl) throws Exception {
         WebConversation conversation = createWebConversation();
         HttpUnitOptions.setLoggingHttpHeaders(true);
-        WebRequest request = new GetMethodWebRequest(formatUrl(url));
+        WebRequest request = new GetMethodWebRequest(formatUrl(serviceProviderUrl));
         WebResponse response = conversation.getResponse(request);
 
         assertTrue(response.getURL().getPath().startsWith(getIdPContextPath()));
@@ -66,13 +66,13 @@ public abstract class AbstractServiceProviderTestCase extends AbstractFederation
 
         response = conversation.getCurrentPage();
 
-        doAssertAuthentication(response);
+        doAssertAuthentication(response, serviceProviderUrl);
     }
 
     @Test
     @OperateOnDeployment("service-provider")
-    public void testLogout(@ArquillianResource URL url) throws Exception {
-        WebRequest request = new GetMethodWebRequest(formatUrl(url));
+    public void testLogout(@ArquillianResource URL serviceProviderUrl) throws Exception {
+        WebRequest request = new GetMethodWebRequest(formatUrl(serviceProviderUrl));
         WebConversation conversation = createWebConversation();
         WebResponse response = conversation.getResponse(request);
 
@@ -88,7 +88,7 @@ public abstract class AbstractServiceProviderTestCase extends AbstractFederation
 
         response = conversation.getCurrentPage();
 
-        doAssertAuthentication(response);
+        doAssertAuthentication(response, serviceProviderUrl);
 
         for (WebLink link: response.getLinks()) {
             if (link.getURLString().contains("GLO=true")) {
@@ -100,16 +100,21 @@ public abstract class AbstractServiceProviderTestCase extends AbstractFederation
 
         assertTrue(response.getURL().getPath().startsWith(getIdPContextPath()));
         assertEquals(1, response.getForms().length);
+
+        doAssertLogout(response, serviceProviderUrl);
+    }
+
+    protected void doAssertLogout(WebResponse response, URL serviceProviderUrl) {
+
     }
 
     protected String getIdPContextPath() {
         return this.idpUrl.getPath();
     }
 
-    protected abstract void doAssertAuthentication(WebResponse response);
+    protected abstract void doAssertAuthentication(WebResponse response, URL url);
 
-    protected WebConversation createWebConversation() {
-        return new WebConversation();
+    public URL getIdpUrl() {
+        return this.idpUrl;
     }
-
 }

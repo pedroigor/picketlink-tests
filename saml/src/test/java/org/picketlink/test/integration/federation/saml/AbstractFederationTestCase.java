@@ -21,6 +21,10 @@
  */
 package org.picketlink.test.integration.federation.saml;
 
+import com.meterware.httpunit.WebClient;
+import com.meterware.httpunit.WebClientListener;
+import com.meterware.httpunit.WebConversation;
+import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.impl.base.io.IOUtil;
@@ -30,17 +34,21 @@ import org.picketlink.identity.federation.core.impl.EmptyAttributeManager;
 import org.picketlink.identity.federation.core.interfaces.AttributeManager;
 import org.picketlink.identity.federation.saml.v2.protocol.ResponseType;
 import org.picketlink.identity.federation.web.util.RedirectBindingUtil;
+import org.picketlink.test.integration.federation.saml.util.SAMLTracer;
 
 import java.io.InputStream;
 import java.net.URL;
 
 import static org.junit.Assert.fail;
+import static org.picketlink.common.util.StringUtil.isNullOrEmpty;
 import static org.picketlink.test.util.EnvironmentUtil.isWildFlyContainer;
 
 /**
  * @author Pedro Igor
  */
 public abstract class AbstractFederationTestCase {
+
+    private SAMLTracer samlTracer = new SAMLTracer();
 
     /**
      * <p>Make sure the URL's host is always localhost if original host is 127.0.0.1. Necessary when running the tests against Undertow as
@@ -159,4 +167,29 @@ public abstract class AbstractFederationTestCase {
 
         return new StringAsset(config);
     }
+
+    protected WebConversation createWebConversation() {
+        WebConversation conversation = new WebConversation();
+
+        conversation.addClientListener(new WebClientListener() {
+            @Override
+            public void requestSent(WebClient src, WebRequest req) {
+                if (!isNullOrEmpty(req.getParameter(GeneralConstants.SAML_REQUEST_KEY))
+                    || !isNullOrEmpty(req.getParameter(GeneralConstants.SAML_RESPONSE_KEY))) {
+                    samlTracer.addSAMLRequest(req);
+                }
+            }
+
+            @Override
+            public void responseReceived(WebClient src, WebResponse resp) {
+            }
+        });
+
+        return conversation;
+    }
+
+    protected SAMLTracer getSamlTracer() {
+        return this.samlTracer;
+    }
+
 }

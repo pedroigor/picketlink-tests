@@ -29,6 +29,7 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.runner.RunWith;
 
 import java.io.IOException;
+import java.net.URL;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -52,7 +53,7 @@ public class SAMLMetadataTestCase extends AbstractServiceProviderTestCase {
     }
 
     @Override
-    protected void doAssertAuthentication(WebResponse response) {
+    protected void doAssertAuthentication(WebResponse response, URL url) {
         try {
             assertTrue(response.getText().contains("SalesTool"));
         } catch (IOException e) {
