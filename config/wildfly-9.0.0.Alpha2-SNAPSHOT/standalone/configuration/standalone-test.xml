@@ -142,7 +142,7 @@
                                 <attribute name="createdDate" ldap-name="createTimeStamp"  read-only="true"/>
                             </mapping>
                             <mapping code="Grant" relates-to="Role">
-                                <attribute name="assignee" ldap-name="member" is-identifier="true" read-only="true"/>
+                                <attribute name="assignee" ldap-name="member" />
                             </mapping>
                         </mappings>
                     </ldap-store>
