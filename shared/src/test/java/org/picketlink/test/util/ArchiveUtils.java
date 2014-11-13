@@ -65,7 +65,17 @@ public class ArchiveUtils {
                     "        \n" +
                     "</beans>"), ArchivePaths.create("beans.xml"));
 
-        addDependency(archive, "org.picketlink:picketlink:" + getCurrentProjectVersion());
+        addDependency(archive, "org.picketlink:picketlink-common:" + getCurrentProjectVersion());
+        addDependency(archive, "org.picketlink:picketlink-config:" + getCurrentProjectVersion());
+        addDependency(archive, "org.picketlink:picketlink-api:" + getCurrentProjectVersion());
+        addDependency(archive, "org.picketlink:picketlink-impl:" + getCurrentProjectVersion());
+        addDependency(archive, "org.picketlink:picketlink-idm-api:" + getCurrentProjectVersion());
+        addDependency(archive, "org.picketlink:picketlink-idm-impl:" + getCurrentProjectVersion());
+        addDependency(archive, "org.picketlink:picketlink-deltaspike:2.7.0.CR2");
+        addDependency(archive, "org.apache.deltaspike.core:deltaspike-core-api:1.0.0");
+        addDependency(archive, "org.apache.deltaspike.core:deltaspike-core-impl:1.0.0");
+        addDependency(archive, "org.apache.deltaspike.modules:deltaspike-security-module-api:1.0.0");
+        addDependency(archive, "org.apache.deltaspike.modules:deltaspike-security-module-impl:1.0.0");
 
         if (classesToAdd != null) {
             for (Class<?> classToAdd : classesToAdd) {
