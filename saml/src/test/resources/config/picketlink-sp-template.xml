@@ -21,7 +21,9 @@
 		<Handler
             class="org.picketlink.identity.federation.web.handlers.saml2.SAML2LogOutHandler"/>
 		<Handler
-            class="org.picketlink.identity.federation.web.handlers.saml2.SAML2AuthenticationHandler" />
+            class="org.picketlink.identity.federation.web.handlers.saml2.SAML2AuthenticationHandler">
+            <Option Key="FORCE_AUTHN" Value="${force-authn}"/>
+        </Handler>
 		<Handler
             class="org.picketlink.identity.federation.web.handlers.saml2.RolesGenerationHandler" />
 		<Handler

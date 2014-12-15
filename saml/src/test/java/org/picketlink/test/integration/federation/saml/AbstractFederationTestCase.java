@@ -122,7 +122,7 @@ public abstract class AbstractFederationTestCase {
     }
 
     protected static StringAsset getSpConfig(String identityUrl, String serviceUrl, boolean supportSignatures,
-        boolean supportEncryption) {
+        boolean supportEncryption, boolean forceAuthn) {
         InputStream inputStream = AbstractFederationTestCase.class.getResourceAsStream("/config/picketlink-sp-template.xml");;
 
         String config = new String(IOUtil.asByteArray(inputStream));
@@ -139,6 +139,7 @@ public abstract class AbstractFederationTestCase {
         config = config.replace("${service-url}", serviceUrl);
         config = config.replace("${support-signatures}", Boolean.valueOf(supportSignatures).toString());
         config = config.replace("${support-encryption}", Boolean.valueOf(supportEncryption).toString());
+        config = config.replace("${force-authn}", Boolean.valueOf(forceAuthn).toString());
 
         return new StringAsset(config);
     }

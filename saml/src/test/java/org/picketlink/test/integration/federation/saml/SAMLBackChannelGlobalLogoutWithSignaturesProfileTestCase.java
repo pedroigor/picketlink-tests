@@ -67,7 +67,7 @@ public class SAMLBackChannelGlobalLogoutWithSignaturesProfileTestCase extends Ab
     public static WebArchive deployEmployee() {
         WebArchive deployment = resolveFromFederation("picketlink-federation-saml-sp-redirect-basic");
 
-        deployment.add(getSpConfig(null, "http://localhost:8080/employee/", true, false), "WEB-INF/picketlink.xml");
+        deployment.add(getSpConfig(null, "http://localhost:8080/employee/", true, false, false), "WEB-INF/picketlink.xml");
         deployment.addAsResource(AbstractFederationTestCase.class.getResource("/config/jbid_test_keystore.jks"), "/jbid_test_keystore.jks");
 
         return deployment;
@@ -77,7 +77,7 @@ public class SAMLBackChannelGlobalLogoutWithSignaturesProfileTestCase extends Ab
     public static WebArchive deploySales() {
         WebArchive deployment = resolveFromFederation("picketlink-federation-saml-sp-post-basic");
 
-        deployment.add(getSpConfig(null, "http://localhost:8080/sales-post/", true, false), "WEB-INF/picketlink.xml");
+        deployment.add(getSpConfig(null, "http://localhost:8080/sales-post/", true, false, false), "WEB-INF/picketlink.xml");
         deployment.addAsResource(AbstractFederationTestCase.class.getResource("/config/jbid_test_keystore.jks"), "/jbid_test_keystore.jks");
 
         return deployment;

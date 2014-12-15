@@ -65,7 +65,7 @@ public class SAML2IDPInitiatedTestCase extends AbstractSAML2IDPInitiatedTestCase
     public static WebArchive deployServiceProvider() {
         WebArchive serviceProvider = resolveFromFederation("picketlink-federation-saml-sp-post-basic");
 
-        serviceProvider.add(new StringAsset("Back to the original requested resource."), "savedRequest/savedRequest.html");
+        serviceProvider.add(new StringAsset("Back to the original requested resource."), "savedRequest/savedRequest.jsp");
 
         return serviceProvider;
     }
@@ -84,7 +84,7 @@ public class SAML2IDPInitiatedTestCase extends AbstractSAML2IDPInitiatedTestCase
 
         webForm.getSubmitButtons()[0].click();
 
-        request = new GetMethodWebRequest(formatUrl(url) + "?SAML_VERSION=2.0&TARGET=" + formatUrl(this.serviceProviderPostURL) + "savedRequest/savedRequest.html");
+        request = new GetMethodWebRequest(formatUrl(url) + "?SAML_VERSION=2.0&TARGET=" + formatUrl(this.serviceProviderPostURL) + "savedRequest/savedRequest.jsp");
 
         response = conversation.getResponse(request);
 
@@ -105,7 +105,7 @@ public class SAML2IDPInitiatedTestCase extends AbstractSAML2IDPInitiatedTestCase
 
         webForm.getSubmitButtons()[0].click();
 
-        request = new GetMethodWebRequest(formatUrl(url) + "?SAML_VERSION=2.0&TARGET=" + formatUrl(this.serviceProviderPostURL) + "savedRequest/savedRequest.html&SAML_BINDING=REDIRECT");
+        request = new GetMethodWebRequest(formatUrl(url) + "?SAML_VERSION=2.0&TARGET=" + formatUrl(this.serviceProviderPostURL) + "savedRequest/savedRequest.jsp&SAML_BINDING=REDIRECT");
 
         response = conversation.getResponse(request);
 

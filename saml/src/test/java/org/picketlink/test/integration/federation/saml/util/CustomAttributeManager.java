@@ -50,6 +50,8 @@ public class CustomAttributeManager implements SAML2AttributeManager {
         AttributeStatementType attrStatement = new AttributeStatementType();
         AttributeType attr = new AttributeType("attribute4");
         attr.setNameFormat("customNameFormat");
+        attr.setName("attribute4");
+        attr.setFriendlyName("friendly");
         attr.addAttributeValue("value1");
         attr.addAttributeValue("value2");
         attr.addAttributeValue("value3");
