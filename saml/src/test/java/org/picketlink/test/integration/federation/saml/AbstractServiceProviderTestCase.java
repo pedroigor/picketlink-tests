@@ -112,7 +112,7 @@ public abstract class AbstractServiceProviderTestCase extends AbstractFederation
         return this.idpUrl.getPath();
     }
 
-    protected abstract void doAssertAuthentication(WebResponse response, URL url);
+    protected abstract void doAssertAuthentication(WebResponse response, URL url) throws Exception;
 
     public URL getIdpUrl() {
         return this.idpUrl;

@@ -28,6 +28,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.runner.RunWith;
 import org.picketlink.common.constants.JBossSAMLURIConstants;
+import org.picketlink.common.util.DocumentUtil;
 import org.picketlink.identity.federation.saml.v2.assertion.AssertionType;
 import org.picketlink.identity.federation.saml.v2.assertion.NameIDType;
 import org.picketlink.identity.federation.saml.v2.protocol.AuthnRequestType;
@@ -35,16 +36,14 @@ import org.picketlink.identity.federation.saml.v2.protocol.LogoutRequestType;
 import org.picketlink.identity.federation.saml.v2.protocol.ResponseType;
 import org.picketlink.identity.federation.saml.v2.protocol.StatusResponseType;
 import org.picketlink.test.integration.federation.saml.util.SAMLTracer;
+import org.w3c.dom.Element;
 
+import javax.xml.namespace.QName;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static org.picketlink.common.util.StringUtil.isNullOrEmpty;
 import static org.picketlink.test.integration.federation.saml.QuickstartArchiveUtil.resolveFromFederation;
 import static org.picketlink.test.integration.federation.saml.util.SAMLTracer.SAMLMessage;
@@ -67,7 +66,7 @@ public class SAMLPostBindingWithSignaturesTestCase extends AbstractServiceProvid
     }
 
     @Override
-    protected void doAssertAuthentication(WebResponse response, URL serviceProviderUrl) {
+    protected void doAssertAuthentication(WebResponse response, URL serviceProviderUrl) throws Exception {
         try {
             assertTrue(response.getText().contains("SalesTool"));
         } catch (IOException e) {
@@ -101,7 +100,7 @@ public class SAMLPostBindingWithSignaturesTestCase extends AbstractServiceProvid
         assertEquals(JBossSAMLURIConstants.STATUS_SUCCESS.get(), statusResponseType.getStatus().getStatusCode().getValue().toString());
     }
 
-    protected void assertSAMLMessageFlow(URL serviceProviderUrl) {
+    protected void assertSAMLMessageFlow(URL serviceProviderUrl) throws Exception {
         SAMLTracer samlTracer = getSamlTracer();
         List<SAMLMessage> messages = samlTracer.getMessages();
 
@@ -129,7 +128,13 @@ public class SAMLPostBindingWithSignaturesTestCase extends AbstractServiceProvid
         assertEquals(authnRequestType.getID(), responseType.getInResponseTo());
         assertEquals(JBossSAMLURIConstants.STATUS_SUCCESS.get(), responseType.getStatus().getStatusCode().getValue().toString());
         assertEquals(1, responseType.getAssertions().size());
-        assertNotNull(responseType.getSignature());
+        Element originalSignature = responseType.getSignature();
+
+        assertNotNull(originalSignature);
+
+        Element x509KeyInfo = DocumentUtil.getChildElement(originalSignature, new QName("dsig", "X509Certificate"));
+
+        assertNotNull(x509KeyInfo);
 
         ResponseType.RTChoiceType rtChoiceType = responseType.getAssertions().get(0);
         AssertionType assertionType = rtChoiceType.getAssertion();
