@@ -919,11 +919,11 @@
         </profile>
 
         <profile>
-            <id>wildfly-8.2.0.CR1-SNAPSHOT</id>
+            <id>wildfly-8.2.0.Final</id>
             <properties>
-                <version.wildfly>8.2.0.CR1-SNAPSHOT</version.wildfly>
-                <version.arquillian>8.2.0.CR1-SNAPSHOT</version.arquillian>
-                <version.jboss.as.distribution>wildfly-8.2.0.CR1-SNAPSHOT</version.jboss.as.distribution>
+                <version.wildfly>8.2.0.Final</version.wildfly>
+                <version.arquillian>8.2.0.Final</version.arquillian>
+                <version.jboss.as.distribution>wildfly-8.2.0.Final</version.jboss.as.distribution>
                 <org.picketlink.test.subsystem.disable>true</org.picketlink.test.subsystem.disable>
             </properties>
             <dependencyManagement>
