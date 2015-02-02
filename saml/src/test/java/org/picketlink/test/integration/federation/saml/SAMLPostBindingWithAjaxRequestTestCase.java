@@ -64,7 +64,22 @@ public class SAMLPostBindingWithAjaxRequestTestCase extends AbstractFederationTe
 
     @Test
     @OperateOnDeployment("service-provider")
-    public void testAuthentication(@ArquillianResource URL url) throws Exception {
+    public void testForbiddenStatusFromServiceProvider(@ArquillianResource URL url) throws Exception {
+        HttpUnitOptions.setLoggingHttpHeaders(true);
+        HttpUnitOptions.setExceptionsThrownOnErrorStatus(false);
+        WebConversation conversation = new WebConversation();
+        WebRequest request = new GetMethodWebRequest(formatUrl(url));
+
+        request.setHeaderField("X-Requested-With", "XMLHttpRequest");
+
+        WebResponse response = conversation.getResponse(request);
+
+        assertEquals(HttpServletResponse.SC_FORBIDDEN, response.getResponseCode());
+    }
+
+    @Test
+    @OperateOnDeployment("idp")
+    public void testForbiddenStatusFromIdentityProvider(@ArquillianResource URL url) throws Exception {
         HttpUnitOptions.setLoggingHttpHeaders(true);
         HttpUnitOptions.setExceptionsThrownOnErrorStatus(false);
         WebConversation conversation = new WebConversation();
