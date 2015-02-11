@@ -21,11 +21,7 @@
  */
 package org.picketlink.test.integration.federation.saml;
 
-import com.meterware.httpunit.GetMethodWebRequest;
-import com.meterware.httpunit.HttpUnitOptions;
-import com.meterware.httpunit.WebConversation;
-import com.meterware.httpunit.WebRequest;
-import com.meterware.httpunit.WebResponse;
+import com.meterware.httpunit.*;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.OperateOnDeployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
@@ -39,6 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.picketlink.test.integration.federation.saml.QuickstartArchiveUtil.resolveFromFederation;
 
 /**
@@ -90,5 +87,35 @@ public class SAMLPostBindingWithAjaxRequestTestCase extends AbstractFederationTe
         WebResponse response = conversation.getResponse(request);
 
         assertEquals(HttpServletResponse.SC_FORBIDDEN, response.getResponseCode());
+    }
+
+    @Test
+    @OperateOnDeployment("idp")
+    public void testAjaxRequestAfterSuccessfulAuthentication(@ArquillianResource URL url) throws Exception {
+        WebConversation conversation = createWebConversation();
+        HttpUnitOptions.setLoggingHttpHeaders(true);
+        WebRequest request = new GetMethodWebRequest(formatUrl(url));
+        WebResponse response = conversation.getResponse(request);
+
+        assertEquals(1, response.getForms().length);
+
+        WebForm webForm = response.getForms()[0];
+
+        webForm.setParameter("j_username", "tomcat");
+        webForm.setParameter("j_password", "tomcat");
+
+        webForm.getSubmitButtons()[0].click();
+
+        response = conversation.getCurrentPage();
+
+        assertTrue(response.getText().contains("Welcome"));
+
+        request = new GetMethodWebRequest(formatUrl(url));
+
+        request.setHeaderField("X-Requested-With", "XMLHttpRequest");
+
+        response = conversation.getResponse(request);
+
+        assertTrue(response.getText().contains("Welcome"));
     }
 }
