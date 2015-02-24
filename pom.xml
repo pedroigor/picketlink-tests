@@ -650,7 +650,7 @@
                                     <exclude>**/SAMLSPInitiatedFallbackFormSSLAuthenticationTestCase.java</exclude>
                                     <exclude>**/SAMLSPInitiatedSSLAuthenticationTestCase.java</exclude>
                                     <exclude>**/SAMLPostBindingWithAjaxRequestTestCase.java</exclude>
-                                    <exclude>**/SAMLSPAccountChooserTestCase.java</exclude>
+                                    <exclude>**/AccountChooserTestCase.java</exclude>
                                 </excludes>
                             </configuration>
                         </plugin>
