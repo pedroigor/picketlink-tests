@@ -47,7 +47,7 @@ public class JBoss7Util {
         sb.append("<jboss-deployment-structure><deployment><dependencies>");
         if (dependencies != null) {
             for (String moduleName : dependencies) {
-                sb.append("\n\t<module name='").append(moduleName).append("'/>");
+                sb.append("\n\t<module name='").append(moduleName).append("'").append(" ").append("services=\"import\"").append("/>");
             }
         }
         sb.append("\n</dependencies></deployment></jboss-deployment-structure>");

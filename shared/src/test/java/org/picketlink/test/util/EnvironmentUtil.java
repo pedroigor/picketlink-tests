@@ -39,7 +39,7 @@ public class EnvironmentUtil {
     }
 
     public static String getVersion() {
-        return System.getProperty("project.version", "2.7.0-SNAPSHOT");
+        return System.getProperty("project.version", "2.8.0.Beta1-SNAPSHOT");
     }
 
 }

@@ -642,20 +642,6 @@
                         </plugin>
                         <plugin>
                             <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-surefire-plugin</artifactId>
-                            <configuration>
-                                <!-- We ignore SSL authentication tests for WildFly. Feature not support yet. -->
-                                <excludes>
-                                    <exclude>**/SAMLIDPInitiatedSSLAuthenticationTestCase.java</exclude>
-                                    <exclude>**/SAMLSPInitiatedFallbackFormSSLAuthenticationTestCase.java</exclude>
-                                    <exclude>**/SAMLSPInitiatedSSLAuthenticationTestCase.java</exclude>
-                                    <exclude>**/SAMLPostBindingWithAjaxRequestTestCase.java</exclude>
-                                    <exclude>**/AccountChooserTestCase.java</exclude>
-                                </excludes>
-                            </configuration>
-                        </plugin>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
                             <artifactId>maven-compiler-plugin</artifactId>
                             <version>3.1</version>
                             <configuration>

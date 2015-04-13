@@ -33,6 +33,8 @@ import org.picketlink.identity.federation.bindings.tomcat.sp.AbstractAccountChoo
 import org.picketlink.test.integration.federation.saml.AbstractFederationTestCase;
 import org.picketlink.test.integration.federation.saml.util.JBoss7Util;
 import org.picketlink.test.integration.federation.saml.util.NewPropertiesAccountMapProvider;
+import org.picketlink.test.integration.federation.saml.util.WildFlyNewPropertiesAccountMapProvider;
+import org.picketlink.test.util.EnvironmentUtil;
 
 import static org.junit.Assert.*;
 
@@ -102,8 +104,14 @@ public class AccountChooserTestCase extends AbstractFederationTestCase {
         war.addAsResource(new StringAsset(USERS), "users.properties");
         war.addAsResource(new StringAsset(ROLES), "roles.properties");
         war.addAsWebInfResource(AccountChooserTestCase.class.getPackage(), "web.xml", "web.xml");
-        war.addAsWebInfResource(JBoss7Util.getJBossWebXmlAsset("idp",
-                "org.picketlink.identity.federation.bindings.tomcat.idp.IDPWebBrowserSSOValve"), "jboss-web.xml");
+
+        if (EnvironmentUtil.isWildFlyContainer()) {
+            war.addAsWebInfResource(JBoss7Util.getJBossWebXmlAsset("idp"), "jboss-web.xml");
+        } else {
+            war.addAsWebInfResource(JBoss7Util.getJBossWebXmlAsset("idp",
+                    "org.picketlink.identity.federation.bindings.tomcat.idp.IDPWebBrowserSSOValve"), "jboss-web.xml");
+        }
+
         war.addAsManifestResource(JBoss7Util.getJBossDeploymentStructure("org.picketlink"), "jboss-deployment-structure.xml");
         war.addAsWebInfResource(
                 new StringAsset(JBoss7Util.propertiesReplacer(
@@ -122,8 +130,14 @@ public class AccountChooserTestCase extends AbstractFederationTestCase {
         war.addAsResource(new StringAsset(USERS2), "users.properties");
         war.addAsResource(new StringAsset(ROLES2), "roles.properties");
         war.addAsWebInfResource(AccountChooserTestCase.class.getPackage(), "web.xml", "web.xml");
-        war.addAsWebInfResource(JBoss7Util.getJBossWebXmlAsset("idp",
-                "org.picketlink.identity.federation.bindings.tomcat.idp.IDPWebBrowserSSOValve"), "jboss-web.xml");
+
+        if (EnvironmentUtil.isWildFlyContainer()) {
+            war.addAsWebInfResource(JBoss7Util.getJBossWebXmlAsset("idp"), "jboss-web.xml");
+        } else {
+            war.addAsWebInfResource(JBoss7Util.getJBossWebXmlAsset("idp",
+                    "org.picketlink.identity.federation.bindings.tomcat.idp.IDPWebBrowserSSOValve"), "jboss-web.xml");
+        }
+
         war.addAsManifestResource(JBoss7Util.getJBossDeploymentStructure("org.picketlink"), "jboss-deployment-structure.xml");
         war.addAsWebInfResource(
                 new StringAsset(JBoss7Util.propertiesReplacer(
@@ -140,14 +154,29 @@ public class AccountChooserTestCase extends AbstractFederationTestCase {
     public static WebArchive deploymentSP1() {
         final WebArchive war = ShrinkWrap.create(WebArchive.class, SP1 + ".war");
         war.addAsWebInfResource(AccountChooserTestCase.class.getPackage(), "web.xml", "web.xml");
-        war.addAsWebInfResource(JBoss7Util.getJBossWebXmlAsset("sp",
-                "org.picketlink.identity.federation.bindings.tomcat.sp.AccountChooserValve",
-                "org.picketlink.identity.federation.bindings.tomcat.sp.ServiceProviderAuthenticator"), "jboss-web.xml");
+
+        if (EnvironmentUtil.isWildFlyContainer()) {
+            war.addAsWebInfResource(JBoss7Util.getJBossWebXmlAsset("sp"), "jboss-web.xml");
+        } else {
+            war.addAsWebInfResource(JBoss7Util.getJBossWebXmlAsset("sp",
+                    "org.picketlink.identity.federation.bindings.tomcat.sp.AccountChooserValve",
+                    "org.picketlink.identity.federation.bindings.tomcat.sp.ServiceProviderAuthenticator"), "jboss-web.xml");
+        }
+
         war.addAsManifestResource(JBoss7Util.getJBossDeploymentStructure("org.picketlink"), "jboss-deployment-structure.xml");
-        war.addAsWebInfResource(
-                new StringAsset(JBoss7Util.propertiesReplacer(
-                        AccountChooserTestCase.class.getResourceAsStream("picketlink-sp.xml"), SP1, "REDIRECT", "whateverHere")),
-                "picketlink.xml");
+
+        if (EnvironmentUtil.isWildFlyContainer()) {
+            war.addAsWebInfResource(
+                    new StringAsset(JBoss7Util.propertiesReplacer(
+                            AccountChooserTestCase.class.getResourceAsStream("picketlink-sp-account-chooser.xml"), SP1, "REDIRECT", "whateverHere")),
+                    "picketlink.xml");
+        } else {
+            war.addAsWebInfResource(
+                    new StringAsset(JBoss7Util.propertiesReplacer(
+                            AccountChooserTestCase.class.getResourceAsStream("picketlink-sp.xml"), SP1, "REDIRECT", "whateverHere")),
+                    "picketlink.xml");
+        }
+
         war.add(new StringAsset(HELLO_FROM_SP1), "index.jsp");
         war.add(new StringAsset(HELLO_FROM_AC1), "accountChooser.html");
         war.add(new StringAsset(HELLO_FROM_LOGOUT_PAGE), "logout.jsp");
@@ -160,14 +189,29 @@ public class AccountChooserTestCase extends AbstractFederationTestCase {
     public static WebArchive deploymentSP2() {
         final WebArchive war = ShrinkWrap.create(WebArchive.class, SP2 + ".war");
         war.addAsWebInfResource(AccountChooserTestCase.class.getPackage(), "web.xml", "web.xml");
-        war.addAsWebInfResource(JBoss7Util.getJBossWebXmlAsset("sp",
-                "org.picketlink.identity.federation.bindings.tomcat.sp.AccountChooserValve",
-                "org.picketlink.identity.federation.bindings.tomcat.sp.ServiceProviderAuthenticator"), "jboss-web.xml");
+
+        if (EnvironmentUtil.isWildFlyContainer()) {
+            war.addAsWebInfResource(JBoss7Util.getJBossWebXmlAsset("sp"), "jboss-web.xml");
+        } else {
+            war.addAsWebInfResource(JBoss7Util.getJBossWebXmlAsset("sp",
+                    "org.picketlink.identity.federation.bindings.tomcat.sp.AccountChooserValve",
+                    "org.picketlink.identity.federation.bindings.tomcat.sp.ServiceProviderAuthenticator"), "jboss-web.xml");
+        }
+
         war.addAsManifestResource(JBoss7Util.getJBossDeploymentStructure("org.picketlink"), "jboss-deployment-structure.xml");
-        war.addAsWebInfResource(
-                new StringAsset(JBoss7Util.propertiesReplacer(
-                        AccountChooserTestCase.class.getResourceAsStream("picketlink-sp.xml"), SP2, "REDIRECT", "whateverHere")),
-                "picketlink.xml");
+
+        if (EnvironmentUtil.isWildFlyContainer()) {
+            war.addAsWebInfResource(
+                    new StringAsset(JBoss7Util.propertiesReplacer(
+                            AccountChooserTestCase.class.getResourceAsStream("picketlink-sp-account-chooser.xml"), SP2, "REDIRECT", "whateverHere")),
+                    "picketlink.xml");
+        } else {
+            war.addAsWebInfResource(
+                    new StringAsset(JBoss7Util.propertiesReplacer(
+                            AccountChooserTestCase.class.getResourceAsStream("picketlink-sp.xml"), SP2, "REDIRECT", "whateverHere")),
+                    "picketlink.xml");
+        }
+
         war.add(new StringAsset(HELLO_FROM_SP2), "index.jsp");
         war.add(new StringAsset(HELLO_FROM_AC2), "accountChooser.html");
         war.add(new StringAsset(HELLO_FROM_LOGOUT_PAGE), "logout.jsp");
@@ -180,19 +224,39 @@ public class AccountChooserTestCase extends AbstractFederationTestCase {
     public static WebArchive deploymentSP3() {
         final WebArchive war = ShrinkWrap.create(WebArchive.class, SP3 + ".war");
         war.addAsWebInfResource(AccountChooserTestCase.class.getPackage(), "web.xml", "web.xml");
-        war.addAsWebInfResource(AccountChooserTestCase.class.getPackage(), "jboss-web-accountchooserpage-param.xml",
-                "jboss-web.xml");
+
+        if (EnvironmentUtil.isWildFlyContainer()) {
+            war.addAsWebInfResource(JBoss7Util.getJBossWebXmlAsset("sp"), "jboss-web.xml");
+        } else {
+            war.addAsWebInfResource(AccountChooserTestCase.class.getPackage(), "jboss-web-accountchooserpage-param.xml",
+                    "jboss-web.xml");
+        }
+
         war.addAsManifestResource(JBoss7Util.getJBossDeploymentStructure("org.picketlink"), "jboss-deployment-structure.xml");
-        war.addAsWebInfResource(
-                new StringAsset(JBoss7Util.propertiesReplacer(
-                        AccountChooserTestCase.class.getResourceAsStream("picketlink-sp.xml"), SP3, "REDIRECT", "whateverHere")),
-                "picketlink.xml");
+
+        if (EnvironmentUtil.isWildFlyContainer()) {
+            war.addAsWebInfResource(
+                    new StringAsset(JBoss7Util.propertiesReplacer(
+                            AccountChooserTestCase.class.getResourceAsStream("picketlink-sp-account-chooser-page.xml"), SP3, "REDIRECT", "whateverHere")),
+                    "picketlink.xml");
+        } else {
+            war.addAsWebInfResource(
+                    new StringAsset(JBoss7Util.propertiesReplacer(
+                            AccountChooserTestCase.class.getResourceAsStream("picketlink-sp.xml"), SP3, "REDIRECT", "whateverHere")),
+                    "picketlink.xml");
+        }
+
         war.add(new StringAsset(HELLO_FROM_SP3), "index.jsp");
         war.add(new StringAsset(HELLO_FROM_AC3), "accountChooser.html");
         war.add(new StringAsset(HELLO_FROM_NEW_AC3), "newAccountChooser.html");
         war.add(new StringAsset(HELLO_FROM_LOGOUT_PAGE), "logout.jsp");
         war.addAsWebInfResource(new StringAsset("DomainA=" + IDP1_URL), "idpmap.properties");
-        war.addClass(NewPropertiesAccountMapProvider.class);
+
+        if (EnvironmentUtil.isWildFlyContainer()) {
+            war.addClass(WildFlyNewPropertiesAccountMapProvider.class);
+        } else {
+            war.addClass(NewPropertiesAccountMapProvider.class);
+        }
 
         return war;
     }
@@ -201,17 +265,37 @@ public class AccountChooserTestCase extends AbstractFederationTestCase {
     public static WebArchive deploymentSP4() {
         final WebArchive war = ShrinkWrap.create(WebArchive.class, SP4 + ".war");
         war.addAsWebInfResource(AccountChooserTestCase.class.getPackage(), "web.xml", "web.xml");
-        war.addAsWebInfResource(AccountChooserTestCase.class.getPackage(), "jboss-web-cookieexpiry-param.xml", "jboss-web.xml");
+
+        if (EnvironmentUtil.isWildFlyContainer()) {
+            war.addAsWebInfResource(JBoss7Util.getJBossWebXmlAsset("sp"), "jboss-web.xml");
+        } else {
+            war.addAsWebInfResource(AccountChooserTestCase.class.getPackage(), "jboss-web-cookieexpiry-param.xml", "jboss-web.xml");
+        }
+
         war.addAsManifestResource(JBoss7Util.getJBossDeploymentStructure("org.picketlink"), "jboss-deployment-structure.xml");
-        war.addAsWebInfResource(
-                new StringAsset(JBoss7Util.propertiesReplacer(
-                        AccountChooserTestCase.class.getResourceAsStream("picketlink-sp.xml"), SP4, "REDIRECT", "whateverHere")),
-                "picketlink.xml");
+
+        if (EnvironmentUtil.isWildFlyContainer()) {
+            war.addAsWebInfResource(
+                    new StringAsset(JBoss7Util.propertiesReplacer(
+                            AccountChooserTestCase.class.getResourceAsStream("picketlink-sp-account-chooser-cookie-expiry.xml"), SP4, "REDIRECT", "whateverHere")),
+                    "picketlink.xml");
+        } else {
+            war.addAsWebInfResource(
+                    new StringAsset(JBoss7Util.propertiesReplacer(
+                            AccountChooserTestCase.class.getResourceAsStream("picketlink-sp.xml"), SP4, "REDIRECT", "whateverHere")),
+                    "picketlink.xml");
+        }
+
         war.add(new StringAsset(HELLO_FROM_SP4), "index.jsp");
         war.add(new StringAsset(HELLO_FROM_AC4), "accountChooser.html");
         war.add(new StringAsset(HELLO_FROM_LOGOUT_PAGE), "logout.jsp");
         war.addAsWebInfResource(new StringAsset("DomainA=" + IDP1_URL), "idpmap.properties");
-        war.addClass(NewPropertiesAccountMapProvider.class);
+
+        if (EnvironmentUtil.isWildFlyContainer()) {
+            war.addClass(WildFlyNewPropertiesAccountMapProvider.class);
+        } else {
+            war.addClass(NewPropertiesAccountMapProvider.class);
+        }
 
         return war;
     }
@@ -220,18 +304,38 @@ public class AccountChooserTestCase extends AbstractFederationTestCase {
     public static WebArchive deploymentSP5() {
         final WebArchive war = ShrinkWrap.create(WebArchive.class, SP5 + ".war");
         war.addAsWebInfResource(AccountChooserTestCase.class.getPackage(), "web.xml", "web.xml");
-        war.addAsWebInfResource(AccountChooserTestCase.class.getPackage(), "jboss-web-accountidpmapprovider-param.xml",
-                "jboss-web.xml");
+
+        if (EnvironmentUtil.isWildFlyContainer()) {
+            war.addAsWebInfResource(JBoss7Util.getJBossWebXmlAsset("sp"), "jboss-web.xml");
+        } else {
+            war.addAsWebInfResource(AccountChooserTestCase.class.getPackage(), "jboss-web-accountidpmapprovider-param.xml",
+                    "jboss-web.xml");
+        }
+
         war.addAsManifestResource(JBoss7Util.getJBossDeploymentStructure("org.picketlink"), "jboss-deployment-structure.xml");
-        war.addAsWebInfResource(
-                new StringAsset(JBoss7Util.propertiesReplacer(
-                        AccountChooserTestCase.class.getResourceAsStream("picketlink-sp.xml"), SP5, "REDIRECT", "whateverHere")),
-                "picketlink.xml");
+
+        if (EnvironmentUtil.isWildFlyContainer()) {
+            war.addAsWebInfResource(
+                    new StringAsset(JBoss7Util.propertiesReplacer(
+                            AccountChooserTestCase.class.getResourceAsStream("picketlink-sp-account-chooser-provider-type.xml"), SP5, "REDIRECT", "whateverHere")),
+                    "picketlink.xml");
+        } else {
+            war.addAsWebInfResource(
+                    new StringAsset(JBoss7Util.propertiesReplacer(
+                            AccountChooserTestCase.class.getResourceAsStream("picketlink-sp.xml"), SP5, "REDIRECT", "whateverHere")),
+                    "picketlink.xml");
+        }
+
         war.add(new StringAsset(HELLO_FROM_SP5), "index.jsp");
         war.add(new StringAsset(HELLO_FROM_AC5), "accountChooser.html");
         war.add(new StringAsset(HELLO_FROM_LOGOUT_PAGE), "logout.jsp");
         war.addAsWebInfResource(new StringAsset("DomainA=" + IDP1_URL), "newidpmap.properties");
-        war.addClass(NewPropertiesAccountMapProvider.class);
+
+        if (EnvironmentUtil.isWildFlyContainer()) {
+            war.addClass(WildFlyNewPropertiesAccountMapProvider.class);
+        } else {
+            war.addClass(NewPropertiesAccountMapProvider.class);
+        }
 
         return war;
     }
