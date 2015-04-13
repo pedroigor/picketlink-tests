@@ -35,9 +35,18 @@ import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.picketlink.identity.federation.saml.v2.SAML2Object;
+import org.picketlink.identity.federation.saml.v2.assertion.AssertionType;
+import org.picketlink.identity.federation.saml.v2.assertion.SubjectConfirmationDataType;
+import org.picketlink.identity.federation.saml.v2.assertion.SubjectConfirmationType;
+import org.picketlink.identity.federation.saml.v2.assertion.SubjectType;
+import org.picketlink.identity.federation.saml.v2.protocol.ResponseType;
+import org.picketlink.test.integration.federation.saml.util.SAMLTracer;
 
 import java.net.URL;
+import java.util.List;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.picketlink.test.integration.federation.saml.QuickstartArchiveUtil.resolveFromFederation;
 
@@ -54,11 +63,11 @@ public class SAML2IDPInitiatedTestCase extends AbstractSAML2IDPInitiatedTestCase
 
     @Deployment(name = "idp")
     public static WebArchive deployIdentityProvider() {
-        WebArchive webArchive = resolveFromFederation("picketlink-federation-saml-idp-basic");
+        WebArchive deployment = resolveFromFederation("picketlink-federation-saml-idp-basic");
 
-        System.out.println(webArchive.toString(true));
+        deployment.add(getIdPConfig(null, false, false, null, null, false, false), "WEB-INF/picketlink.xml");
 
-        return webArchive;
+        return deployment;
     }
 
     @Deployment(name = "service-provider")
@@ -74,7 +83,7 @@ public class SAML2IDPInitiatedTestCase extends AbstractSAML2IDPInitiatedTestCase
     @OperateOnDeployment("idp")
     public void testPostOriginalRequest(@ArquillianResource URL url) throws Exception {
         WebRequest request = new GetMethodWebRequest(formatUrl(url));
-        WebConversation conversation = new WebConversation();
+        WebConversation conversation = createWebConversation();
         WebResponse response = conversation.getResponse(request);
 
         WebForm webForm = response.getForms()[0];
@@ -84,11 +93,34 @@ public class SAML2IDPInitiatedTestCase extends AbstractSAML2IDPInitiatedTestCase
 
         webForm.getSubmitButtons()[0].click();
 
-        request = new GetMethodWebRequest(formatUrl(url) + "?SAML_VERSION=2.0&TARGET=" + formatUrl(this.serviceProviderPostURL) + "savedRequest/savedRequest.jsp");
+        request = new GetMethodWebRequest(formatUrl(url) + "?SAML_VERSION=2.0&TARGET=" + formatUrl(this.serviceProviderPostURL) + "savedRequest/savedRequest.jsp&SAML_BINDING=POST");
 
         response = conversation.getResponse(request);
 
         assertTrue(response.getText().contains("Back to the original requested resource."));
+
+        SAMLTracer samlTracer = getSamlTracer();
+        List<SAMLTracer.SAMLMessage> messages = samlTracer.getMessages();
+        SAMLTracer.SAMLMessage samlMessage = messages.get(messages.size() - 1);
+        SAML2Object samlObject = samlMessage.getSamlObject();
+
+        assertTrue(ResponseType.class.isInstance(samlObject));
+
+        ResponseType responseType = (ResponseType) samlObject;
+
+        assertNull(responseType.getInResponseTo());
+
+        ResponseType.RTChoiceType rtChoiceType = responseType.getAssertions().get(0);
+        AssertionType assertionType = rtChoiceType.getAssertion();
+        SubjectType subject = assertionType.getSubject();
+
+        for (SubjectConfirmationType confirmationType : subject.getConfirmation()) {
+            SubjectConfirmationDataType subjectConfirmationData = confirmationType.getSubjectConfirmationData();
+
+            if (subjectConfirmationData != null) {
+                assertNull(subjectConfirmationData.getInResponseTo());
+            }
+        }
     }
 
     @Test
@@ -110,5 +142,6 @@ public class SAML2IDPInitiatedTestCase extends AbstractSAML2IDPInitiatedTestCase
         response = conversation.getResponse(request);
 
         assertTrue(response.getText().contains("Back to the original requested resource."));
+        assertTrue(response.getURL().toString().startsWith(formatUrl(this.serviceProviderPostURL) + "savedRequest/savedRequest.jsp?SAMLResponse="));
     }
 }

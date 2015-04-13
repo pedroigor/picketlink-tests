@@ -56,7 +56,7 @@ public class SAMLBackChannelGlobalLogoutWithSignaturesProfileTestCase extends Ab
     public static WebArchive deployIdp() {
         WebArchive deployment = resolveFromFederation("picketlink-federation-saml-idp-basic");
 
-        deployment.add(getIdPConfig(null, true, false, null, null, true), "WEB-INF/picketlink.xml");
+        deployment.add(getIdPConfig(null, true, false, null, null, true, true), "WEB-INF/picketlink.xml");
 
         deployment.addAsResource(AbstractFederationTestCase.class.getResource("/config/jbid_test_keystore.jks"), "/jbid_test_keystore.jks");
 

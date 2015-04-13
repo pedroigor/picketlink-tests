@@ -56,7 +56,7 @@ public class SAMLBackChannelGlobalLogoutProfileTestCase extends AbstractFederati
     public static WebArchive deployIdp() {
         WebArchive deployment = resolveFromFederation("picketlink-federation-saml-idp-basic");
 
-        deployment.add(getIdPConfig(null, false, false, null, null, true), "WEB-INF/picketlink.xml");
+        deployment.add(getIdPConfig(null, false, false, null, null, true, true), "WEB-INF/picketlink.xml");
 
         return deployment;
     }

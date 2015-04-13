@@ -3,7 +3,7 @@
                    SupportsSignatures="${support-signatures}"
                    Encrypt="${support-encryption}"
                    AttributeManager="${attribute-manager}"
-                   StrictPostBinding="false">
+                   StrictPostBinding="${strict-post-binding}">
 		<IdentityURL>${identity-url}</IdentityURL>
 		<Trust>
 			<Domains>${trust-domains}</Domains>

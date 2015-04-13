@@ -85,10 +85,10 @@ public abstract class AbstractFederationTestCase {
     }
 
     protected static StringAsset getIdPConfig(String identityUrl, boolean supportSignatures,
-        boolean supportEncryption,
-        String trustedDomains,
-        Class<? extends AttributeManager> attributeManager,
-        boolean backChannelLogout) {
+                                              boolean supportEncryption,
+                                              String trustedDomains,
+                                              Class<? extends AttributeManager> attributeManager,
+                                              boolean backChannelLogout, boolean strictPostBinding) {
         InputStream inputStream;
 
         if (isWildFlyContainer()) {
@@ -117,6 +117,7 @@ public abstract class AbstractFederationTestCase {
         config = config.replace("${support-encryption}", Boolean.valueOf(supportEncryption).toString());
         config = config.replace("${attribute-manager}", attributeManager.getName());
         config = config.replace("${backend-channel-logout}", String.valueOf(backChannelLogout));
+        config = config.replace("${strict-post-binding}", String.valueOf(backChannelLogout));
 
         return new StringAsset(config);
     }

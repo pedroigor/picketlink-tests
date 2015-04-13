@@ -64,7 +64,7 @@ public class SAMLForceAuthnTestCase extends AbstractFederationTestCase {
     public static WebArchive deployIdentityProvider() {
         WebArchive deployment = resolveFromFederation("picketlink-federation-saml-idp-basic");
 
-        deployment.add(getIdPConfig(null, false, false, null, null, false), "WEB-INF/picketlink.xml");
+        deployment.add(getIdPConfig(null, false, false, null, null, false, true), "WEB-INF/picketlink.xml");
 
         return deployment;
     }

@@ -29,8 +29,7 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.runner.RunWith;
 import org.picketlink.common.constants.JBossSAMLURIConstants;
 import org.picketlink.common.util.DocumentUtil;
-import org.picketlink.identity.federation.saml.v2.assertion.AssertionType;
-import org.picketlink.identity.federation.saml.v2.assertion.NameIDType;
+import org.picketlink.identity.federation.saml.v2.assertion.*;
 import org.picketlink.identity.federation.saml.v2.protocol.AuthnRequestType;
 import org.picketlink.identity.federation.saml.v2.protocol.LogoutRequestType;
 import org.picketlink.identity.federation.saml.v2.protocol.ResponseType;
@@ -142,7 +141,18 @@ public class SAMLPostBindingWithSignaturesTestCase extends AbstractServiceProvid
         assertEquals("2.0", assertionType.getVersion());
         assertFalse(isNullOrEmpty(assertionType.getID()));
         assertEquals(formatUrl(getIdpUrl()), assertionType.getIssuer().getValue());
-        assertEquals("tomcat", ((NameIDType) assertionType.getSubject().getSubType().getBaseID()).getValue());
+
+        SubjectType subject = assertionType.getSubject();
+
+        assertEquals("tomcat", ((NameIDType) subject.getSubType().getBaseID()).getValue());
         assertFalse(assertionType.getAttributeStatements().isEmpty());
+
+        for (SubjectConfirmationType confirmationType : subject.getConfirmation()) {
+            SubjectConfirmationDataType subjectConfirmationData = confirmationType.getSubjectConfirmationData();
+
+            if (subjectConfirmationData != null) {
+                assertNotNull(subjectConfirmationData.getInResponseTo());
+            }
+        }
     }
 }

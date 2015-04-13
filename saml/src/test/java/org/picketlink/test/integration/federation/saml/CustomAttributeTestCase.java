@@ -63,7 +63,7 @@ public class CustomAttributeTestCase extends AbstractFederationTestCase {
     public static WebArchive deployInvalidTrustDomainIdP() {
         WebArchive deployment = resolveFromFederation("picketlink-federation-saml-idp-basic");
 
-        deployment.add(getIdPConfig(null, false, false, null, CustomAttributeManager.class, false), "WEB-INF/picketlink.xml");
+        deployment.add(getIdPConfig(null, false, false, null, CustomAttributeManager.class, false, true), "WEB-INF/picketlink.xml");
         deployment.addClass(CustomAttributeManager.class);
         deployment.addClass(WriteSAMLAttributesServlet.class);
 
