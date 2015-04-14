@@ -67,7 +67,11 @@ public class SAML2AssertionResponseTestCase extends AbstractFederationTestCase {
 
     @Deployment(name = "service-provider")
     public static WebArchive deployServiceProvider() {
-        return resolveFromFederation("picketlink-federation-saml-sp-redirect-basic");
+        WebArchive deployment = resolveFromFederation("picketlink-federation-saml-sp-redirect-basic");
+
+        deployment.add(getSpConfig(null, null, "http://localhost:8080/employee/", false, false, false, "REDIRECT"), "WEB-INF/picketlink.xml");
+
+        return deployment;
     }
 
     @Test

@@ -21,14 +21,7 @@
  */
 package org.picketlink.test.integration.federation.saml;
 
-import com.meterware.httpunit.GetMethodWebRequest;
-import com.meterware.httpunit.HttpUnitOptions;
-import com.meterware.httpunit.WebClient;
-import com.meterware.httpunit.WebClientListener;
-import com.meterware.httpunit.WebConversation;
-import com.meterware.httpunit.WebForm;
-import com.meterware.httpunit.WebRequest;
-import com.meterware.httpunit.WebResponse;
+import com.meterware.httpunit.*;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.OperateOnDeployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
@@ -37,16 +30,13 @@ import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.picketlink.identity.federation.saml.v2.assertion.AssertionType;
-import org.picketlink.identity.federation.saml.v2.assertion.NameIDType;
+import org.picketlink.identity.federation.saml.v2.assertion.*;
 import org.picketlink.identity.federation.saml.v2.protocol.ResponseType;
 
 import java.net.URL;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.picketlink.test.integration.federation.saml.QuickstartArchiveUtil.resolveFromFederation;
 
 /**
@@ -54,17 +44,13 @@ import static org.picketlink.test.integration.federation.saml.QuickstartArchiveU
  */
 @RunWith (Arquillian.class)
 @RunAsClient
-public class SAMLForceAuthnTestCase extends AbstractFederationTestCase {
-
-    @ArquillianResource
-    @OperateOnDeployment("idp")
-    private URL identityProviderUrl;
+public class SAMLSP2EntityIDIssuerTestCase extends AbstractFederationTestCase {
 
     @Deployment(name = "idp")
     public static WebArchive deployIdentityProvider() {
         WebArchive deployment = resolveFromFederation("picketlink-federation-saml-idp-basic");
 
-        deployment.add(getIdPConfig(null, false, false, null, null, false, true), "WEB-INF/picketlink.xml");
+        deployment.add(getIdPConfig(null, false, false, "localhost,127.0.0.1,urn:samltest:picketlink-wildfly8", null, false, false), "WEB-INF/picketlink.xml");
 
         return deployment;
     }
@@ -73,7 +59,7 @@ public class SAMLForceAuthnTestCase extends AbstractFederationTestCase {
     public static WebArchive deployServiceProvider() {
         WebArchive deployment = resolveFromFederation("picketlink-federation-saml-sp-redirect-basic");
 
-        deployment.add(getSpConfig(null, null, "http://localhost:8080/employee/", false, false, true, null), "WEB-INF/picketlink.xml");
+        deployment.add(getSpConfig("urn:samltest:picketlink-wildfly8", null, "http://localhost:8080/employee/", false, false, false, "REDIRECT"), "WEB-INF/picketlink.xml");
 
         return deployment;
     }
@@ -98,11 +84,6 @@ public class SAMLForceAuthnTestCase extends AbstractFederationTestCase {
         response = conversation.getCurrentPage();
 
         assertTrue(response.getText().contains("EmployeeDashboard"));
-
-        request = new GetMethodWebRequest(formatUrl(this.identityProviderUrl));
-        response = conversation.getResponse(request);
-
-        assertEquals(1, response.getForms().length);
     }
 
     protected WebConversation createWebConversation() {
@@ -131,10 +112,18 @@ public class SAMLForceAuthnTestCase extends AbstractFederationTestCase {
 
                     assertNotNull(assertion);
 
-                    NameIDType subjectName = (NameIDType) assertion.getSubject().getSubType().getBaseID();
+                    SubjectType subject = assertion.getSubject();
+                    NameIDType subjectName = (NameIDType) subject.getSubType().getBaseID();
 
                     assertEquals("tomcat", subjectName.getValue());
 
+                    for (ConditionAbstractType conditionAbstractType : assertion.getConditions().getConditions()) {
+                        assertTrue(AudienceRestrictionType.class.isInstance(conditionAbstractType));
+
+                        AudienceRestrictionType audienceRestrictionType = (AudienceRestrictionType) conditionAbstractType;
+
+                        assertEquals("urn:samltest:picketlink-wildfly8", audienceRestrictionType.getAudience().get(0).toString());
+                    }
                 }
             }
         });

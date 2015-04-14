@@ -1,9 +1,11 @@
 <PicketLink xmlns="urn:picketlink:identity-federation:config:2.1">
 	<PicketLinkSP xmlns="urn:picketlink:identity-federation:config:2.1"
                   ServerEnvironment="tomcat"
-                  BindingType="POST"
+                  BindingType="${binding-type}"
                   SupportsSignatures="${support-signatures}"
-                  Encrypt="${support-encryption}">
+                  Encrypt="${support-encryption}"
+                  EntityID="${entity-id}"
+                  IDPUsesPostBinding="false">
 		<IdentityURL>${identity-url}</IdentityURL>
 		<ServiceURL>${service-url}</ServiceURL>
 		<KeyProvider

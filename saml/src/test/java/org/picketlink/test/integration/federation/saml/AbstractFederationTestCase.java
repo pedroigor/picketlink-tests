@@ -117,13 +117,13 @@ public abstract class AbstractFederationTestCase {
         config = config.replace("${support-encryption}", Boolean.valueOf(supportEncryption).toString());
         config = config.replace("${attribute-manager}", attributeManager.getName());
         config = config.replace("${backend-channel-logout}", String.valueOf(backChannelLogout));
-        config = config.replace("${strict-post-binding}", String.valueOf(backChannelLogout));
+        config = config.replace("${strict-post-binding}", String.valueOf(strictPostBinding));
 
         return new StringAsset(config);
     }
 
-    protected static StringAsset getSpConfig(String identityUrl, String serviceUrl, boolean supportSignatures,
-        boolean supportEncryption, boolean forceAuthn) {
+    protected static StringAsset getSpConfig(String entityID, String identityUrl, String serviceUrl, boolean supportSignatures,
+                                             boolean supportEncryption, boolean forceAuthn, String bindingType) {
         InputStream inputStream = AbstractFederationTestCase.class.getResourceAsStream("/config/picketlink-sp-template.xml");;
 
         String config = new String(IOUtil.asByteArray(inputStream));
@@ -136,11 +136,21 @@ public abstract class AbstractFederationTestCase {
             identityUrl = "http://localhost:8080/idp/";
         }
 
+        if (entityID == null) {
+            entityID = "";
+        }
+
+        if (bindingType == null) {
+            bindingType = "POST";
+        }
+
+        config = config.replace("${entity-id}", entityID);
         config = config.replace("${identity-url}", identityUrl);
         config = config.replace("${service-url}", serviceUrl);
         config = config.replace("${support-signatures}", Boolean.valueOf(supportSignatures).toString());
         config = config.replace("${support-encryption}", Boolean.valueOf(supportEncryption).toString());
         config = config.replace("${force-authn}", Boolean.valueOf(forceAuthn).toString());
+        config = config.replace("${binding-type}", bindingType);
 
         return new StringAsset(config);
     }
