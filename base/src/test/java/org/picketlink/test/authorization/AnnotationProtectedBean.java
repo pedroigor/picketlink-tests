@@ -101,6 +101,11 @@ public class AnnotationProtectedBean {
 
     }
 
+    @RolesAllowed("Inherited Role")
+    public void protectedWithInheritedRole() {
+
+    }
+
     @GroupsAllowed("QA")
     public void protectedWithRequiredGroup() {
 

@@ -48,9 +48,9 @@ import static org.picketlink.idm.model.basic.BasicModel.grantRole;
  * <p>
  * Perform some authentication tests using the {@link org.picketlink.authentication.internal.IdmAuthenticator}, which is the default {@link java.net.Authenticator}.
  * </p>
- * 
+ *
  * @author Pedro Igor
- * 
+ *
  */
 @RunWith(Arquillian.class)
 public class AnnotationBasedAuthorizationTestCase extends AbstractAuthorizationTestCase {
@@ -88,6 +88,17 @@ public class AnnotationBasedAuthorizationTestCase extends AbstractAuthorizationT
             grantRole(relationshipManager, john, tester);
             addToGroup(relationshipManager, john, qaGroup);
             grantGroupRole(relationshipManager, john, tester, qaGroup);
+
+            Role inheritedRole = new Role("Inherited Role");
+
+            this.identityManager.add(inheritedRole);
+
+            Group inheritedRoleGroup = new Group("Inherited Role Group");
+
+            this.identityManager.add(inheritedRoleGroup);
+
+            grantRole(relationshipManager, inheritedRoleGroup, inheritedRole);
+            addToGroup(relationshipManager, john, inheritedRoleGroup);
 
             this.permissionManager.grantPermission(john, "profile", "read");
             this.permissionManager.grantPermission(john, SomeEntity.class, "create");
@@ -171,6 +182,12 @@ public class AnnotationBasedAuthorizationTestCase extends AbstractAuthorizationT
     public void testSuccessfulClassLevelAuthorization() throws Exception {
         performAuthentication();
         this.classLevelAnnotationProtectedBean.protectedWithRequiredRole();
+    }
+
+    @Test
+    public void testSuccessfulInheritedRoleFromGroup() throws Exception {
+        performAuthentication();
+        this.protectedBean.protectedWithInheritedRole();
     }
 
     @Test
