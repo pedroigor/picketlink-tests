@@ -186,6 +186,10 @@ public abstract class AbstractFederationTestCase {
         conversation.addClientListener(new WebClientListener() {
             @Override
             public void requestSent(WebClient src, WebRequest req) {
+                if (req == null) {
+                    return;
+                }
+
                 if (!isNullOrEmpty(req.getParameter(GeneralConstants.SAML_REQUEST_KEY))
                     || !isNullOrEmpty(req.getParameter(GeneralConstants.SAML_RESPONSE_KEY))) {
                     samlTracer.addSAMLRequest(req);
