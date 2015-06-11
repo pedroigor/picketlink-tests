@@ -987,6 +987,52 @@
                 </dependency>
             </dependencies>
         </profile>
+
+        <profile>
+            <id>wildfly-9.0.0.CR1</id>
+            <properties>
+                <version.wildfly>9.0.0.CR1</version.wildfly>
+                <version.arquillian>1.0.0.Alpha2</version.arquillian>
+                <version.jboss.as.distribution>wildfly-9.0.0.CR1</version.jboss.as.distribution>
+            </properties>
+            <dependencyManagement>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.wildfly.arquillian</groupId>
+                        <artifactId>wildfly-arquillian-container-managed</artifactId>
+                        <version>${version.arquillian}</version>
+                        <scope>test</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.wildfly.arquillian</groupId>
+                        <artifactId>wildfly-arquillian-container-remote</artifactId>
+                        <version>${version.arquillian}</version>
+                        <scope>test</scope>
+                    </dependency>
+                </dependencies>
+            </dependencyManagement>
+            <dependencies>
+                <!--<dependency>-->
+                <!--<groupId>org.wildfly.arquillian</groupId>-->
+                <!--<artifactId>wildfly-arquillian-container-remote</artifactId>-->
+                <!--<scope>test</scope>-->
+                <!--</dependency>-->
+                <dependency>
+                    <groupId>org.wildfly.arquillian</groupId>
+                    <artifactId>wildfly-arquillian-container-managed</artifactId>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.wildfly.arquillian</groupId>
+                    <artifactId>wildfly-arquillian-common</artifactId>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.wildfly.core</groupId>
+                    <artifactId>wildfly-core-testsuite-shared</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
     </profiles>
 
     <repositories>
