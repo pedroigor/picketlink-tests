@@ -92,12 +92,7 @@ public class IDPNotTrustedDomainTestCase extends AbstractFederationTestCase {
                     StatusCodeType topLevelCode = status.getStatusCode();
 
                     assertNotNull(topLevelCode);
-                    assertEquals(JBossSAMLURIConstants.STATUS_RESPONDER.get(), topLevelCode.getValue().toString());
-
-                    StatusCodeType secondLevelCode = topLevelCode.getStatusCode();
-
-                    assertNotNull(secondLevelCode);
-                    assertEquals(JBossSAMLURIConstants.STATUS_REQUEST_DENIED.get(), secondLevelCode.getValue().toString());
+                    assertEquals(JBossSAMLURIConstants.STATUS_REQUEST_DENIED.get(), topLevelCode.getValue().toString());
                 }
             }
         });

@@ -48,6 +48,20 @@
     </configuration>
   </container>
 
+  <container qualifier="wildfly-10.0.0.Alpha6-SNAPSHOT">
+    <configuration>
+      <property name="serverConfig">standalone-test.xml</property>
+      <property name="outputToConsole">true</property>
+      <property name="allowConnectingToRunningServer">true</property>
+      <property name="javaVmArguments">-Xms128m -Xmx768m -XX:MaxPermSize=256m</property>
+      <property name="managementAddress">127.0.0.1</property>
+      <property name="managementPort">9990</property>
+      <!-- If running in managed mode, the location of the installation -->
+      <!--<property name="jbossHome">${jboss.home}</property>-->
+      <!--<property name="jbossHome">federation/saml/target/integration-tests/wildfly-8.1.0.CR1</property>-->
+    </configuration>
+  </container>
+
   <container qualifier="wildfly-9.0.0.CR1">
     <configuration>
       <property name="serverConfig">standalone-test.xml</property>

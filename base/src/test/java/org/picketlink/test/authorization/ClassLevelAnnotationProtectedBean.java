@@ -21,15 +21,17 @@
  */
 package org.picketlink.test.authorization;
 
-import org.picketlink.authorization.annotations.RolesAllowed;
+public class ClassLevelAnnotationProtectedBean {}
 
-/**
- * @author Pedro Igor
- */
-@RolesAllowed("Tester")
-public class ClassLevelAnnotationProtectedBean {
-
-    public void protectedWithRequiredRole() {
-
-    }
-}
+//import org.picketlink.authorization.annotations.RolesAllowed;
+//
+///**
+// * @author Pedro Igor
+// */
+//@RolesAllowed("Tester")
+//public class ClassLevelAnnotationProtectedBean {
+//
+//    public void protectedWithRequiredRole() {
+//
+//    }
+//}

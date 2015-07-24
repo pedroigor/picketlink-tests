@@ -33,6 +33,7 @@ import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -47,6 +48,7 @@ import static org.picketlink.test.integration.federation.saml.QuickstartArchiveU
  */
 @RunWith (Arquillian.class)
 @RunAsClient
+@Ignore("Not supported in product")
 public class SAMLBackChannelGlobalLogoutProfileTestCase extends AbstractFederationTestCase {
 
     @ArquillianResource

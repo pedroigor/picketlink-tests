@@ -21,111 +21,112 @@
  */
 package org.picketlink.test.authorization;
 
-import org.picketlink.authorization.annotations.Restrict;
-
-/**
- * @author Pedro Igor
- */
-public class ELProtectedBean {
-
-    @Restrict("#{identity.loggedIn}")
-    public void protectedFromUnauthenticatedUsers() throws IllegalAccessException {
-
-    }
-
-    @Restrict("#{isLoggedIn()}")
-    public void protectedFromUnauthenticatedUsersFunction() {
-
-    }
-
-    @Restrict("#{hasPermission('profile','read')}")
-    public void protectedWithResourcePermission() {
-
-    }
-
-    @Restrict("#{hasPermission('profile','write')}")
-    public void protectedWithResourceWithoutPermission() {
-
-    }
-
-    @Restrict("#{hasRole('Tester')}")
-    public void protectedWithRequiredRole() {
-
-    }
-
-    @Restrict("#{hasRole('Invalid Role')}")
-    public void protectedWithRequiredInvalidRole() {
-
-    }
-
-    @Restrict("#{isMember('QA')}")
-    public void protectedWithRequiredGroup() {
-
-    }
-
-    @Restrict("#{isMember('Invalid Group')}")
-    public void protectedWithRequiredInvalidGroup() {
-
-    }
-
-    @Restrict("#{isMember('QA') and hasRole('Tester')}")
-    public void protectedWithRequiredMemberAndRole() {
-
-    }
-
-    @Restrict("#{isMember('QA') and hasRole('Invalid Role')}")
-    public void protectedWithRequiredMemberAndInvalidRole() {
-
-    }
-
-    @Restrict("#{hasPartition('default')}")
-    public void protectedWithRequiredPartitionName() {
-
-    }
-
-    @Restrict("#{hasPartition('invalid partition')}")
-    public void protectedWithInvalidPartitionName() {
-
-    }
-
-    @Restrict("#{hasAttribute('someAttribute')}")
-    public void protectedWithAttribute() {
-
-    }
-
-    @Restrict("#{hasAttribute('invalidAttribute')}")
-    public void protectedWithInvalidAttribute() {
-
-    }
-
-    @Restrict("#{identity.account != null}")
-    public void protectedWithValidAccountExpression() {
-
-    }
-
-    @Restrict("#{identity.account.partition.name == 'default'}")
-    public void protectedWithValidPartitionExpression() {
-
-    }
-
-    @Restrict("#{isLoggedIn() and identity.account.partition.name != 'default'}")
-    public void protectedWithInvalidPartitionExpression() {
-
-    }
-
-    @Restrict("#{identity.account.attributes['someAttribute'] != null}")
-    public void protectedWithValidAccountAttributeExpression() {
-
-    }
-
-    @Restrict("#{identity.account.attributes['someAttribute'] == 'someValue'}")
-    public void protectedWithValidAccountAttributeValueExpression() {
-
-    }
-
-    @Restrict("#{identity.account.attributes['someAttribute'] == 'invalidValue'}")
-    public void protectedWithInvalidAccountAttributeValueExpression() {
-
-    }
-
-}
+public class ELProtectedBean {}
+//import org.picketlink.authorization.annotations.Restrict;
+//
+///**
+// * @author Pedro Igor
+// */
+//public class ELProtectedBean {
+//
+//    @Restrict("#{identity.loggedIn}")
+//    public void protectedFromUnauthenticatedUsers() throws IllegalAccessException {
+//
+//    }
+//
+//    @Restrict("#{isLoggedIn()}")
+//    public void protectedFromUnauthenticatedUsersFunction() {
+//
+//    }
+//
+//    @Restrict("#{hasPermission('profile','read')}")
+//    public void protectedWithResourcePermission() {
+//
+//    }
+//
+//    @Restrict("#{hasPermission('profile','write')}")
+//    public void protectedWithResourceWithoutPermission() {
+//
+//    }
+//
+//    @Restrict("#{hasRole('Tester')}")
+//    public void protectedWithRequiredRole() {
+//
+//    }
+//
+//    @Restrict("#{hasRole('Invalid Role')}")
+//    public void protectedWithRequiredInvalidRole() {
+//
+//    }
+//
+//    @Restrict("#{isMember('QA')}")
+//    public void protectedWithRequiredGroup() {
+//
+//    }
+//
+//    @Restrict("#{isMember('Invalid Group')}")
+//    public void protectedWithRequiredInvalidGroup() {
+//
+//    }
+//
+//    @Restrict("#{isMember('QA') and hasRole('Tester')}")
+//    public void protectedWithRequiredMemberAndRole() {
+//
+//    }
+//
+//    @Restrict("#{isMember('QA') and hasRole('Invalid Role')}")
+//    public void protectedWithRequiredMemberAndInvalidRole() {
+//
+//    }
+//
+//    @Restrict("#{hasPartition('default')}")
+//    public void protectedWithRequiredPartitionName() {
+//
+//    }
+//
+//    @Restrict("#{hasPartition('invalid partition')}")
+//    public void protectedWithInvalidPartitionName() {
+//
+//    }
+//
+//    @Restrict("#{hasAttribute('someAttribute')}")
+//    public void protectedWithAttribute() {
+//
+//    }
+//
+//    @Restrict("#{hasAttribute('invalidAttribute')}")
+//    public void protectedWithInvalidAttribute() {
+//
+//    }
+//
+//    @Restrict("#{identity.account != null}")
+//    public void protectedWithValidAccountExpression() {
+//
+//    }
+//
+//    @Restrict("#{identity.account.partition.name == 'default'}")
+//    public void protectedWithValidPartitionExpression() {
+//
+//    }
+//
+//    @Restrict("#{isLoggedIn() and identity.account.partition.name != 'default'}")
+//    public void protectedWithInvalidPartitionExpression() {
+//
+//    }
+//
+//    @Restrict("#{identity.account.attributes['someAttribute'] != null}")
+//    public void protectedWithValidAccountAttributeExpression() {
+//
+//    }
+//
+//    @Restrict("#{identity.account.attributes['someAttribute'] == 'someValue'}")
+//    public void protectedWithValidAccountAttributeValueExpression() {
+//
+//    }
+//
+//    @Restrict("#{identity.account.attributes['someAttribute'] == 'invalidValue'}")
+//    public void protectedWithInvalidAccountAttributeValueExpression() {
+//
+//    }
+//
+//}

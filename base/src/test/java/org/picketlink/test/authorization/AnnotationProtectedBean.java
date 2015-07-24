@@ -21,130 +21,131 @@
  */
 package org.picketlink.test.authorization;
 
-import org.picketlink.authorization.annotations.GroupsAllowed;
-import org.picketlink.authorization.annotations.LoggedIn;
-import org.picketlink.authorization.annotations.PartitionsAllowed;
-import org.picketlink.authorization.annotations.RequiresPermission;
-import org.picketlink.authorization.annotations.RolesAllowed;
-import org.picketlink.idm.model.basic.Realm;
-import org.picketlink.idm.model.basic.Tier;
-import org.picketlink.test.authorization.permission.AnotherEntity;
-import org.picketlink.test.authorization.permission.SomeEntity;
-
-/**
- * @author Pedro Igor
- */
-public class AnnotationProtectedBean {
-
-    @LoggedIn
-    public void protectedFromUnauthenticatedUsers(){
-
-    }
-
-    @RequiresPermission(resource = "profile", operation = "read")
-    public void protectedWithResourcePermission() {
-
-    }
-
-    @RequiresPermission(resource = "profile", operation = "write")
-    public void protectedWithResourceWithoutPermission() {
-
-    }
-
-    @RequiresPermission(resourceClass = SomeEntity.class, operation = "create")
-    public void protectedWithResourceClassPermission() {
-
-    }
-
-    @RequiresPermission(resourceClass = SomeEntity.class, operation = "delete")
-    public void protectedWithoutResourceClassPermission() {
-
-    }
-
-    @RequiresPermission(resourceClass = SomeEntity.class, resourceIdentifier = "1", operation = "write")
-    public void protectedWithResourceClassIdentifierPermission() {
-
-    }
-
-    @RequiresPermission(resourceClass = SomeEntity.class, resourceIdentifier = "2", operation = "create")
-    public void protectedWithoutResourceClassIdentifierPermission() {
-
-    }
-
-    @RequiresPermission(resourceClass = AnotherEntity.class, operation = "load")
-    public void protectedWithResourceClassPermissionAnotherEntity() {
-
-    }
-
-    @RequiresPermission(resourceClass = AnotherEntity.class, operation = "write")
-    public void protectedWithoutResourceClassPermissionAnotherEntity() {
-
-    }
-
-    @RequiresPermission(resourceClass = AnotherEntity.class, resourceIdentifier = "1", operation = "delete")
-    public void protectedWithResourceClassIdentifierPermissionAnotherEntity() {
-
-    }
-
-    @RequiresPermission(resourceClass = AnotherEntity.class, resourceIdentifier = "2", operation = "load")
-    public void protectedWithoutResourceClassIdentifierPermissionAnotherEntity() {
-
-    }
-
-    @RolesAllowed("Tester")
-    public void protectedWithRequiredRole() {
-
-    }
-
-    @RolesAllowed("Invalid Role")
-    public void protectedWithRequiredInvalidRole() {
-
-    }
-
-    @GroupsAllowed("QA")
-    public void protectedWithRequiredGroup() {
-
-    }
-
-    @GroupsAllowed("Another QA")
-    public void protectedWithRequiredInvalidGroup() {
-
-    }
-
-    @GroupsAllowed("QA")
-    @RolesAllowed("Tester")
-    public void protectedWithRequiredMemberAndRole() {
-
-    }
-
-    @GroupsAllowed("QA")
-    @RolesAllowed("Invalid Tester")
-    public void protectedWithRequiredMemberAndInvalidRole() {
-
-    }
-
-    @PartitionsAllowed(name = "default")
-    public void protectedWithRequiredPartitionName() {
-
-    }
-
-    @PartitionsAllowed(name = "invalid partition")
-    public void protectedWithInvalidPartitionName() {
-
-    }
-
-    @PartitionsAllowed(type = Realm.class)
-    public void protectedWithRequiredPartitionType() {
-
-    }
-
-    @PartitionsAllowed(type = Tier.class)
-    public void protectedWithInvalidPartitionType() {
-
-    }
-
-    @PartitionsAllowed(type = Realm.class, name = "default")
-    public void protectedWithRequiredPartitionTypeAndName() {
-
-    }
-}
+public class AnnotationProtectedBean {}
+//import org.picketlink.authorization.annotations.GroupsAllowed;
+//import org.picketlink.authorization.annotations.LoggedIn;
+//import org.picketlink.authorization.annotations.PartitionsAllowed;
+//import org.picketlink.authorization.annotations.RequiresPermission;
+//import org.picketlink.authorization.annotations.RolesAllowed;
+//import org.picketlink.idm.model.basic.Realm;
+//import org.picketlink.idm.model.basic.Tier;
+//import org.picketlink.test.authorization.permission.AnotherEntity;
+//import org.picketlink.test.authorization.permission.SomeEntity;
+//
+///**
+// * @author Pedro Igor
+// */
+//public class AnnotationProtectedBean {
+//
+//    @LoggedIn
+//    public void protectedFromUnauthenticatedUsers(){
+//
+//    }
+//
+//    @RequiresPermission(resource = "profile", operation = "read")
+//    public void protectedWithResourcePermission() {
+//
+//    }
+//
+//    @RequiresPermission(resource = "profile", operation = "write")
+//    public void protectedWithResourceWithoutPermission() {
+//
+//    }
+//
+//    @RequiresPermission(resourceClass = SomeEntity.class, operation = "create")
+//    public void protectedWithResourceClassPermission() {
+//
+//    }
+//
+//    @RequiresPermission(resourceClass = SomeEntity.class, operation = "delete")
+//    public void protectedWithoutResourceClassPermission() {
+//
+//    }
+//
+//    @RequiresPermission(resourceClass = SomeEntity.class, resourceIdentifier = "1", operation = "write")
+//    public void protectedWithResourceClassIdentifierPermission() {
+//
+//    }
+//
+//    @RequiresPermission(resourceClass = SomeEntity.class, resourceIdentifier = "2", operation = "create")
+//    public void protectedWithoutResourceClassIdentifierPermission() {
+//
+//    }
+//
+//    @RequiresPermission(resourceClass = AnotherEntity.class, operation = "load")
+//    public void protectedWithResourceClassPermissionAnotherEntity() {
+//
+//    }
+//
+//    @RequiresPermission(resourceClass = AnotherEntity.class, operation = "write")
+//    public void protectedWithoutResourceClassPermissionAnotherEntity() {
+//
+//    }
+//
+//    @RequiresPermission(resourceClass = AnotherEntity.class, resourceIdentifier = "1", operation = "delete")
+//    public void protectedWithResourceClassIdentifierPermissionAnotherEntity() {
+//
+//    }
+//
+//    @RequiresPermission(resourceClass = AnotherEntity.class, resourceIdentifier = "2", operation = "load")
+//    public void protectedWithoutResourceClassIdentifierPermissionAnotherEntity() {
+//
+//    }
+//
+//    @RolesAllowed("Tester")
+//    public void protectedWithRequiredRole() {
+//
+//    }
+//
+//    @RolesAllowed("Invalid Role")
+//    public void protectedWithRequiredInvalidRole() {
+//
+//    }
+//
+//    @GroupsAllowed("QA")
+//    public void protectedWithRequiredGroup() {
+//
+//    }
+//
+//    @GroupsAllowed("Another QA")
+//    public void protectedWithRequiredInvalidGroup() {
+//
+//    }
+//
+//    @GroupsAllowed("QA")
+//    @RolesAllowed("Tester")
+//    public void protectedWithRequiredMemberAndRole() {
+//
+//    }
+//
+//    @GroupsAllowed("QA")
+//    @RolesAllowed("Invalid Tester")
+//    public void protectedWithRequiredMemberAndInvalidRole() {
+//
+//    }
+//
+//    @PartitionsAllowed(name = "default")
+//    public void protectedWithRequiredPartitionName() {
+//
+//    }
+//
+//    @PartitionsAllowed(name = "invalid partition")
+//    public void protectedWithInvalidPartitionName() {
+//
+//    }
+//
+//    @PartitionsAllowed(type = Realm.class)
+//    public void protectedWithRequiredPartitionType() {
+//
+//    }
+//
+//    @PartitionsAllowed(type = Tier.class)
+//    public void protectedWithInvalidPartitionType() {
+//
+//    }
+//
+//    @PartitionsAllowed(type = Realm.class, name = "default")
+//    public void protectedWithRequiredPartitionTypeAndName() {
+//
+//    }
+//}

@@ -21,50 +21,51 @@
  */
 package org.picketlink.test.integration.federation.saml.util;
 
-import org.picketlink.identity.federation.core.saml.v2.interfaces.SAML2AttributeManager;
-import org.picketlink.identity.federation.saml.v2.assertion.AttributeStatementType;
-import org.picketlink.identity.federation.saml.v2.assertion.AttributeType;
-import org.picketlink.identity.federation.saml.v2.protocol.AuthnRequestType;
-
-import java.security.Principal;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import static org.picketlink.identity.federation.core.saml.v2.util.StatementUtil.createAttributeStatement;
-
-/**
- * @author Pedro Igor
- */
-public class CustomAttributeManager implements SAML2AttributeManager {
-
-    @Override
-    public Set<AttributeStatementType> getAttributes(AuthnRequestType authnRequestType, Principal userPrincipal) {
-        Set<AttributeStatementType> attributeStatementTypes = new HashSet<AttributeStatementType>();
-
-        attributeStatementTypes.add(createAttributeStatement("attribute1", "attributeValue1"));
-        attributeStatementTypes.add(createAttributeStatement("attribute2", "attributeValue2"));
-        attributeStatementTypes.add(createAttributeStatement("attribute3", "attributeValue3"));
-
-        AttributeStatementType attrStatement = new AttributeStatementType();
-        AttributeType attr = new AttributeType("attribute4");
-        attr.setNameFormat("customNameFormat");
-        attr.setName("attribute4");
-        attr.setFriendlyName("friendly");
-        attr.addAttributeValue("value1");
-        attr.addAttributeValue("value2");
-        attr.addAttributeValue("value3");
-        attr.addAttributeValue("value4");
-        attrStatement.addAttribute(new AttributeStatementType.ASTChoiceType(attr));
-
-        attributeStatementTypes.add(attrStatement);
-
-        return attributeStatementTypes;
-    }
-
-    @Override
-    public Map<String, Object> getAttributes(Principal userPrincipal, List<String> attributeKeys) {
-        return null;
-    }
-}
+public class CustomAttributeManager {}
+//import org.picketlink.identity.federation.core.saml.v2.interfaces.SAML2AttributeManager;
+//import org.picketlink.identity.federation.saml.v2.assertion.AttributeStatementType;
+//import org.picketlink.identity.federation.saml.v2.assertion.AttributeType;
+//import org.picketlink.identity.federation.saml.v2.protocol.AuthnRequestType;
+//
+//import java.security.Principal;
+//import java.util.HashSet;
+//import java.util.List;
+//import java.util.Map;
+//import java.util.Set;
+//
+//import static org.picketlink.identity.federation.core.saml.v2.util.StatementUtil.createAttributeStatement;
+//
+///**
+// * @author Pedro Igor
+// */
+//public class CustomAttributeManager implements SAML2AttributeManager {
+//
+//    @Override
+//    public Set<AttributeStatementType> getAttributes(AuthnRequestType authnRequestType, Principal userPrincipal) {
+//        Set<AttributeStatementType> attributeStatementTypes = new HashSet<AttributeStatementType>();
+//
+//        attributeStatementTypes.add(createAttributeStatement("attribute1", "attributeValue1"));
+//        attributeStatementTypes.add(createAttributeStatement("attribute2", "attributeValue2"));
+//        attributeStatementTypes.add(createAttributeStatement("attribute3", "attributeValue3"));
+//
+//        AttributeStatementType attrStatement = new AttributeStatementType();
+//        AttributeType attr = new AttributeType("attribute4");
+//        attr.setNameFormat("customNameFormat");
+//        attr.setName("attribute4");
+//        attr.setFriendlyName("friendly");
+//        attr.addAttributeValue("value1");
+//        attr.addAttributeValue("value2");
+//        attr.addAttributeValue("value3");
+//        attr.addAttributeValue("value4");
+//        attrStatement.addAttribute(new AttributeStatementType.ASTChoiceType(attr));
+//
+//        attributeStatementTypes.add(attrStatement);
+//
+//        return attributeStatementTypes;
+//    }
+//
+//    @Override
+//    public Map<String, Object> getAttributes(Principal userPrincipal, List<String> attributeKeys) {
+//        return null;
+//    }
+//}

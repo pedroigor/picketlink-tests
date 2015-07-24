@@ -55,80 +55,80 @@ import static org.picketlink.test.integration.federation.saml.util.SAMLTracer.SA
 /**
  * @author Pedro Igor
  */
-@RunWith (Arquillian.class)
-@RunAsClient
+//@RunWith (Arquillian.class)
+//@RunAsClient
 public class CustomAttributeTestCase extends AbstractFederationTestCase {
 
-    @Deployment(name = "idp")
-    public static WebArchive deployInvalidTrustDomainIdP() {
-        WebArchive deployment = resolveFromFederation("picketlink-federation-saml-idp-basic");
-
-        deployment.add(getIdPConfig(null, false, false, null, CustomAttributeManager.class, false), "WEB-INF/picketlink.xml");
-        deployment.addClass(CustomAttributeManager.class);
-        deployment.addClass(WriteSAMLAttributesServlet.class);
-
-        return deployment;
-    }
-
-    @Deployment(name = "service-provider")
-    public static WebArchive deployEmployee() {
-        return resolveFromFederation("picketlink-federation-saml-sp-post-basic");
-    }
-
-    @Test
-    @OperateOnDeployment("service-provider")
-    public void testRedirectOriginalRequest(@ArquillianResource URL url) throws Exception {
-        WebRequest request = new GetMethodWebRequest(formatUrl(url));
-        WebConversation conversation = createWebConversation();
-        WebResponse response = conversation.getResponse(request);
-
-        WebForm webForm = response.getForms()[0];
-
-        webForm.setParameter("j_username", "tomcat");
-        webForm.setParameter("j_password", "tomcat");
-
-        webForm.getSubmitButtons()[0].click();
-
-        SAMLTracer samlTracer = getSamlTracer();
-
-        SAMLMessage samlMessage = samlTracer.getMessages().get(1);
-        ResponseType responseType = (ResponseType) samlMessage.getSamlObject();
-
-        assertEquals(1, responseType.getAssertions().size());
-
-        AssertionType assertion = responseType.getAssertions().get(0).getAssertion();
-        Map<String, AttributeType> attributes = new HashMap<String, AttributeType>();
-
-        for (AttributeStatementType attributeStatementType : assertion.getAttributeStatements()) {
-            for (AttributeStatementType.ASTChoiceType choiceType : attributeStatementType.getAttributes()) {
-                AttributeType attribute = choiceType.getAttribute();
-
-                attributes.put(attribute.getName(), attribute);
-            }
-        }
-
-        AttributeType attribute1 = attributes.get("attribute1");
-
-        assertNotNull(attribute1);
-        assertTrue(attribute1.getAttributeValue().contains("attributeValue1"));
-
-        AttributeType attribute2 = attributes.get("attribute2");
-
-        assertNotNull(attribute2);
-        assertTrue(attribute2.getAttributeValue().contains("attributeValue2"));
-
-        AttributeType attribute3 = attributes.get("attribute3");
-
-        assertNotNull(attribute3);
-        assertTrue(attribute3.getAttributeValue().contains("attributeValue3"));
-
-        AttributeType attribute4 = attributes.get("attribute4");
-
-        assertNotNull(attribute4);
-        assertEquals("customNameFormat", attribute4.getNameFormat());
-        assertTrue(attribute4.getAttributeValue().contains("value1"));
-        assertTrue(attribute4.getAttributeValue().contains("value2"));
-        assertTrue(attribute4.getAttributeValue().contains("value3"));
-        assertTrue(attribute4.getAttributeValue().contains("value4"));
-    }
+//    @Deployment(name = "idp")
+//    public static WebArchive deployInvalidTrustDomainIdP() {
+//        WebArchive deployment = resolveFromFederation("picketlink-federation-saml-idp-basic");
+//
+//        deployment.add(getIdPConfig(null, false, false, null, CustomAttributeManager.class, false), "WEB-INF/picketlink.xml");
+//        deployment.addClass(CustomAttributeManager.class);
+//        deployment.addClass(WriteSAMLAttributesServlet.class);
+//
+//        return deployment;
+//    }
+//
+//    @Deployment(name = "service-provider")
+//    public static WebArchive deployEmployee() {
+//        return resolveFromFederation("picketlink-federation-saml-sp-post-basic");
+//    }
+//
+//    @Test
+//    @OperateOnDeployment("service-provider")
+//    public void testRedirectOriginalRequest(@ArquillianResource URL url) throws Exception {
+//        WebRequest request = new GetMethodWebRequest(formatUrl(url));
+//        WebConversation conversation = createWebConversation();
+//        WebResponse response = conversation.getResponse(request);
+//
+//        WebForm webForm = response.getForms()[0];
+//
+//        webForm.setParameter("j_username", "tomcat");
+//        webForm.setParameter("j_password", "tomcat");
+//
+//        webForm.getSubmitButtons()[0].click();
+//
+//        SAMLTracer samlTracer = getSamlTracer();
+//
+//        SAMLMessage samlMessage = samlTracer.getMessages().get(1);
+//        ResponseType responseType = (ResponseType) samlMessage.getSamlObject();
+//
+//        assertEquals(1, responseType.getAssertions().size());
+//
+//        AssertionType assertion = responseType.getAssertions().get(0).getAssertion();
+//        Map<String, AttributeType> attributes = new HashMap<String, AttributeType>();
+//
+//        for (AttributeStatementType attributeStatementType : assertion.getAttributeStatements()) {
+//            for (AttributeStatementType.ASTChoiceType choiceType : attributeStatementType.getAttributes()) {
+//                AttributeType attribute = choiceType.getAttribute();
+//
+//                attributes.put(attribute.getName(), attribute);
+//            }
+//        }
+//
+//        AttributeType attribute1 = attributes.get("attribute1");
+//
+//        assertNotNull(attribute1);
+//        assertTrue(attribute1.getAttributeValue().contains("attributeValue1"));
+//
+//        AttributeType attribute2 = attributes.get("attribute2");
+//
+//        assertNotNull(attribute2);
+//        assertTrue(attribute2.getAttributeValue().contains("attributeValue2"));
+//
+//        AttributeType attribute3 = attributes.get("attribute3");
+//
+//        assertNotNull(attribute3);
+//        assertTrue(attribute3.getAttributeValue().contains("attributeValue3"));
+//
+//        AttributeType attribute4 = attributes.get("attribute4");
+//
+//        assertNotNull(attribute4);
+//        assertEquals("customNameFormat", attribute4.getNameFormat());
+//        assertTrue(attribute4.getAttributeValue().contains("value1"));
+//        assertTrue(attribute4.getAttributeValue().contains("value2"));
+//        assertTrue(attribute4.getAttributeValue().contains("value3"));
+//        assertTrue(attribute4.getAttributeValue().contains("value4"));
+//    }
 }
