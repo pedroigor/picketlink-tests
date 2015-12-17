@@ -97,7 +97,7 @@ public class ArchiveUtils {
      * @return
      */
     public static String getCurrentProjectVersion() {
-        return System.getProperty("project.version", "2.7.0-SNAPSHOT");
+        return System.getProperty("project.version", "2.7.1.Final");
     }
 
     public static void addBeansXml(WebArchive webArchive, String resourcePath) {

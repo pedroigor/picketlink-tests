@@ -21,6 +21,7 @@
  */
 package org.picketlink.test.authentication.web;
 
+import org.picketlink.authentication.LockedAccountException;
 import org.picketlink.config.SecurityConfigurationBuilder;
 import org.picketlink.event.SecurityConfigurationEvent;
 
@@ -41,7 +42,8 @@ public class FormHttpSecurityConfiguration {
             .form()
                 .loginPage("/login.jsp")
                 .errorPage("/loginError.jsp")
-                .restoreOriginalRequest();
+                .restoreOriginalRequest()
+            .redirectTo("/login.jsp").whenException(LockedAccountException.class);
     }
 
 }

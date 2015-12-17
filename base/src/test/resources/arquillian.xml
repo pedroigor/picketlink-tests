@@ -35,7 +35,7 @@
     </configuration>
   </container>
 
-  <container qualifier="wildfly-9.0.0.Alpha2-SNAPSHOT">
+  <container qualifier="wildfly-9.0.2.Final">
     <configuration>
       <property name="serverConfig">standalone-test.xml</property>
       <property name="outputToConsole">true</property>
