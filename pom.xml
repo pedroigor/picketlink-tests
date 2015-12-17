@@ -1035,11 +1035,11 @@
         </profile>
 
         <profile>
-            <id>wildfly-10.0.0.Alpha6-SNAPSHOT</id>
+            <id>wildfly-10.0.0.CR1-SNAPSHOT</id>
             <properties>
-                <version.wildfly>10.0.0.Alpha6-SNAPSHOT</version.wildfly>
+                <version.wildfly>10.0.0.CR1-SNAPSHOT</version.wildfly>
                 <version.arquillian>1.0.0.Alpha2</version.arquillian>
-                <version.jboss.as.distribution>wildfly-10.0.0.Alpha6-SNAPSHOT</version.jboss.as.distribution>
+                <version.jboss.as.distribution>wildfly-10.0.0.CR1-SNAPSHOT</version.jboss.as.distribution>
             </properties>
             <dependencyManagement>
                 <dependencies>
